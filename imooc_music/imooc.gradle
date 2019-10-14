@@ -15,13 +15,31 @@ ext {
             appcompat: '28.0.0',
             magicindicator: '1.5.0',
             okhttp        : '3.3.0',
+            rxjava        : '2.2.9',
+            rxandroid     : '2.1.1',
+            glide         : '4.9.0',
+            glidecompiler : '4.9.0',
+            eventbus      : '3.1.1',
     ]
 
     depsLibs = [
             appcompat: "com.android.support:appcompat-v7:${depsVersion.appcompat}",
+
             // 第三方 viewpager
             magicindicator: "com.github.hackware1993:MagicIndicator:${depsVersion.magicindicator}",
+
+            // http
             okhttp        : "com.squareup.okhttp3:okhttp:${depsVersion.okhttp}",
+
+            // 图片加载
+            glide         : "com.github.bumptech.glide:glide:${depsVersion.glide}",
+            glidecompiler : "com.github.bumptech.glide:compiler:${depsVersion.glidecompiler}",
+
+            // rx
+            rxjava        : "io.reactivex.rxjava2:rxjava:${depsVersion.rxjava}",
+            rxandroid     : "io.reactivex.rxjava2:rxandroid:${depsVersion.rxandroid}",
+
+            eventbus      : "org.greenrobot:eventbus:${depsVersion.eventbus}",
     ]
 
 }
