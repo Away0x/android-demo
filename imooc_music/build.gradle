@@ -1,0 +1,75 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+// 引入定义的 imooc.gradle 文件，这样整个项目下的 gradle 文件都可以用 imooc.gradle 里面定义的常量了
+// gradle 父工程定义的变量，子工程也可使用.
+apply from: this.rootProject.file('imooc.gradle')
+
+buildscript {
+    repositories {
+        google()
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        jcenter()
+        mavenCentral()
+
+        maven {
+            url "https://jitpack.io"
+        }
+
+
+        // 私服
+        maven {
+            url 'http://localhost:8081/repository/imooc-releases/'
+            credentials{
+                username 'admin'
+                password '123456'
+            }
+        }
+        maven {
+            url 'http://localhost:8081/repository/imooc-snapshots/'
+            credentials{
+                username 'admin'
+                password '123456'
+            }
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.0'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        jcenter()
+        mavenCentral()
+
+        maven {
+            url "https://jitpack.io"
+        }
+
+
+        // 私服
+        maven {
+            url 'http://localhost:8081/repository/imooc-releases/'
+            credentials{
+                username 'admin'
+                password '123456'
+            }
+        }
+        maven {
+            url 'http://localhost:8081/repository/imooc-snapshots/'
+            credentials{
+                username 'admin'
+                password '123456'
+            }
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
