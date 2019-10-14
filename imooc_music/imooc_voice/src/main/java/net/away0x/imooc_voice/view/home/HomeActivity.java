@@ -3,17 +3,23 @@ package net.away0x.imooc_voice.view.home;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 
 import net.away0x.imooc_voice.R;
 import net.away0x.imooc_voice.view.home.adpater.HomePagerAdapter;
 import net.away0x.imooc_voice.view.home.model.CHANNEL;
+import net.away0x.imooc_voice.view.login.LoginActivity;
+import net.away0x.imooc_voice.view.login.manager.UserManager;
+import net.away0x.imooc_voice.view.login.user.LoginEvent;
 import net.away0x.lib_common_ui.base.BaseActivity;
 import net.away0x.lib_common_ui.pager_indictor.ScaleTransitionPagerTitleView;
+import net.away0x.lib_image_loader.app.ImageLoaderManager;
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
@@ -22,9 +28,13 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.SimplePagerTitleView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
-    // 指定首页要出现的卡片
+    //指定首页要出现的卡片
     private static final CHANNEL[] CHANNELS =
             new CHANNEL[]{CHANNEL.MY, CHANNEL.DISCORY, CHANNEL.FRIEND};
 
@@ -37,9 +47,16 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private ViewPager mViewPager;
     private HomePagerAdapter mAdapter;
 
+    private View unLogginLayout;
+    private ImageView mPhotoView;
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // event bus
+        EventBus.getDefault().register(this);
+
         setContentView(R.layout.activity_home);
 
         initView();
@@ -47,7 +64,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initData() {
-
     }
 
     private void initView() {
@@ -60,9 +76,13 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         mAdapter = new HomePagerAdapter(getSupportFragmentManager(), CHANNELS);
         mViewPager.setAdapter(mAdapter);
         initMagicIndicator();
+        //登录相关UI
+        unLogginLayout = findViewById(R.id.unloggin_layout);
+        unLogginLayout.setOnClickListener(this);
+        mPhotoView = findViewById(R.id.avatr_view);
     }
 
-    // 初始化指示器
+    //初始化指示器
     private void initMagicIndicator() {
         MagicIndicator magicIndicator = findViewById(R.id.magic_indicator);
         magicIndicator.setBackgroundColor(Color.WHITE);
@@ -82,7 +102,6 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 simplePagerTitleView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 simplePagerTitleView.setNormalColor(Color.parseColor("#999999"));
                 simplePagerTitleView.setSelectedColor(Color.parseColor("#333333"));
-                // 点击事件
                 simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -102,13 +121,44 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 return 1.0f;
             }
         });
-
         magicIndicator.setNavigator(commonNavigator);
-        ViewPagerHelper.bind(magicIndicator, mViewPager); // 绑定
+        ViewPagerHelper.bind(magicIndicator, mViewPager);
     }
 
     @Override
-    public void onClick(View view) {
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            // toggle drawer
+            case R.id.toggle_view:
+                if (mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                } else {
+                    mDrawerLayout.openDrawer(Gravity.LEFT);
+                }
+                break;
+            case R.id.unloggin_layout:
+                // 未登录，跳转到登录页
+                if (!UserManager.getInstance().hasLogin()) {
+                    LoginActivity.start(this);
+                } else {
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+                }
+                break;
+        }
+    }
+
+    // 接收到 event bus 事件 (登录事件
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLoginEvent(LoginEvent event) {
+        unLogginLayout.setVisibility(View.GONE);
+        mPhotoView.setVisibility(View.VISIBLE);
+        ImageLoaderManager.getInstance()
+                .displayImageForCircle(mPhotoView, UserManager.getInstance().getUser().data.photoUrl);
     }
 }

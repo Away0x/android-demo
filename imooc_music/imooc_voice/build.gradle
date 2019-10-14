@@ -26,9 +26,13 @@ dependencies {
 
     // this 可忽略: this.rootProject === rootProject
     implementation this.rootProject.depsLibs.appcompat
+
+    // rxjava
+    implementation rootProject.depsLibs.rxjava
+    implementation rootProject.depsLibs.rxandroid
+    implementation rootProject.depsLibs.eventbus
+
     implementation project(':lib_common_ui')
     implementation project(':lib_network')
-
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:support-v4:28.0.0'
+    implementation project(':lib_image_loader')
 }
