@@ -45,13 +45,23 @@
                 android:layout_marginEnd="42dp"
                 android:layout_toStartOf="@id/search_view"
                 android:layout_toEndOf="@id/toggle_view" />
+
         </RelativeLayout>
+
+        <net.away0x.lib_audio.mediaplayer.view.BottomMusicView
+            android:id="@+id/bottom_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@id/bottom_view"
             android:layout_below="@id/title_layout" />
+
+
     </RelativeLayout>
 
     <!-- 存放侧滑菜单-->
@@ -86,7 +96,6 @@
                         android:layout_marginTop="20dp"
                         android:visibility="gone" />
 
-                    <!-- 未登录的展示 -->
                     <LinearLayout
                         android:id="@+id/unloggin_layout"
                         android:layout_width="match_parent"
