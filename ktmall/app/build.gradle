@@ -31,4 +31,11 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+
+    implementation project(':lib_provider')
+
+    // user center 不为 debug 模式是，作为库工程引入
+    if (!userCenterDebug.toBoolean()) {
+        implementation project(':lib_user_center')
+    }
 }

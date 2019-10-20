@@ -1,0 +1,66 @@
+// 判断该 module 是一个应用程序工程还是库工程 (debug 时可作为单独应用程序启动)
+if (userCenterDebug.toBoolean()) {
+    apply plugin: 'com.android.application' // 应用程序工程
+} else {
+    apply plugin: 'com.android.library' // 库工程
+}
+
+
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 28
+
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            // 判断加载不同的 AndroidManifest.xml 文件
+            if (userCenterDebug.toBoolean()) {
+                // debug 模式
+                manifest.srcFile 'src/main/debug/AndroidManifest.xml'
+            } else {
+                // release 模式
+                manifest.srcFile 'src/main/release/AndroidManifest.xml'
+                // 排除 debug 文件夹中的所有 java 文件
+                java {
+                    exclude 'debug/**'
+                }
+            }
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.core:core-ktx:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+
+    implementation project(":lib_provider")
+
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+}
