@@ -77,16 +77,16 @@ class RegisterActivity : BaseMvpActivity<RegisterPresenter>(), RegisterView,
         mRegisterBtn.onClick(this)
         mVerifyCodeBtn.onClick(this)
         // 判断按钮是否可用
-        mRegisterBtn.enable(mMobileEt) { isRegisterBEnEnable() }
-        mRegisterBtn.enable(mVerifyCodeEt) { isRegisterBEnEnable() }
-        mRegisterBtn.enable(mPwdEt) { isRegisterBEnEnable() }
-        mRegisterBtn.enable(mPwdConfirmEt) { isRegisterBEnEnable() }
+        mRegisterBtn.enable(mMobileEt) { isRegisterBtnEnable() }
+        mRegisterBtn.enable(mVerifyCodeEt) { isRegisterBtnEnable() }
+        mRegisterBtn.enable(mPwdEt) { isRegisterBtnEnable() }
+        mRegisterBtn.enable(mPwdConfirmEt) { isRegisterBtnEnable() }
     }
 
     /**
      * 注册按钮是否可点击
      */
-    private fun isRegisterBEnEnable(): Boolean {
+    private fun isRegisterBtnEnable(): Boolean {
         return mMobileEt.text.isNullOrEmpty().not() &&
                 mVerifyCodeEt.text.isNullOrEmpty().not() &&
                 mPwdEt.text.isNullOrEmpty().not() &&
