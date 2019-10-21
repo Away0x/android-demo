@@ -22,6 +22,11 @@ class ResetPwdActivity : BaseMvpActivity<ResetPwdPresenter>(), ResetPwdView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reset_pwd)
 
+        val mobile = intent.getStringExtra("mobile")
+        if (mobile.isNullOrEmpty().not()) {
+            toast("mobile: $mobile")
+        }
+
         initView()
     }
 

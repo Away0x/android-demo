@@ -68,4 +68,17 @@ dependencies {
 
     // glide
     api "com.github.bumptech.glide:glide:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
+
+    // circle imageview
+    api "de.hdodenhof:circleimageview:$circle_imageview_version"
+
+    // take photo
+    api "org.devio.takephoto:takephoto_library:$take_photo_version"
+
+    // alert view
+    api "com.bigkoo:alertview:$alert_view_version"
+
+    //七牛
+    api "com.qiniu:qiniu-android-sdk:$qiniu_sdk_version"
 }

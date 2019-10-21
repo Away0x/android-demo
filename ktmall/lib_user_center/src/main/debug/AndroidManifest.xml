@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name="net.away0x.lib_base.common.BaseApplication"
@@ -15,18 +16,21 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".ui.activity.LoginActivity">
+
+        </activity>
+
+        <activity android:name=".ui.activity.RegisterActivity" />
+
+        <activity android:name=".ui.activity.ResetPwdActivity" />
+        <activity android:name=".ui.activity.ForgetPwdActivity">
+        </activity>
+
+        <activity android:name=".ui.activity.UserInfoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity android:name=".ui.activity.RegisterActivity" />
-        <activity android:name=".ui.activity.UserInfoActivity" />
-        <activity android:name=".ui.activity.ResetPwdActivity" />
-        <activity android:name=".ui.activity.ForgetPwdActivity">
-
         </activity>
 
     </application>
