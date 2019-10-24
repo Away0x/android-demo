@@ -28,9 +28,18 @@ buildscript {
 
     ext.qiniu_sdk_version = '7.4.0'
 
+    ext.bottom_nav_bar_version = '2.1.0'
+
+    ext.banner_version = '1.4.10'
+
+    ext.triangle_label_view_version = '1.1.2'
+
+    ext.cover_flow_version = 'release-v1.0.5'
+
     repositories {
         google()
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://jitpack.io' }
         jcenter()
 
     }
@@ -46,6 +55,7 @@ allprojects {
     repositories {
         google()
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://jitpack.io' }
         jcenter()
 
     }
