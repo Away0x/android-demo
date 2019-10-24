@@ -3,10 +3,12 @@ package net.away0x.lib_base.ext
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import com.trello.rxlifecycle3.LifecycleProvider
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import net.away0x.lib_base.utils.GlideUtils
 import net.away0x.lib_base.widgets.DefaultTextWatcher
 
 fun <T> Observable<T>.execute(lifecycleProvider: LifecycleProvider<*>, onNext: (T) -> Unit, onError: (Throwable) -> Unit) {
@@ -35,4 +37,10 @@ fun Button.enable(et: EditText, method: () -> Boolean) {
             btn.isEnabled = method()
         }
     })
+}
+
+
+/* ImageView加载网络图片 */
+fun ImageView.loadUrl(url: String) {
+    GlideUtils.loadUrlImage(context, url, this)
 }

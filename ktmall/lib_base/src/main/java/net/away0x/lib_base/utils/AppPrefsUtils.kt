@@ -10,7 +10,8 @@ import net.away0x.lib_base.common.BaseConstant
     SP工具类
  */
 object AppPrefsUtils {
-    private var sp: SharedPreferences = BaseApplication.context.getSharedPreferences(BaseConstant.TABLE_PREFS, Context.MODE_PRIVATE)
+    private var sp: SharedPreferences =
+        BaseApplication.context.getSharedPreferences(BaseConstant.TABLE_PREFS, Context.MODE_PRIVATE)
     private var ed: Editor
 
     init {

@@ -6,7 +6,7 @@ import net.away0x.lib_base.injection.component.AppComponent
 import net.away0x.lib_base.injection.component.DaggerAppComponent
 import net.away0x.lib_base.injection.module.AppModule
 
-class BaseApplication: Application() {
+open class BaseApplication: Application() {
 
     lateinit var appComponent: AppComponent
 

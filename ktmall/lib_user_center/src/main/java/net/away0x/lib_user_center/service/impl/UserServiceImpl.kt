@@ -21,8 +21,17 @@ class UserServiceImpl @Inject constructor(): UserService {
 
     // 登录
     override fun login(mobile: String, pwd: String, pushId: String): Observable<UserInfo> {
-        return repository.login(mobile, pwd, pushId)
-            .flatMap { baseFunc(it) }
+        // mock
+        return Observable.just(UserInfo(
+            id = "1",
+            userIcon = "https://img14.360buyimg.com/n0/jfs/t3157/231/5756125504/98807/97ab361d/588084a1N06efb01d.jpg",
+            userName = "away0x",
+            userGender = "男",
+            userMobile = "123123123",
+            userSign = "阿塞阿塞撒大大"
+        ))
+//        return repository.login(mobile, pwd, pushId)
+//            .flatMap { baseFunc(it) }
     }
 
     // 忘记密码

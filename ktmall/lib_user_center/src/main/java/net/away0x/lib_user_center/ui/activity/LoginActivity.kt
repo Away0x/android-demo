@@ -12,6 +12,7 @@ import net.away0x.lib_user_center.injection.component.DaggerUserComponet
 import net.away0x.lib_user_center.injection.module.UserModule
 import net.away0x.lib_user_center.presenter.LoginPresenter
 import net.away0x.lib_user_center.presenter.view.LoginView
+import net.away0x.lib_user_center.utils.UserPrefsUtils
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
@@ -28,6 +29,8 @@ class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView,
 
     override fun onLoginResult(result: UserInfo) {
         toast("登录成功")
+        UserPrefsUtils.putUserInfo(result)
+        finish()
     }
 
     override fun injectComponent() {

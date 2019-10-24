@@ -20,6 +20,12 @@ class MainActivity : BaseActivity() {
 
     // 首页 Fragment
     private val mHomeFragment by lazy { HomeFragment() }
+    // 商品分类 Fragment
+    private val mCategoryFragment by lazy { MeFragment() }
+    // 购物车 Fragment
+    private val mCartFragment by lazy { HomeFragment() }
+    // 消息 Fragment
+    private val mMsgFragment by lazy { MeFragment() }
     // 我的 Fragment
     private val mMeFragment by lazy { MeFragment() }
 
@@ -29,7 +35,7 @@ class MainActivity : BaseActivity() {
 
         initFragment()
         initBottomNav()
-        changeFragment(0)
+        changeFragment(0) // 显示第一个 fragment (home)
         initObserve()
         loadCartSize()
     }
@@ -42,10 +48,16 @@ class MainActivity : BaseActivity() {
     private fun initFragment() {
         val manager = supportFragmentManager.beginTransaction()
         manager.add(R.id.mContaier, mHomeFragment)
+        manager.add(R.id.mContaier, mCategoryFragment)
+        manager.add(R.id.mContaier, mCartFragment)
+        manager.add(R.id.mContaier, mMsgFragment)
         manager.add(R.id.mContaier, mMeFragment)
         manager.commit()
 
         mStack.add(mHomeFragment)
+        mStack.add(mCategoryFragment)
+        mStack.add(mCartFragment)
+        mStack.add(mMsgFragment)
         mStack.add(mMeFragment)
     }
 
