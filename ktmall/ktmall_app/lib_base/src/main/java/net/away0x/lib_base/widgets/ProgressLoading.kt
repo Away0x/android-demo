@@ -20,11 +20,11 @@ class ProgressLoading private constructor(context: Context, theme: Int): Dialog(
             mDialog.setContentView(R.layout.progress_dialog)
             mDialog.setCancelable(true)
             mDialog.setCanceledOnTouchOutside(false) // 点击 dialog 外侧不关闭 dialog
-            mDialog.window.attributes.gravity = Gravity.CENTER
+            mDialog.window?.attributes?.gravity = Gravity.CENTER
 
-            val lp = mDialog.window.attributes
-            lp.dimAmount = 0.2f // 灰暗程度
-            mDialog.window.attributes = lp
+            val lp = mDialog.window?.attributes
+            lp?.dimAmount = 0.2f // 灰暗程度
+            mDialog.window?.attributes = lp
 
             val loadingView = mDialog.find<ImageView>(R.id.iv_loading)
             animDrawable = loadingView.background as AnimationDrawable

@@ -45,7 +45,7 @@ object AppPrefsUtils {
         默认 ""
      */
     fun getString(key: String): String {
-        return sp.getString(key, "")
+        return sp.getString(key, "") ?: ""
     }
 
     /*
@@ -93,7 +93,7 @@ object AppPrefsUtils {
      */
     fun getStringSet(key: String): Set<String> {
         val set = setOf<String>()
-        return sp.getStringSet(key, set)
+        return sp.getStringSet(key, set) ?: set
     }
 
     /*

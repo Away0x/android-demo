@@ -12,7 +12,7 @@ import net.away0x.lib_base.ui.activity.BaseActivity
 import org.jetbrains.anko.support.v4.toast
 import javax.inject.Inject
 
-open abstract class BaseMvpFragment<T: BasePresenter<*>>: BaseFragment(), BaseView {
+abstract class BaseMvpFragment<T: BasePresenter<*>>: BaseFragment(), BaseView {
 
     @Inject
     lateinit var mPresenter: T
