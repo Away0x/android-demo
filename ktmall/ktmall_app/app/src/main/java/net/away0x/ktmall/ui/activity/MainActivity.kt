@@ -9,6 +9,7 @@ import net.away0x.ktmall.ui.fragment.HomeFragment
 import net.away0x.ktmall.ui.fragment.MeFragment
 import net.away0x.lib_base.common.AppManager
 import net.away0x.lib_base.ui.activity.BaseActivity
+import net.away0x.lib_goods_center.ui.fragment.CategoryFragment
 import org.jetbrains.anko.toast
 import java.util.*
 
@@ -21,7 +22,7 @@ class MainActivity : BaseActivity() {
     // 首页 Fragment
     private val mHomeFragment by lazy { HomeFragment() }
     // 商品分类 Fragment
-    private val mCategoryFragment by lazy { MeFragment() }
+    private val mCategoryFragment by lazy { CategoryFragment() }
     // 购物车 Fragment
     private val mCartFragment by lazy { HomeFragment() }
     // 消息 Fragment
