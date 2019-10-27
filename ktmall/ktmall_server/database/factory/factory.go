@@ -16,4 +16,8 @@ func Run() {
 	defer db.Close()
 
 	fmt.Println("database.factory runing")
+
+	categoryFactory()
+	factoryGoodsInfo()
+	factoryGoodsSku()
 }
