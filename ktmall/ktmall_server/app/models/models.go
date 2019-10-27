@@ -2,16 +2,10 @@ package models
 
 import (
 	"ktmall/database"
+	"strconv"
 	"time"
 
 	"github.com/jinzhu/gorm"
-)
-
-const (
-	// TrueTinyint true
-	TrueTinyint = 1
-	// FalseTinyint false
-	FalseTinyint = 0
 )
 
 type BaseModel struct {
@@ -21,6 +15,10 @@ type BaseModel struct {
 	UpdatedAt time.Time
 	// 有 DeletedAt (类型需要是 *time.Time) 即支持 gorm 软删除
 	DeletedAt *time.Time `sql:"index"`
+}
+
+func (m *BaseModel) IDString() string {
+	return strconv.Itoa(int(m.ID))
 }
 
 func DB() *gorm.DB {

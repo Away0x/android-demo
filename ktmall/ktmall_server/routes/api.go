@@ -3,6 +3,7 @@ package routes
 import (
 	"ktmall/app/context"
 	. "ktmall/app/controllers"
+	"ktmall/routes/wrapper"
 
 	"github.com/labstack/echo/v4"
 )
@@ -20,10 +21,12 @@ func registerAPI(e *echo.Echo) {
 	{
 		context.RegisterHandler(user.POST, "/register", UserRegister)
 		context.RegisterHandler(user.POST, "/login", UserLogin)
+		context.RegisterHandler(user.POST, "/logout", wrapper.GetTokenAndUser(UserLogout))
+		context.RegisterHandler(user.POST, "/refresh_token", wrapper.GetToken(UserRefreshToken))
 		context.RegisterHandler(user.POST, "/forget_pwd", UserForgetPwd)
-		context.RegisterHandler(user.POST, "/reset_pwd", UserResetPwd)
-		context.RegisterHandler(user.POST, "/edit", UserEdit)
-		context.RegisterHandler(user.GET, "/info", UserInfo)
+		context.RegisterHandler(user.POST, "/reset_pwd", wrapper.GetTokenAndUser(UserResetPwd))
+		context.RegisterHandler(user.POST, "/edit", wrapper.GetTokenAndUser(UserEdit))
+		context.RegisterHandler(user.GET, "/info", wrapper.GetTokenAndUser(UserInfo))
 	}
 
 	address := ee.Group("/address")
@@ -51,7 +54,7 @@ func registerAPI(e *echo.Echo) {
 	{
 		context.RegisterHandler(goods.GET, "/list", GoodsList)
 		context.RegisterHandler(goods.GET, "/list_by_keyword", GoodsListByKeyword)
-		context.RegisterHandler(goods.GET, "/detail", GoodsDetail)
+		context.RegisterHandler(goods.GET, "/detail/:id", GoodsDetail)
 	}
 
 	message := ee.Group("/message")

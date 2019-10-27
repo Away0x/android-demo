@@ -10,6 +10,8 @@ type (
 	AppContext struct {
 		echo.Context
 	}
+	AppHandlerFunc = func(c *AppContext) error
+	echoRegisterFn = func(path string, h echo.HandlerFunc, m ...echo.MiddlewareFunc) *echo.Route
 )
 
 func NewAppContext(c echo.Context) *AppContext {
@@ -24,9 +26,9 @@ func Middleware(h echo.HandlerFunc) echo.HandlerFunc {
 }
 
 func RegisterHandler(
-	fn func(string, echo.HandlerFunc, ...echo.MiddlewareFunc) *echo.Route,
+	fn echoRegisterFn,
 	path string,
-	h func(c *AppContext) error,
+	h AppHandlerFunc,
 	m ...echo.MiddlewareFunc,
 ) *echo.Route {
 	if path != "" && !strings.HasPrefix(path, "/") {

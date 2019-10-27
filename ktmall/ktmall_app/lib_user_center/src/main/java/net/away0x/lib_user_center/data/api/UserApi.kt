@@ -8,22 +8,22 @@ import retrofit2.http.POST
 
 interface UserApi {
 
-    @POST("userCenter/register")
+    @POST("user/register")
     fun register(@Body req: RegisterReq): Observable<BaseResp<String>>
 
-    @POST("userCenter/login")
+    @POST("user/login")
     fun login(@Body req: LoginReq): Observable<BaseResp<UserInfo>>
 
     /* 忘记密码 */
-    @POST("userCenter/forgetPwd")
+    @POST("user/forget_pwd")
     fun forgetPwd(@Body req: ForgetPwdReq): Observable<BaseResp<String>>
 
     /* 重置密码 */
-    @POST("userCenter/resetPwd")
+    @POST("user/reset_pwd")
     fun resetPwd(@Body req: ResetPwdReq): Observable<BaseResp<String>>
 
     /* 编辑用户资料 */
-    @POST("userCenter/editUser")
+    @POST("user/edit")
     fun editUser(@Body req: EditUserReq): Observable<BaseResp<UserInfo>>
 
 }

@@ -1,5 +1,9 @@
 package models
 
+import (
+	"ktmall/common/serializer"
+)
+
 const (
 	MessageInfoTableName = "message_info"
 )
@@ -16,4 +20,13 @@ type MessageInfo struct {
 
 func (MessageInfo) TableName() string {
 	return MessageInfoTableName
+}
+
+func (m *MessageInfo) Serialize() serializer.Data {
+	return serializer.Data{
+		"icon":    m.Icon,
+		"title":   m.Title,
+		"content": m.Content,
+		"time":    m.Time,
+	}
 }

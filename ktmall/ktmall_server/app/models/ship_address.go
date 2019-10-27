@@ -1,5 +1,9 @@
 package models
 
+import (
+	"ktmall/common/serializer"
+)
+
 const (
 	ShipAddressTableName = "ship_address"
 )
@@ -11,9 +15,20 @@ type ShipAddress struct {
 	ShipUserMobile string
 	ShipAddress    string
 	ShipIsDefault  int
-	UserId         uint
+
+	UserId uint
 }
 
 func (ShipAddress) TableName() string {
 	return ShipAddressTableName
+}
+
+func (s *ShipAddress) Serialize() serializer.Data {
+	return serializer.Data{
+		"id":             s.ID,
+		"shipUserName":   s.ShipUserName,
+		"shipUserMobile": s.ShipUserMobile,
+		"shipAddress":    s.ShipAddress,
+		"shipIsDefault":  s.ShipIsDefault,
+	}
 }
