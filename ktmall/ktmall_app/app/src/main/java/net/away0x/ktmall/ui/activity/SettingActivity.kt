@@ -1,14 +1,12 @@
 package net.away0x.ktmall.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.activity_setting.*
 import net.away0x.ktmall.R
 import net.away0x.lib_base.ext.onClick
 import net.away0x.lib_base.ui.activity.BaseActivity
-import net.away0x.lib_provider.common.isLogined
-import net.away0x.lib_user_center.utils.UserPrefsUtils
+import net.away0x.lib_base.common.AuthManager
 import org.jetbrains.anko.toast
 
 class SettingActivity : BaseActivity() {
@@ -17,7 +15,7 @@ class SettingActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
 
-        if (!isLogined()) {
+        if (!AuthManager.instance.isLogined()) {
             mLogoutBtn.visibility = View.GONE
         }
 
@@ -33,7 +31,7 @@ class SettingActivity : BaseActivity() {
 
         // 退出登录，清空本地用户数据
         mLogoutBtn.onClick {
-            UserPrefsUtils.putUserInfo(null)
+            AuthManager.instance.logout()
             finish()
         }
     }

@@ -1,5 +1,6 @@
 package net.away0x.lib_base.data.net
 
+import net.away0x.lib_base.common.AuthManager
 import net.away0x.lib_base.common.BaseConstant
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -26,8 +27,13 @@ class RetrofitFactory private constructor(){
                     .newBuilder()
                     .addHeader("Content-Type", "application/json")
                     .addHeader("charset", "utf-8")
-                    .build()
-                chain.proceed(request)
+
+                val token = AuthManager.instance.getToken()
+                if (!token.isNullOrEmpty()) {
+                    request.addHeader("Authorization", "Bearer $token")
+                }
+
+                chain.proceed(request.build())
         }
 
         retrofit = Retrofit.Builder()

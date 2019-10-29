@@ -25,9 +25,9 @@ class SecondCategoryAdapter(context: Context): BaseRecyclerViewAdapter<Category,
         super.onBindViewHolder(holder, position)
         val model = dataList[position]
         //分类图片
-        holder.itemView.mCategoryIconIv.loadUrl(model.categoryIcon)
+        holder.itemView.mCategoryIconIv.loadUrl(model.icon)
         //分类名称
-        holder.itemView.mSecondCategoryNameTv.text = model.categoryName
+        holder.itemView.mSecondCategoryNameTv.text = model.name
 
     }
 

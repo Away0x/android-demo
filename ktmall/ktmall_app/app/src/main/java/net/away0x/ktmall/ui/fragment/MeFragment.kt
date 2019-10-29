@@ -3,7 +3,6 @@ package net.away0x.ktmall.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +13,9 @@ import net.away0x.ktmall.ui.activity.SettingActivity
 import net.away0x.lib_base.ext.loadUrl
 import net.away0x.lib_base.ext.onClick
 import net.away0x.lib_base.ui.fragment.BaseFragment
-import net.away0x.lib_base.utils.AppPrefsUtils
-import net.away0x.lib_provider.common.ProviderConstant
-import net.away0x.lib_provider.common.afterLogin
-import net.away0x.lib_provider.common.isLogined
 import net.away0x.lib_user_center.ui.activity.LoginActivity
 import net.away0x.lib_user_center.ui.activity.UserInfoActivity
+import net.away0x.lib_base.common.AuthManager
 import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 
@@ -62,12 +58,14 @@ class MeFragment : BaseFragment(), View.OnClickListener {
 
     /* 加载初始数据 */
     private fun loadData() {
-        if (isLogined()) {
-            val userIcon = AppPrefsUtils.getString(ProviderConstant.KEY_SP_USER_ICON)
+        if (AuthManager.instance.isLogined()) {
+            val userInfo = AuthManager.instance.getUserInfo()
+
+            val userIcon = userInfo?.icon ?: ""
             if (userIcon.isNotEmpty()) {
                 mUserIconIv.loadUrl(userIcon)
             }
-            mUserNameTv.text = AppPrefsUtils.getString(ProviderConstant.KEY_SP_USER_NAME)
+            mUserNameTv.text = userInfo?.name ?: ""
         } else {
             Log.d("LOGIN", "ssss")
             mUserIconIv.setImageResource(R.drawable.icon_default_user)
@@ -79,7 +77,7 @@ class MeFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view.id) {
             R.id.mUserIconIv, R.id.mUserNameTv -> {
-                if (isLogined()) {
+                if (AuthManager.instance.isLogined()) {
                     startActivity<UserInfoActivity>()
                 } else {
                     startActivity<LoginActivity>()

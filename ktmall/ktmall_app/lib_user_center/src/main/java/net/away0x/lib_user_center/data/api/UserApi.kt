@@ -2,6 +2,7 @@ package net.away0x.lib_user_center.data.api
 
 import io.reactivex.Observable
 import net.away0x.lib_base.data.protocol.BaseResp
+import net.away0x.lib_base.data.protocol.UserInfo
 import net.away0x.lib_user_center.data.protocol.*
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -9,10 +10,10 @@ import retrofit2.http.POST
 interface UserApi {
 
     @POST("user/register")
-    fun register(@Body req: RegisterReq): Observable<BaseResp<String>>
+    fun register(@Body req: RegisterReq): Observable<BaseResp<LoginAndRegisterResp?>>
 
     @POST("user/login")
-    fun login(@Body req: LoginReq): Observable<BaseResp<UserInfo>>
+    fun login(@Body req: LoginReq): Observable<BaseResp<LoginAndRegisterResp?>>
 
     /* 忘记密码 */
     @POST("user/forget_pwd")

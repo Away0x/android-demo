@@ -24,7 +24,7 @@ class TopCategoryAdapter(context: Context): BaseRecyclerViewAdapter<Category, To
         super.onBindViewHolder(holder, position)
         val model = dataList[position]
         //分类名称
-        holder.itemView.mTopCategoryNameTv.text = model.categoryName
+        holder.itemView.mTopCategoryNameTv.text = model.name
         //是否被选中
         holder.itemView.mTopCategoryNameTv.isSelected = model.isSelected
 

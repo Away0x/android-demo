@@ -3,6 +3,7 @@ package handler
 import (
 	"ktmall/app/context"
 	"ktmall/app/models"
+	"ktmall/app/services"
 	"ktmall/common"
 )
 
@@ -11,9 +12,20 @@ import (
 // 获取商品列表
 func GoodsList(c *context.AppContext) error {
 	// req := &struct {
+	// 	CategoryId int `query:"categoryId"`
+	// 	PageNo     int `query:"pageNo"`
 	// }{}
+	// if err := c.BindReq(req); err != nil {
+	// 	return err
+	// }
 
-	return nil
+	service := services.GoodsService{DB: c.DB()}
+	list, err := service.GoodsList(14)
+	if err != nil {
+		return err
+	}
+
+	return c.SuccessResp(list)
 }
 
 // 根据关键字获取商品列表

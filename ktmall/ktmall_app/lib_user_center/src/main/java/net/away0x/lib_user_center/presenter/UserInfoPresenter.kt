@@ -6,6 +6,7 @@ import net.away0x.lib_base.rx.BaseException
 import net.away0x.lib_user_center.presenter.view.UserInfoView
 import net.away0x.lib_user_center.service.UploadService
 import net.away0x.lib_user_center.service.UserService
+import net.away0x.lib_base.common.AuthManager
 import javax.inject.Inject
 
 /* 编辑用户资料 Presenter */
@@ -26,6 +27,7 @@ class UserInfoPresenter @Inject constructor() : BasePresenter<UserInfoView>() {
 
         userService.editUser(userIcon, userName, userGender, userSign)
             .execute(lifecycleProvider, {
+                AuthManager.instance.saveUserInfo(it)
                 mView.onEditUserResult(it)
                 mView.hideLoading()
             }, {

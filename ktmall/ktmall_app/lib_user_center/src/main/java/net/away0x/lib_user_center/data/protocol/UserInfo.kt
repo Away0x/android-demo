@@ -1,12 +1,9 @@
 package net.away0x.lib_user_center.data.protocol
 
+import net.away0x.lib_base.data.protocol.TokenInfo
+import net.away0x.lib_base.data.protocol.UserInfo
 
-/** 用户实体类 */
-data class UserInfo(
-    val id: String,
-    val userIcon: String,
-    val userName: String,
-    val userGender: String,
-    val userMobile: String,
-    val userSign: String
+data class LoginAndRegisterResp(
+    val user: UserInfo,
+    val token: TokenInfo
 )

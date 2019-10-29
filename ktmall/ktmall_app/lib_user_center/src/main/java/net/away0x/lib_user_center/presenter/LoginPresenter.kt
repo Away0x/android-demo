@@ -4,8 +4,8 @@ import net.away0x.lib_base.ext.execute
 import net.away0x.lib_base.presenter.BasePresenter
 import net.away0x.lib_base.rx.BaseException
 import net.away0x.lib_user_center.presenter.view.LoginView
-import net.away0x.lib_user_center.presenter.view.RegisterView
 import net.away0x.lib_user_center.service.UserService
+import net.away0x.lib_base.common.AuthManager
 import javax.inject.Inject
 
 class LoginPresenter @Inject constructor(): BasePresenter<LoginView>() {
@@ -23,7 +23,14 @@ class LoginPresenter @Inject constructor(): BasePresenter<LoginView>() {
 
         userService.login(mobile, pwd, pushId)
             .execute(lifecycleProvider, {
-                mView.onLoginResult(it)
+                if (it == null) {
+                    mView.hideLoading()
+                    return@execute
+                }
+                AuthManager.instance.saveUserInfo(it.user)
+                AuthManager.instance.saveToken(it.token.token)
+
+                mView.onLoginResult(true)
                 mView.hideLoading()
             }, {
                 if (it is BaseException) {
