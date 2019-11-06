@@ -37,17 +37,17 @@
                 android:text="热卖热荐"
                 android:layout_marginTop="@dimen/common_margin_middle"/>
 
-<!--            <com.kennyc.view.MultiStateView-->
-<!--                android:id="@+id/mMultiStateView"-->
-<!--                style="@style/MultiStateStyle">-->
-<!--                <android.support.v7.widget.RecyclerView-->
-<!--                    android:id="@+id/mSecondCategoryRv"-->
-<!--                    android:paddingLeft="12dp"-->
-<!--                    android:paddingTop="@dimen/common_padding_small"-->
-<!--                    android:layout_marginTop="@dimen/common_margin_small"-->
-<!--                    style="@style/commonRecyclerView"-->
-<!--                    android:background="@drawable/border_all"/>-->
-<!--            </com.kennyc.view.MultiStateView>-->
+            <com.kennyc.view.MultiStateView
+                android:id="@+id/mMultiStateView"
+                style="@style/MultiStateStyle">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mSecondCategoryRv"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="@dimen/common_padding_small"
+                    android:layout_marginTop="@dimen/common_margin_small"
+                    style="@style/commonRecyclerView"
+                    android:background="@drawable/border_all"/>
+            </com.kennyc.view.MultiStateView>
 
         </LinearLayout>
     </LinearLayout>

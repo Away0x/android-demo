@@ -42,9 +42,9 @@ class AppManager private constructor(){
     fun exitApp(context: Context) {
         finishAllActivity()
 
-        val activityManager = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as ActivityManager
-        activityManager.killBackgroundProcesses(context.packageName)
-        System.exit(0)
+//        val activityManager = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as ActivityManager
+//        activityManager.killBackgroundProcesses(context.packageName)
+//        System.exit(0)
     }
 
 }

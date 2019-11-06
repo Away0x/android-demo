@@ -5,8 +5,8 @@ package net.away0x.lib_goods_center.data.protocol
  */
 data class GoodsSku(
         val id: Int,
-        val skuTitle: String,//SKU标题
-        val skuContent: List<String>//SKU内容
+        val title: String,//SKU标题
+        val content: List<String>//SKU内容
         )
 
 

@@ -11,16 +11,16 @@ import (
 
 // 获取商品列表
 func GoodsList(c *context.AppContext) error {
-	// req := &struct {
-	// 	CategoryId int `query:"categoryId"`
-	// 	PageNo     int `query:"pageNo"`
-	// }{}
-	// if err := c.BindReq(req); err != nil {
-	// 	return err
-	// }
+	req := &struct {
+		CategoryId int `query:"categoryId"`
+		PageNo     int `query:"pageNo"`
+	}{}
+	if err := c.BindReq(req); err != nil {
+		return err
+	}
 
 	service := services.GoodsService{DB: c.DB()}
-	list, err := service.GoodsList(14)
+	list, err := service.GoodsList(req.CategoryId)
 	if err != nil {
 		return err
 	}

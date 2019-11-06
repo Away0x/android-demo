@@ -31,18 +31,18 @@ func registerAPI(e *echo.Echo) {
 
 	address := ee.Group("/address")
 	{
-		context.RegisterHandler(address.POST, "/add", AddressAdd)
-		context.RegisterHandler(address.POST, "/delete", AddressDelete)
-		context.RegisterHandler(address.POST, "/modify", AddressModify)
-		context.RegisterHandler(address.GET, "/list", AddressList)
+		context.RegisterHandler(address.POST, "/add", wrapper.GetTokenAndUser(AddressAdd))
+		context.RegisterHandler(address.POST, "/delete/:id", wrapper.GetTokenAndUser(AddressDelete))
+		context.RegisterHandler(address.POST, "/modify/:id", wrapper.GetTokenAndUser(AddressModify))
+		context.RegisterHandler(address.GET, "/list", wrapper.GetTokenAndUser(AddressList))
 	}
 
 	cart := ee.Group("/cart")
 	{
-		context.RegisterHandler(cart.GET, "/list", CartList)
-		context.RegisterHandler(cart.POST, "/add", CartAdd)
-		context.RegisterHandler(cart.POST, "/delete", CartDelete)
-		context.RegisterHandler(cart.POST, "/submit", CartSubmit)
+		context.RegisterHandler(cart.GET, "/list", wrapper.GetTokenAndUser(CartList))
+		context.RegisterHandler(cart.POST, "/add", wrapper.GetTokenAndUser(CartAdd))
+		context.RegisterHandler(cart.POST, "/delete", wrapper.GetTokenAndUser(CartDelete))
+		context.RegisterHandler(cart.POST, "/submit", wrapper.GetTokenAndUser(CartSubmit))
 	}
 
 	category := ee.Group("/category")

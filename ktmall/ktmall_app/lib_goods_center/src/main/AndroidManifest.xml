@@ -1,2 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.away0x.lib_goods_center" />
+    package="net.away0x.lib_goods_center">
+
+    <application>
+        <activity android:name=".ui.activity.SearchGoodsActivity"></activity>
+        <activity android:name=".ui.activity.CartActivity" />
+        <activity android:name=".ui.activity.GoodsDetailActivity" />
+        <activity android:name=".ui.activity.GoodsActivity" />
+    </application>
+
+</manifest>

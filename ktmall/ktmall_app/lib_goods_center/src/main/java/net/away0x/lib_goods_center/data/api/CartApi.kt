@@ -7,6 +7,7 @@ import net.away0x.lib_goods_center.data.protocol.CartGoods
 import net.away0x.lib_goods_center.data.protocol.DeleteCartReq
 import net.away0x.lib_goods_center.data.protocol.SubmitCartReq
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 /* 购物车 接口 */
@@ -14,7 +15,7 @@ interface CartApi {
     /*
         获取购物车列表
      */
-    @POST("cart/getList")
+    @GET("cart/list")
     fun getCartList(): Observable<BaseResp<MutableList<CartGoods>?>>
 
     /*

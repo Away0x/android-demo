@@ -7,18 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kennyc.view.MultiStateView
 import kotlinx.android.synthetic.main.fragment_category.*
+import net.away0x.lib_base.ext.startLoading
 import net.away0x.lib_base.ui.adapter.BaseRecyclerViewAdapter
 import net.away0x.lib_base.ui.fragment.BaseMvpFragment
 
 import net.away0x.lib_goods_center.R
+import net.away0x.lib_goods_center.common.GoodsConstant
 import net.away0x.lib_goods_center.data.protocol.Category
 import net.away0x.lib_goods_center.injection.component.DaggerCategoryComponent
 import net.away0x.lib_goods_center.injection.module.CategoryModule
 import net.away0x.lib_goods_center.presenter.CategoryPresenter
 import net.away0x.lib_goods_center.presenter.view.CategoryView
+import net.away0x.lib_goods_center.ui.activity.GoodsActivity
 import net.away0x.lib_goods_center.ui.adapter.SecondCategoryAdapter
 import net.away0x.lib_goods_center.ui.adapter.TopCategoryAdapter
+import org.jetbrains.anko.support.v4.startActivity
 
 /** 商品分类 Fragment */
 class CategoryFragment : BaseMvpFragment<CategoryPresenter>(), CategoryView {
@@ -61,13 +66,13 @@ class CategoryFragment : BaseMvpFragment<CategoryPresenter>(), CategoryView {
                 secondAdapter.setData(result)
                 mTopCategoryIv.visibility = View.VISIBLE
                 mCategoryTitleTv.visibility = View.VISIBLE
-                // mMultiStateView.viewState = MultiStateView.VIEW_STATE_CONTENT
+                mMultiStateView.viewState = MultiStateView.VIEW_STATE_CONTENT
             }
         } else {
             // 没有数据
             mTopCategoryIv.visibility = View.GONE
             mCategoryTitleTv.visibility = View.GONE
-            // mMultiStateView.viewState = MultiStateView.VIEW_STATE_EMPTY
+            mMultiStateView.viewState = MultiStateView.VIEW_STATE_EMPTY
         }
     }
 
@@ -88,20 +93,20 @@ class CategoryFragment : BaseMvpFragment<CategoryPresenter>(), CategoryView {
             }
         })
 
-//        mSecondCategoryRv.layoutManager = GridLayoutManager(context, 3)
-//        secondAdapter = SecondCategoryAdapter(context!!)
-//        mSecondCategoryRv.adapter = secondAdapter
-//        secondAdapter.setOnItemClickListener(object : BaseRecyclerViewAdapter.OnItemClickListener<Category> {
-//            override fun onItemClick(item: Category, position: Int) {
-//                // startActivity<GoodsActivity>(GoodsConstant.KEY_CATEGORY_ID  to item.id)
-//            }
-//        })
+        mSecondCategoryRv.layoutManager = GridLayoutManager(context, 3)
+        secondAdapter = SecondCategoryAdapter(context!!)
+        mSecondCategoryRv.adapter = secondAdapter
+        secondAdapter.setOnItemClickListener(object : BaseRecyclerViewAdapter.OnItemClickListener<Category> {
+            override fun onItemClick(item: Category, position: Int) {
+                startActivity<GoodsActivity>(GoodsConstant.KEY_CATEGORY_ID to item.id)
+            }
+        })
     }
 
     /* 加载数据 */
     private fun loadData(parentId: Int = 0) {
         if (parentId != 0) {
-            // mMultiStateView.startLoading()
+            mMultiStateView.startLoading()
         }
 
         mPresenter.getCategory(parentId)

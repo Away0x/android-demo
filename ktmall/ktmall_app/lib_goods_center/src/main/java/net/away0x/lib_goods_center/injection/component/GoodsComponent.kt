@@ -5,6 +5,8 @@ import net.away0x.lib_base.injection.PerComponentScope
 import net.away0x.lib_base.injection.component.ActivityComponent
 import net.away0x.lib_goods_center.injection.module.CartModule
 import net.away0x.lib_goods_center.injection.module.GoodsModule
+import net.away0x.lib_goods_center.ui.activity.GoodsActivity
+import net.away0x.lib_goods_center.ui.fragment.GoodsDetailTabOneFragment
 
 /* 商品Component */
 @PerComponentScope
@@ -14,8 +16,8 @@ import net.away0x.lib_goods_center.injection.module.GoodsModule
 )
 interface GoodsComponent {
 
-//    fun inject(activity: GoodsActivity)
+    fun inject(activity: GoodsActivity)
 
-//    fun inject(fragment: GoodsDetailTabOneFragment)
+    fun inject(fragment: GoodsDetailTabOneFragment)
 
 }

@@ -37,6 +37,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.core:core-ktx:1.0.2'
+    api "com.android.support:design:${android_support_version}"
     api "com.android.support:recyclerview-v7:${android_support_version}"
     api "com.android.support:cardview-v7:${android_support_version}"
 
@@ -55,6 +56,9 @@ dependencies {
     // rxlifecycle
     api "com.trello.rxlifecycle3:rxlifecycle:$rx_lifecycle_version"
     api "com.trello.rxlifecycle3:rxlifecycle-components:$rx_lifecycle_version"
+
+    // rx bus
+    api "com.eightbitlab:rxbus:$rx_bus_version"
 
     // http
     api "com.squareup.okhttp3:okhttp:$ok_http_version"
@@ -94,4 +98,16 @@ dependencies {
 
     // cover flow 画廊
     api "com.github.crosswall:Android-Coverflow:$cover_flow_version"
+
+    // 多状态视图
+    api "com.github.Kennyc1012:MultiStateView:$multistate_view_version"
+
+    // 上下拉刷新
+    api "cn.bingoogolapple:bga-refreshlayout:$refreshlayout_version"
+
+    // flow layout
+    api "com.zhy:flowlayout-lib:$flowlayout_version"
+
+    // badge view
+    api "q.rorbin:badgeview:$badgeview_version"
 }

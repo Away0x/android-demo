@@ -2,30 +2,27 @@ package net.away0x.lib_goods_center.data.api
 
 import io.reactivex.Observable
 import net.away0x.lib_base.data.protocol.BaseResp
-import net.away0x.lib_goods_center.data.protocol.GetGoodsDetailReq
-import net.away0x.lib_goods_center.data.protocol.GetGoodsListByKeywordReq
-import net.away0x.lib_goods_center.data.protocol.GetGoodsListReq
 import net.away0x.lib_goods_center.data.protocol.Goods
-import retrofit2.http.Body
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /* 商品接口 */
 interface GoodsApi {
-    /*
-        获取商品列表
-     */
-    @POST("goods/getGoodsList")
-    fun getGoodsList(@Body req: GetGoodsListReq): Observable<BaseResp<MutableList<Goods>?>>
 
-    /*
-        获取商品列表
-     */
-    @POST("goods/getGoodsListByKeyword")
-    fun getGoodsListByKeyword(@Body req: GetGoodsListByKeywordReq): Observable<BaseResp<MutableList<Goods>?>>
+    /* 获取商品列表 */
+    @GET("goods/list")
+    fun getGoodsList(
+        @Query("categoryId") categoryId: Int,
+        @Query("pageNo") pageNo: Int
+    ): Observable<BaseResp<MutableList<Goods>?>>
 
-    /*
-        获取商品详情
-     */
-    @POST("goods/getGoodsDetail")
-    fun getGoodsDetail(@Body req: GetGoodsDetailReq): Observable<BaseResp<Goods>>
+    /* 获取商品列表 */
+    @GET("goods/list_by_keyword")
+    fun getGoodsListByKeyword(
+        @Query("keyword") keyword: String,
+        @Query("pageNo") pageNo: Int
+    ): Observable<BaseResp<MutableList<Goods>?>>
+
+    /* 获取商品详情 */
+    @GET("goods/detail/{id}")
+    fun getGoodsDetail(@Path("id") id: Int): Observable<BaseResp<Goods>>
 }

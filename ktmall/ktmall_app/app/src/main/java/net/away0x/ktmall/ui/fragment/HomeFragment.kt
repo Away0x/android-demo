@@ -18,6 +18,8 @@ import net.away0x.ktmall.ui.adapter.TopicAdapter
 import net.away0x.lib_base.ext.onClick
 import net.away0x.lib_base.ui.fragment.BaseFragment
 import net.away0x.lib_base.widgets.BannerImageLoader
+import net.away0x.lib_goods_center.ui.activity.SearchGoodsActivity
+import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 
 
@@ -41,6 +43,10 @@ class HomeFragment : BaseFragment() {
 
     /* 初始化视图 */
     private fun initView() {
+        mSearchEt.onClick {
+            startActivity<SearchGoodsActivity>()
+        }
+
         mScanIv.onClick {
             toast(R.string.coming_soon_tip)
         }

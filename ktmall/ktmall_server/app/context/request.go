@@ -8,7 +8,7 @@ import (
 )
 
 // 包装错误为 validate.Messages 类型
-func wrapRequestError(err error) validate.Messages {
+func wrapRequestError(err error) error {
 	switch typed := err.(type) {
 	case *echo.HTTPError:
 		return validate.Messages{
@@ -23,7 +23,7 @@ func wrapRequestError(err error) validate.Messages {
 	}
 }
 
-func (c *AppContext) BindReq(v interface{}) validate.Messages {
+func (c *AppContext) BindReq(v interface{}) error {
 	if err := c.Context.Bind(v); err != nil {
 		return wrapRequestError(err)
 	}
@@ -31,7 +31,7 @@ func (c *AppContext) BindReq(v interface{}) validate.Messages {
 	return nil
 }
 
-func (c *AppContext) BindAndValidate(v validate.Validater) validate.Messages {
+func (c *AppContext) BindAndValidate(v validate.Validater) error {
 	if err := c.Context.Bind(v); err != nil {
 		return wrapRequestError(err)
 	}
@@ -43,7 +43,7 @@ func (c *AppContext) BindAndValidate(v validate.Validater) validate.Messages {
 	return nil
 }
 
-func (c *AppContext) BindAndValidateWithConfig(v validate.Validater, createConfig func(req validate.Validater) validate.Config) validate.Messages {
+func (c *AppContext) BindAndValidateWithConfig(v validate.Validater, createConfig func(req validate.Validater) validate.Config) error {
 	if err := c.Context.Bind(v); err != nil {
 		return wrapRequestError(err)
 	}
@@ -54,6 +54,7 @@ func (c *AppContext) BindAndValidateWithConfig(v validate.Validater, createConfi
 
 	return nil
 }
+
 func (c *AppContext) IntParam(key string) (int, error) {
 	i, err := strconv.Atoi(c.Param(key))
 	if err != nil {
@@ -61,4 +62,13 @@ func (c *AppContext) IntParam(key string) (int, error) {
 	}
 
 	return i, nil
+}
+
+func (c *AppContext) UintParam(key string) (uint, error) {
+	i, err := strconv.Atoi(c.Param(key))
+	if err != nil {
+		return 0, err
+	}
+
+	return uint(i), nil
 }
