@@ -5,7 +5,8 @@
     <application>
         <activity android:name=".ui.activity.SearchGoodsActivity"></activity>
         <activity android:name=".ui.activity.CartActivity" />
-        <activity android:name=".ui.activity.GoodsDetailActivity" />
+        <activity android:name=".ui.activity.GoodsDetailActivity"
+            android:theme="@style/AppTheme.Black"/>
         <activity android:name=".ui.activity.GoodsActivity" />
     </application>
 

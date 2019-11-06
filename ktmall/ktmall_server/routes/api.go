@@ -53,7 +53,6 @@ func registerAPI(e *echo.Echo) {
 	goods := ee.Group("/goods")
 	{
 		context.RegisterHandler(goods.GET, "/list", GoodsList)
-		context.RegisterHandler(goods.GET, "/list_by_keyword", GoodsListByKeyword)
 		context.RegisterHandler(goods.GET, "/detail/:id", GoodsDetail)
 	}
 

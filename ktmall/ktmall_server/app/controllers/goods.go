@@ -12,25 +12,25 @@ import (
 // 获取商品列表
 func GoodsList(c *context.AppContext) error {
 	req := &struct {
-		CategoryId int `query:"categoryId"`
-		PageNo     int `query:"pageNo"`
+		CategoryId int    `query:"categoryId"`
+		PageNo     int    `query:"pageNo"`
+		Keyword    string `query:"keyword"`
 	}{}
 	if err := c.BindReq(req); err != nil {
 		return err
 	}
 
+	if req.PageNo == 0 {
+		req.PageNo = 1
+	}
+
 	service := services.GoodsService{DB: c.DB()}
-	list, err := service.GoodsList(req.CategoryId)
+	list, err := service.GoodsList(req.CategoryId, req.PageNo, req.Keyword)
 	if err != nil {
 		return err
 	}
 
 	return c.SuccessResp(list)
-}
-
-// 根据关键字获取商品列表
-func GoodsListByKeyword(c *context.AppContext) error {
-	return nil
 }
 
 // 获取商品详情

@@ -2,10 +2,12 @@ package net.away0x.lib_user_center.ui.activity
 
 import android.os.Bundle
 import android.view.View
+import com.alibaba.android.arouter.facade.annotation.Route
 import kotlinx.android.synthetic.main.activity_login.*
 import net.away0x.lib_base.ext.enable
 import net.away0x.lib_base.ext.onClick
 import net.away0x.lib_base.ui.activity.BaseMvpActivity
+import net.away0x.lib_provider.router.RouterPath
 import net.away0x.lib_user_center.R
 import net.away0x.lib_user_center.injection.component.DaggerUserComponet
 import net.away0x.lib_user_center.injection.module.UserModule
@@ -15,6 +17,7 @@ import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 
 /** 登录界面 */
+@Route(path = RouterPath.UserCenter.PATH_LOGIN)
 class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView,
     View.OnClickListener {
 

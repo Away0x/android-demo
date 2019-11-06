@@ -16,7 +16,7 @@ interface GoodsApi {
     ): Observable<BaseResp<MutableList<Goods>?>>
 
     /* 获取商品列表 */
-    @GET("goods/list_by_keyword")
+    @GET("goods/list")
     fun getGoodsListByKeyword(
         @Query("keyword") keyword: String,
         @Query("pageNo") pageNo: Int
