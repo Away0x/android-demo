@@ -117,6 +117,9 @@ dependencies {
     // badge view
     api "q.rorbin:badgeview:$badgeview_version"
 
+    // number button
+    api "ren.qinc.numberbutton:numberbutton:$number_button_version"
+
     // arouter
     api "com.alibaba:arouter-api:$arouter_api_version"
     kapt "com.alibaba:arouter-compiler:$arouter_compiler_version"
