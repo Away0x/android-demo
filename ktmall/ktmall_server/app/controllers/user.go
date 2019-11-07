@@ -12,9 +12,9 @@ import (
 /// 用户相关接口
 
 // 用户注册
-func UserRegister(c *context.AppContext) error {
+func UserRegister(c *context.AppContext) (err error) {
 	req := new(request.UserRegisterReq)
-	if err := c.BindAndValidate(req); err != nil {
+	if err = c.BindAndValidate(req); err != nil {
 		return err
 	}
 
@@ -22,7 +22,7 @@ func UserRegister(c *context.AppContext) error {
 		Mobile: req.Mobile,
 		Pwd:    req.Pwd,
 	}
-	if err := c.DB().Create(u).Error; err != nil {
+	if err = u.Create(); err != nil {
 		return err
 	}
 
@@ -38,17 +38,17 @@ func UserRegister(c *context.AppContext) error {
 }
 
 // 用户登录
-func UserLogin(c *context.AppContext) error {
+func UserLogin(c *context.AppContext) (err error) {
 	req := new(request.UserLoginReq)
 	if err := c.BindAndValidate(req); err != nil {
 		return err
 	}
 
 	u := new(models.UserInfo)
-	if err := models.DB().Where("mobile = ?", req.Mobile).First(u).Error; err != nil {
+	if err = models.DB().Where("mobile = ?", req.Mobile).First(u).Error; err != nil {
 		return c.ErrorResp(common.ResultCodeResourceError, "用户不存在")
 	}
-	if err := u.Compare(req.Pwd); err != nil {
+	if err = u.Compare(req.Pwd); err != nil {
 		return c.ErrorResp(common.ResultCodeError, "密码错误")
 	}
 
@@ -79,13 +79,13 @@ func UserLogout(c *context.AppContext, u *models.UserInfo, s string) error {
 }
 
 // 忘记密码
-func UserForgetPwd(c *context.AppContext) error {
+func UserForgetPwd(c *context.AppContext) (err error) {
 	req := &struct {
 		validate.Base
 		Mobile     string `json:"mobile"`
 		VerifyCode string `json:"verifyCode"`
 	}{}
-	if err := c.BindAndValidateWithConfig(req, func(r validate.Validater) validate.Config {
+	if err = c.BindAndValidateWithConfig(req, func(r validate.Validater) validate.Config {
 		return validate.Config{Plugins: validate.Plugins{request.VerifyCodePlugin(req.VerifyCode)}}
 	}); err != nil {
 		return err
@@ -95,7 +95,7 @@ func UserForgetPwd(c *context.AppContext) error {
 		return c.ErrorResp(common.ResultCodeReqError, "手机号不能为空")
 	}
 	u := new(models.UserInfo)
-	if err := c.DB().Where("mobile = ?", req.Mobile).First(u).Error; err != nil {
+	if err = c.DB().Where("mobile = ?", req.Mobile).First(u).Error; err != nil {
 		return c.ErrorResp(common.ResultCodeResourceError, "用户不存在")
 	}
 
@@ -105,16 +105,16 @@ func UserForgetPwd(c *context.AppContext) error {
 }
 
 // 重置密码
-func UserResetPwd(c *context.AppContext, u *models.UserInfo, s string) error {
+func UserResetPwd(c *context.AppContext, u *models.UserInfo, s string) (err error) {
 	req := &struct {
 		Pwd string `json:"pwd"`
 	}{}
-	if err := c.BindReq(req); err != nil {
+	if err = c.BindReq(req); err != nil {
 		return err
 	}
 
 	u.Pwd = req.Pwd
-	if err := c.DB().Save(u).Error; err != nil {
+	if err = u.Update(); err != nil {
 		return c.ErrorResp(common.ResultCodeDatabaseError, "密码更新失败")
 	}
 
@@ -130,9 +130,9 @@ func UserResetPwd(c *context.AppContext, u *models.UserInfo, s string) error {
 }
 
 // 编辑用户资料
-func UserEdit(c *context.AppContext, u *models.UserInfo, s string) error {
+func UserEdit(c *context.AppContext, u *models.UserInfo, s string) (err error) {
 	req := new(request.UserEditReq)
-	if err := c.BindReq(req); err != nil {
+	if err = c.BindReq(req); err != nil {
 		return err
 	}
 
@@ -140,7 +140,7 @@ func UserEdit(c *context.AppContext, u *models.UserInfo, s string) error {
 	u.Icon = req.Icon
 	u.Gender = req.Gender
 	u.Sign = req.Sign
-	if err := c.DB().Save(u).Error; err != nil {
+	if err = u.Update(); err != nil {
 		return c.ErrorResp(common.ResultCodeDatabaseError, "用户更新失败")
 	}
 

@@ -10,13 +10,13 @@ import (
 /// 商品相关接口
 
 // 获取商品列表
-func GoodsList(c *context.AppContext) error {
+func GoodsList(c *context.AppContext) (err error) {
 	req := &struct {
 		CategoryId int    `query:"categoryId"`
 		PageNo     int    `query:"pageNo"`
 		Keyword    string `query:"keyword"`
 	}{}
-	if err := c.BindReq(req); err != nil {
+	if err = c.BindReq(req); err != nil {
 		return err
 	}
 

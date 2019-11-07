@@ -15,7 +15,7 @@ const (
 func registerAPI(e *echo.Echo) {
 	ee := e.Group(APIPrefix)
 
-	context.RegisterHandler(ee.GET, "/upload_token", CommonGetQiNiuUploadToken)
+	context.RegisterHandler(ee.GET, "/upload_token", wrapper.GetTokenAndUser(CommonGetQiNiuUploadToken))
 
 	user := ee.Group("/user")
 	{
@@ -58,7 +58,7 @@ func registerAPI(e *echo.Echo) {
 
 	message := ee.Group("/message")
 	{
-		context.RegisterHandler(message.GET, "/list", MessageList)
+		context.RegisterHandler(message.GET, "/list", wrapper.GetTokenAndUser(MessageList))
 	}
 
 	order := ee.Group("/order")

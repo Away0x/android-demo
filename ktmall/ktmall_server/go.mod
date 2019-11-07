@@ -45,6 +45,7 @@ require (
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pelletier/go-toml v1.6.0 // indirect
 	github.com/prometheus/client_golang v1.2.1 // indirect
+	github.com/qiniu/api.v7/v7 v7.4.0
 	github.com/rogpeppe/fastuuid v1.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.5.0 // indirect
 	github.com/russross/blackfriday v2.0.0+incompatible // indirect

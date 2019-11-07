@@ -2,14 +2,17 @@ package models
 
 import (
 	"errors"
+	"ktmall/common/cache"
 	"ktmall/common/serializer"
 	"ktmall/common/utils"
+	"strconv"
 
 	"github.com/jinzhu/gorm"
 )
 
 const (
 	UserInfoTableName = "user_info"
+	UserModelCacheKey = "user_info_"
 )
 
 // 用户表
@@ -86,4 +89,72 @@ func (u *UserInfo) Encrypt() (pwd string, err error) {
 func (u *UserInfo) Compare(pwd string) (err error) {
 	err = utils.Compare(u.Pwd, pwd)
 	return
+}
+
+// cache -------
+func getUserModelCacheKey(id uint) string {
+	return UserModelCacheKey + strconv.Itoa(int(id))
+}
+
+func putUserModelCache(u *UserInfo) {
+	cache.Put(getUserModelCacheKey(u.ID), u, cache.DefaultExpiration)
+}
+
+func getUserModelFromCache(id uint) (*UserInfo, bool) {
+	key := getUserModelCacheKey(id)
+	cacheUser, ok := cache.Get(key)
+	if !ok {
+		return nil, false
+	}
+
+	if u, ok := cacheUser.(*UserInfo); ok {
+		return u, true
+	}
+
+	return nil, false
+}
+
+// utils
+func GetUserInfo(id uint) (*UserInfo, error) {
+	if cacheUser, ok := getUserModelFromCache(id); ok {
+		return cacheUser, nil
+	}
+
+	user := new(UserInfo)
+	if err := DB().First(user, id).Error; err != nil {
+		return nil, err
+	}
+
+	putUserModelCache(user)
+	return user, nil
+}
+
+func DeleteUser(id uint) error {
+	u := new(UserInfo)
+	u.BaseModel.ID = id
+
+	if err := DB().Delete(u).Error; err != nil {
+		return err
+	}
+
+	cache.Del(getUserModelCacheKey(id))
+	return nil
+}
+
+func (u *UserInfo) Create() error {
+	if err := DB().Create(u).Error; err != nil {
+		return err
+	}
+
+	putUserModelCache(u)
+	return nil
+}
+
+func (u *UserInfo) Update() error {
+	if err := DB().Save(u).Error; err != nil {
+		return err
+	}
+
+	putUserModelCache(u)
+	return nil
 }

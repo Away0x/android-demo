@@ -19,7 +19,12 @@ import net.away0x.lib_base.widgets.ProgressLoading
 import org.devio.takephoto.app.TakePhoto
 import org.devio.takephoto.app.TakePhotoImpl
 import org.devio.takephoto.compress.CompressConfig
+import org.devio.takephoto.model.InvokeParam
+import org.devio.takephoto.model.TContextWrap
 import org.devio.takephoto.model.TResult
+import org.devio.takephoto.permission.InvokeListener
+import org.devio.takephoto.permission.PermissionManager
+import org.devio.takephoto.permission.TakePhotoInvocationHandler
 import org.jetbrains.anko.toast
 import java.io.File
 import javax.inject.Inject
@@ -27,9 +32,10 @@ import javax.inject.Inject
 abstract class BaseTakePhotoActivity<T : BasePresenter<*>> :
     BaseActivity(),
     BaseView,
-    TakePhoto.TakeResultListener {
+    TakePhoto.TakeResultListener, InvokeListener {
 
     private lateinit var mTakePhoto: TakePhoto
+    private var mInvokeParam: InvokeParam? = null
     private lateinit var mTempFile: File
 
     lateinit var mActivityComponent: ActivityComponent
@@ -55,10 +61,27 @@ abstract class BaseTakePhotoActivity<T : BasePresenter<*>> :
         initActivityInjection()
         injectComponent()
 
-        mTakePhoto = TakePhotoImpl(this,this)
+//        mTakePhoto = TakePhotoImpl(this,this)
+        mTakePhoto = TakePhotoInvocationHandler.of(this).bind(TakePhotoImpl(this,this)) as TakePhoto
         mTakePhoto.onCreate(savedInstanceState)
 
         mLoadingDialog = ProgressLoading.create(this)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        val type = PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionManager.handlePermissionsResult(this, type, mInvokeParam, this)
+    }
+
+    override fun invoke(invokeParam: InvokeParam): PermissionManager.TPermissionType {
+        val type = PermissionManager.checkPermission(TContextWrap.of(this), invokeParam.method)
+        if (PermissionManager.TPermissionType.WAIT.equals(type)) {
+            mInvokeParam = invokeParam
+        }
+
+        return type
     }
 
     /* TakePhoto默认实现 */

@@ -54,10 +54,15 @@ class UserInfoActivity : BaseTakePhotoActivity<UserInfoPresenter>(), UserInfoVie
     }
 
     /* 获取上传凭证回调 */
-    override fun onGetUploadTokenResult(result: String) {
-        mUploadManager.put(mLocalFileUrl,null, result, object: UpCompletionHandler {
+    override fun onGetUploadTokenResult(token: String) {
+        mUploadManager.put(mLocalFileUrl,null, token, object: UpCompletionHandler {
             override fun complete(key: String?, info: ResponseInfo?, response: JSONObject?) {
-                mRemoteFileUrl = BaseConstant.IMAGE_SERVER_ADDRESS + response?.get("hash")
+                val hash = response?.get("hash")
+                if (hash == null) {
+                    toast("上传失败")
+                    return
+                }
+                mRemoteFileUrl = BaseConstant.IMAGE_SERVER_ADDRESS + hash
 
                 Log.d("test", mRemoteFileUrl)
                 GlideUtils.loadUrlImage(this@UserInfoActivity, mRemoteFileUrl!!, mUserIconIv)

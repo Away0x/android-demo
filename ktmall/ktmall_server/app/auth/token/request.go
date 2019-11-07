@@ -29,9 +29,8 @@ func GetUser(c echo.Context, token string) (*models.UserInfo, error) {
 		return nil, err
 	}
 
-	user := new(models.UserInfo)
-	user.ID = claims.UserID
-	if e := models.DB().First(user).Error; e != nil {
+	user, e := models.GetUserInfo(claims.UserID)
+	if e != nil {
 		return nil, errors.New("用户不存在")
 	}
 

@@ -49,6 +49,7 @@ class UserInfoPresenter @Inject constructor() : BasePresenter<UserInfoView>() {
         uploadService.getUploadToken()
             .execute(lifecycleProvider, {
                 mView.onGetUploadTokenResult(it)
+                mView.hideLoading()
             }, {
                 if (it is BaseException) {
                     mView.onError(it.msg)
