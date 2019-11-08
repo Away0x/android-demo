@@ -30,7 +30,8 @@ android {
         }
     }
 
-
+    // 出现 "org.jetbrains.kotlin.kapt3.base.ProcessorWrapper 的受支持 source 版本 RELEASE_7 低于 -source 1.8" warning 时
+    // 如下配置可规避
     kotlinOptions {
         jvmTarget = "1.8"
     }

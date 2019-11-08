@@ -44,4 +44,6 @@ dependencies {
 
     implementation project(':lib_message_center')
     implementation project(':lib_goods_center')
+    implementation project(':lib_order_center')
+    implementation project(':lib_pay_center')
 }

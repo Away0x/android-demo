@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/lib_goods_center" />
             <option value="$PROJECT_DIR$/lib_message_center" />
             <option value="$PROJECT_DIR$/lib_order_center" />
+            <option value="$PROJECT_DIR$/lib_pay_center" />
             <option value="$PROJECT_DIR$/lib_provider" />
             <option value="$PROJECT_DIR$/lib_user_center" />
           </set>
