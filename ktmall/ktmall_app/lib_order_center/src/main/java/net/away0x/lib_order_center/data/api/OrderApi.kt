@@ -4,7 +4,9 @@ import net.away0x.lib_order_center.data.protocol.*
 import io.reactivex.Observable
 import net.away0x.lib_base.data.protocol.BaseResp
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 
 /*
@@ -16,30 +18,30 @@ interface OrderApi {
         取消订单
      */
     @POST("order/cancel")
-    fun cancelOrder(@Body req: CancelOrderReq): Observable<BaseResp<String>>
+    fun cancelOrder(@Path("id") id: Int): Observable<BaseResp<String>>
 
     /*
         确认订单
      */
     @POST("order/confirm")
-    fun confirmOrder(@Body req: ConfirmOrderReq): Observable<BaseResp<String>>
+    fun confirmOrder(@Path("id") id: Int): Observable<BaseResp<String>>
 
     /*
         根据ID获取订单
      */
-    @POST("order/getOrderById")
-    fun getOrderById(@Body req: GetOrderByIdReq): Observable<BaseResp<Order>>
+    @GET("order/detail")
+    fun getOrderById(@Path("id") id: Int): Observable<BaseResp<Order>>
 
     /*
         根据订单状态查询查询订单列表
      */
-    @POST("order/getOrderList")
+    @GET("order/list")
     fun getOrderList(@Body req: GetOrderListReq): Observable<BaseResp<MutableList<Order>?>>
 
     /*
         提交订单
      */
-    @POST("order/submitOrder")
+    @POST("order/submit")
     fun submitOrder(@Body req: SubmitOrderReq): Observable<BaseResp<String>>
 
 }

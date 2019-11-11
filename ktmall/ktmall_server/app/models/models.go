@@ -8,6 +8,11 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+const (
+	TrueTinyint  uint = 1
+	FalseTinyint uint = 0
+)
+
 type BaseModel struct {
 	ID uint `sql:"primary_key; auto_increment; not null"`
 	// MySQL 的 DATE/DATATIME 类型可以对应 Golang的time.Time
@@ -23,4 +28,8 @@ func (m *BaseModel) IDString() string {
 
 func DB() *gorm.DB {
 	return database.DBManager()
+}
+
+func TinyBool(i uint) bool {
+	return i == TrueTinyint
 }

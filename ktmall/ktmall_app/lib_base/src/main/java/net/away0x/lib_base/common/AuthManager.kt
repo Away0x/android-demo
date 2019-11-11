@@ -1,5 +1,6 @@
 package net.away0x.lib_base.common
 
+import com.alibaba.android.arouter.launcher.ARouter
 import net.away0x.lib_base.data.protocol.UserInfo
 import net.away0x.lib_base.utils.AppPrefsUtils
 
@@ -35,7 +36,7 @@ class AuthManager {
         if (isLogined()) {
             cb()
         } else {
-
+            ARouter.getInstance().build(RouterPath.UserCenter.PATH_LOGIN).navigation()
         }
     }
 
@@ -80,4 +81,8 @@ class AuthManager {
         return if (token.isNotEmpty()) token else null
     }
 
+    /** 跳转到登录界面 */
+    fun gotoLogin() {
+        ARouter.getInstance().build(RouterPath.UserCenter.PATH_LOGIN).navigation()
+    }
 }

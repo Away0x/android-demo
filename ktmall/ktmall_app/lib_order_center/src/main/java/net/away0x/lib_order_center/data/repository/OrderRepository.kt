@@ -17,21 +17,21 @@ class OrderRepository @Inject constructor() {
         取消订单
      */
     fun cancelOrder(orderId: Int): Observable<BaseResp<String>> {
-        return RetrofitFactory.instance.create(OrderApi::class.java).cancelOrder(CancelOrderReq(orderId))
+        return RetrofitFactory.instance.create(OrderApi::class.java).cancelOrder(orderId)
     }
 
     /*
         确认订单
      */
     fun confirmOrder(orderId: Int): Observable<BaseResp<String>> {
-        return RetrofitFactory.instance.create(OrderApi::class.java).confirmOrder(ConfirmOrderReq(orderId))
+        return RetrofitFactory.instance.create(OrderApi::class.java).confirmOrder(orderId)
     }
 
     /*
         根据ID查询订单
      */
     fun getOrderById(orderId: Int): Observable<BaseResp<Order>> {
-        return RetrofitFactory.instance.create(OrderApi::class.java).getOrderById(GetOrderByIdReq(orderId))
+        return RetrofitFactory.instance.create(OrderApi::class.java).getOrderById(orderId)
     }
 
     /*

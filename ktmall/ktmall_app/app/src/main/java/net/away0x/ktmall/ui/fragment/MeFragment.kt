@@ -16,6 +16,10 @@ import net.away0x.lib_base.ui.fragment.BaseFragment
 import net.away0x.lib_user_center.ui.activity.LoginActivity
 import net.away0x.lib_user_center.ui.activity.UserInfoActivity
 import net.away0x.lib_base.common.AuthManager
+import net.away0x.lib_order_center.common.OrderConstant
+import net.away0x.lib_order_center.common.OrderStatus
+import net.away0x.lib_order_center.ui.activity.OrderActivity
+import net.away0x.lib_order_center.ui.activity.ShipAddressActivity
 import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 
@@ -85,27 +89,27 @@ class MeFragment : BaseFragment(), View.OnClickListener {
             }
 
             R.id.mWaitPayOrderTv -> {
-//                startActivity<OrderActivity>(OrderConstant.KEY_ORDER_STATUS to OrderStatus.ORDER_WAIT_PAY)
+                startActivity<OrderActivity>(OrderConstant.KEY_ORDER_STATUS to OrderStatus.ORDER_WAIT_PAY)
             }
 
             R.id.mWaitConfirmOrderTv -> {
-//                startActivity<OrderActivity>(OrderConstant.KEY_ORDER_STATUS to OrderStatus.ORDER_WAIT_CONFIRM)
+                startActivity<OrderActivity>(OrderConstant.KEY_ORDER_STATUS to OrderStatus.ORDER_WAIT_CONFIRM)
             }
 
             R.id.mCompleteOrderTv -> {
-//                startActivity<OrderActivity>(OrderConstant.KEY_ORDER_STATUS to OrderStatus.ORDER_COMPLETED)
+                startActivity<OrderActivity>(OrderConstant.KEY_ORDER_STATUS to OrderStatus.ORDER_COMPLETED)
             }
 
             R.id.mAllOrderTv -> {
-//                afterLogin {
-//                    startActivity<OrderActivity>()
-//                }
+                AuthManager.instance.afterLogin {
+                    startActivity<OrderActivity>()
+                }
             }
 
             R.id.mAddressTv -> {
-//                afterLogin {
-//                    startActivity<ShipAddressActivity>()
-//                }
+                AuthManager.instance.afterLogin {
+                    startActivity<ShipAddressActivity>()
+                }
             }
 
             R.id.mShareTv -> {

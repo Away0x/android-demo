@@ -6,6 +6,7 @@ import net.away0x.lib_pay_center.data.protocol.GetPaySignReq
 import net.away0x.lib_pay_center.data.protocol.PayOrderReq
 import net.away0x.lib_base.data.protocol.BaseResp
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 
 /*
@@ -23,6 +24,6 @@ interface PayApi {
         刷新订单状态，已支付
      */
     @POST("order/pay")
-    fun payOrder(@Body req: PayOrderReq): Observable<BaseResp<String>>
+    fun payOrder(@Path("id") id: Int): Observable<BaseResp<String>>
 
 }

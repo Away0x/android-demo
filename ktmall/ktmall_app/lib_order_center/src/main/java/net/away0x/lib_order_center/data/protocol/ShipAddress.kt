@@ -5,20 +5,21 @@ import kotlinx.android.parcel.Parcelize
 
 /*
    收货地址
+   Parcelable: 序列化
  */
-//@Parcelize
-//data class ShipAddress(
-//        val id: Int,
-//        var shipUserName: String,
-//        var shipUserMobile: String,
-//        var shipAddress: String,
-//        var shipIsDefault: Int
-//) : Parcelable
-
+@Parcelize
 data class ShipAddress(
         val id: Int,
         var shipUserName: String,
         var shipUserMobile: String,
         var shipAddress: String,
         var shipIsDefault: Int
-)
+) : Parcelable
+
+//data class ShipAddress(
+//        val id: Int,
+//        var shipUserName: String,
+//        var shipUserMobile: String,
+//        var shipAddress: String,
+//        var shipIsDefault: Int
+//)

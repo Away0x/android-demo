@@ -1,2 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.away0x.lib_order_center" />
+    package="net.away0x.lib_order_center">
+
+    <application android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true">
+        <activity android:name=".ui.activity.OrderActivity" />
+        <activity android:name=".ui.activity.OrderConfirmActivity" />
+        <activity android:name=".ui.activity.OrderDetailActivity" />
+        <activity android:name=".ui.activity.ShipAddressActivity" />
+        <activity android:name=".ui.activity.ShipAddressEditActivity" />
+    </application>
+
+</manifest>

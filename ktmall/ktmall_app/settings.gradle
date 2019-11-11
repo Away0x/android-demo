@@ -1,2 +1,2 @@
-include ':app', ':lib_base', ':lib_provider', ':lib_user_center', ':lib_message_center', ':lib_goods_center', ':lib_order_center', ':lib_pay_center'
+include ':app', ':lib_base', ':lib_user_center', ':lib_message_center', ':lib_goods_center', ':lib_order_center', ':lib_pay_center'
 rootProject.name='ktmall'

@@ -1,4 +1,4 @@
-package net.away0x.lib_provider.router
+package net.away0x.lib_base.common
 
 /* 模块路由 路径定义 */
 object RouterPath{

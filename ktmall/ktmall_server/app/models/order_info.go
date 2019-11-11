@@ -4,18 +4,37 @@ import (
 	"ktmall/common/serializer"
 )
 
+type (
+	// 订单状态
+	OrderStatus uint
+	// 支付状态
+	OrderPayType uint
+)
+
 const (
 	OrderInfoTableName = "order_info"
+)
+
+const (
+	OrderStatusWaitPay     OrderStatus = 1 // 待支付
+	OrderStatusWaitConfirm OrderStatus = 2 // 待收货
+	OrderStatusCompleted   OrderStatus = 3 // 已完成
+	OrderStatusCanceled    OrderStatus = 4 // 已取消
+)
+
+const (
+	OrderPayTypeWait OrderPayType = 0 // 待支付
+	OrderPayTypeOver OrderPayType = 1 // 已支付
 )
 
 // 订单信息
 type OrderInfo struct {
 	BaseModel
 	UserId      uint
-	PayType     uint
 	ShipId      uint
 	TotalPrice  int
-	OrderStatus int
+	PayType     OrderPayType
+	OrderStatus OrderStatus
 }
 
 func (OrderInfo) TableName() string {

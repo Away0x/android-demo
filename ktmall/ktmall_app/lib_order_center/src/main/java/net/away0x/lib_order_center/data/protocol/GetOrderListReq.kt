@@ -3,4 +3,4 @@ package net.away0x.lib_order_center.data.protocol
 /*
     根据订单状态查询查询订单列表
  */
-data class GetOrderListReq(val orderStatus:Int)
+data class GetOrderListReq(val orderStatus: Int)

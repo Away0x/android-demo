@@ -9,6 +9,12 @@ kapt {
     }
 }
 
+// 可使用 kotlin 实验特性
+// 比如就允许了数据类 Parcelable 接口 (例: net.away0x.lib_order_center.data.protocol.ShipAddress)
+androidExtensions {
+    experimental = true
+}
+
 android {
     compileSdkVersion 28
 
@@ -45,7 +51,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 
-    implementation project(":lib_provider")
+    implementation project(":lib_base")
 
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.alibaba:arouter-compiler:$arouter_compiler_version"

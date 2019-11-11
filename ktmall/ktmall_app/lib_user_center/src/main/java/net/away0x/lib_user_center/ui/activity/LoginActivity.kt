@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import net.away0x.lib_base.ext.enable
 import net.away0x.lib_base.ext.onClick
 import net.away0x.lib_base.ui.activity.BaseMvpActivity
-import net.away0x.lib_provider.router.RouterPath
+import net.away0x.lib_base.common.RouterPath
 import net.away0x.lib_user_center.R
 import net.away0x.lib_user_center.injection.component.DaggerUserComponet
 import net.away0x.lib_user_center.injection.module.UserModule

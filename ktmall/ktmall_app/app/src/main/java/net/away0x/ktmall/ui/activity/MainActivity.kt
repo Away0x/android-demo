@@ -10,6 +10,7 @@ import net.away0x.ktmall.R
 import net.away0x.ktmall.ui.fragment.HomeFragment
 import net.away0x.ktmall.ui.fragment.MeFragment
 import net.away0x.lib_base.common.AppManager
+import net.away0x.lib_base.common.AuthManager
 import net.away0x.lib_base.ui.activity.BaseActivity
 import net.away0x.lib_base.utils.AppPrefsUtils
 import net.away0x.lib_goods_center.common.GoodsConstant
@@ -17,7 +18,7 @@ import net.away0x.lib_goods_center.event.UpdateCartSizeEvent
 import net.away0x.lib_goods_center.ui.fragment.CartFragment
 import net.away0x.lib_goods_center.ui.fragment.CategoryFragment
 import net.away0x.lib_message_center.ui.fragment.MessageFragment
-import net.away0x.lib_provider.event.MessageBadgeEvent
+import net.away0x.lib_base.event.MessageBadgeEvent
 import org.jetbrains.anko.toast
 import java.util.*
 

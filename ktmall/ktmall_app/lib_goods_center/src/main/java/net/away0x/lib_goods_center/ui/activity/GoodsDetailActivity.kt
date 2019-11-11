@@ -2,7 +2,6 @@ package net.away0x.lib_goods_center.ui.activity
 
 import android.os.Bundle
 import android.view.Gravity
-import com.alibaba.android.arouter.launcher.ARouter
 import com.eightbitlab.rxbus.Bus
 import com.eightbitlab.rxbus.registerInBus
 import com.google.android.material.tabs.TabLayout
@@ -16,7 +15,6 @@ import net.away0x.lib_goods_center.common.GoodsConstant
 import net.away0x.lib_goods_center.event.AddCartEvent
 import net.away0x.lib_goods_center.event.UpdateCartSizeEvent
 import net.away0x.lib_goods_center.ui.adapter.GoodsDetailVpAdapter
-import net.away0x.lib_provider.router.RouterPath
 import org.jetbrains.anko.startActivity
 import q.rorbin.badgeview.QBadgeView
 

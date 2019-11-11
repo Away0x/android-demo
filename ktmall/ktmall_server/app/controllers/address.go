@@ -4,6 +4,7 @@ import (
 	"ktmall/app/context"
 	"ktmall/app/models"
 	"ktmall/common"
+	"ktmall/common/utils"
 )
 
 /// 收货地址相关接口
@@ -13,7 +14,7 @@ type (
 		UserName   string `json:"user_name"`
 		UserMobile string `json:"user_mobile"`
 		Address    string `json:"address"`
-		IsDefault  int    `json:"is_default"`
+		IsDefault  uint   `json:"is_default"`
 	}
 
 	ModifyShipAddressReq struct {
@@ -21,7 +22,7 @@ type (
 		UserName   string `json:"user_name"`
 		UserMobile string `json:"user_mobile"`
 		Address    string `json:"address"`
-		IsDefault  int    `json:"is_default"`
+		IsDefault  uint   `json:"is_default"`
 	}
 )
 
@@ -39,6 +40,18 @@ func AddressAdd(c *context.AppContext, u *models.UserInfo, s string) (err error)
 		ShipIsDefault:  req.IsDefault,
 		UserId:         u.ID,
 	}
+
+	count := 0
+	c.DB().Model(&models.ShipAddress{}).Count(&count)
+
+	// 设置默认地址
+	if count == 0 {
+		address.ShipIsDefault = models.TrueTinyint
+	} else {
+		address.ShipIsDefault = utils.UnitTernaryOp(address.ShipIsDefault == models.TrueTinyint,
+			models.TrueTinyint, models.FalseTinyint)
+	}
+
 	if err = c.DB().Create(address).Error; err != nil {
 		return c.ErrorResp(common.ResultCodeDatabaseError, "创建失败")
 	}
@@ -62,6 +75,12 @@ func AddressDelete(c *context.AppContext, u *models.UserInfo, s string) (err err
 		return c.ErrorResp(common.ResultCodeResourceError, "删除失败")
 	}
 
+	// 取消默认地址
+	if models.TinyBool(address.ShipIsDefault) {
+		address.ShipIsDefault = models.FalseTinyint
+		c.DB().Save(address)
+	}
+
 	return c.SuccessResp(nil)
 }
 
@@ -81,6 +100,16 @@ func AddressModify(c *context.AppContext, u *models.UserInfo, s string) (err err
 	address.ShipUserMobile = req.UserMobile
 	address.ShipAddress = req.Address
 	address.ShipIsDefault = req.IsDefault
+
+	// 设置默认地址
+	if models.TinyBool(address.ShipIsDefault) {
+		if err = c.DB().Model(models.ShipAddress{}).Updates(models.ShipAddress{
+			ShipIsDefault: models.FalseTinyint,
+		}).Error; err != nil {
+			return c.ErrorResp(common.ResultCodeResourceError, "修改失败")
+		}
+	}
+
 	if err = c.DB().Save(address).Error; err != nil {
 		return c.ErrorResp(common.ResultCodeResourceError, "修改失败")
 	}

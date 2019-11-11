@@ -27,7 +27,7 @@ class PayRepository @Inject constructor() {
         刷新订单状态已支付
      */
     fun payOrder(orderId: Int): Observable<BaseResp<String>> {
-        return RetrofitFactory.instance.create(PayApi::class.java).payOrder(PayOrderReq(orderId))
+        return RetrofitFactory.instance.create(PayApi::class.java).payOrder(orderId)
     }
 
 

@@ -19,8 +19,16 @@ type (
 		GoodsSku   string `json:"goodsSku"`
 	}
 
-	DeleteCartReq struct {
-		CartIdList []uint `json:"cartIdList"`
+	SubmitCartReq struct {
+		TotalPrice int `json:"totalPrice"`
+		GoodsList  []struct {
+			GoodsId    uint
+			GoodsDesc  string
+			GoodsIcon  string
+			GoodsCount uint
+			GoodsSku   string
+			GoodsPrice int
+		} `json:"goodsList"`
 	}
 )
 
@@ -60,7 +68,9 @@ func CartAdd(c *context.AppContext, u *models.UserInfo, t string) (err error) {
 
 // 删除购物车商品
 func CartDelete(c *context.AppContext, u *models.UserInfo, t string) (err error) {
-	req := new(DeleteCartReq)
+	req := &struct {
+		CartIdList []uint `json:"cartIdList"`
+	}{}
 	if err = c.BindReq(req); err != nil {
 		return err
 	}
@@ -74,5 +84,49 @@ func CartDelete(c *context.AppContext, u *models.UserInfo, t string) (err error)
 
 // 提交购物车商品
 func CartSubmit(c *context.AppContext, u *models.UserInfo, t string) (err error) {
-	return c.SuccessResp(nil)
+	req := new(SubmitCartReq)
+	if err = c.BindReq(req); err != nil {
+		return err
+	}
+
+	order := new(models.OrderInfo)
+	order.UserId = u.ID
+	order.TotalPrice = req.TotalPrice
+
+	// 设置默认地址
+	addresses := make([]*models.ShipAddress, 0)
+	if err = c.DB().Where("user_id = ?", u.ID).Find(&addresses).Error; err != nil || len(addresses) == 0 {
+		order.ShipId = 0
+	} else {
+		for _, a := range addresses {
+			if models.TinyBool(a.ShipIsDefault) {
+				order.ShipId = a.ID
+			}
+		}
+	}
+
+	order.OrderStatus = models.OrderStatusWaitPay
+	order.PayType = models.OrderPayTypeWait
+
+	// 创建 order
+	if err = c.DB().Create(order).Error; err != nil {
+		return c.ErrorResp(common.ResultCodeDatabaseError, "创建 Order 失败")
+	}
+
+	// 创建 OrderGoods
+	for _, item := range req.GoodsList {
+		og := new(models.OrderGoods)
+		og.GoodsId = item.GoodsId
+		og.GoodsDesc = item.GoodsDesc
+		og.GoodsIcon = item.GoodsIcon
+		og.GoodsCount = item.GoodsCount
+		og.GoodsSku = item.GoodsSku
+		og.OrderId = order.ID
+		og.GoodsPrice = strconv.Itoa(item.GoodsPrice)
+		if err = c.DB().Create(&og).Error; err != nil {
+			return c.ErrorResp(common.ResultCodeDatabaseError, "创建 OrderGoods 失败")
+		}
+	}
+
+	return c.SuccessResp(order.ID)
 }

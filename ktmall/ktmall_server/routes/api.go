@@ -64,11 +64,13 @@ func registerAPI(e *echo.Echo) {
 	order := ee.Group("/order")
 	{
 		context.RegisterHandler(order.POST, "/get_pay_sign", OrderGetPaySign)
-		context.RegisterHandler(order.POST, "/pay", OrderPay)
-		context.RegisterHandler(order.POST, "/cancel", OrderCancel)
-		context.RegisterHandler(order.POST, "/confirm", OrderConfirm)
-		context.RegisterHandler(order.GET, "/detail", OrderDetail)
-		context.RegisterHandler(order.GET, "/list", OrderList)
-		context.RegisterHandler(order.POST, "/submit", OrderSubmit)
+
+		context.RegisterHandler(order.GET, "/list", wrapper.GetTokenAndUser(OrderList))
+		context.RegisterHandler(order.GET, "/detail/:id", wrapper.GetOrder(OrderDetail))
+		context.RegisterHandler(order.POST, "/submit", wrapper.GetOrder(OrderSubmit))
+
+		context.RegisterHandler(order.POST, "/pay/:id", wrapper.GetOrder(OrderPay))
+		context.RegisterHandler(order.POST, "/confirm/:id", wrapper.GetOrder(OrderConfirm))
+		context.RegisterHandler(order.POST, "/cancel/:id", wrapper.GetOrder(OrderCancel))
 	}
 }

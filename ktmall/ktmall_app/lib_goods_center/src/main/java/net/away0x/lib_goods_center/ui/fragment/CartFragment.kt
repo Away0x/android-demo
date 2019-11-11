@@ -6,10 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alibaba.android.arouter.launcher.ARouter
 import com.eightbitlab.rxbus.Bus
 import com.eightbitlab.rxbus.registerInBus
 import com.kennyc.view.MultiStateView
 import kotlinx.android.synthetic.main.fragment_cart.*
+import net.away0x.lib_base.common.AuthManager
+import net.away0x.lib_base.common.ProviderConstant
+import net.away0x.lib_base.common.RouterPath
 import net.away0x.lib_base.ext.onClick
 import net.away0x.lib_base.ext.setVisible
 import net.away0x.lib_base.ext.startLoading
@@ -125,8 +129,12 @@ class CartFragment : BaseMvpFragment<CartListPresenter>(), CartListView {
 
     /* 加载数据 */
     private fun loadData() {
-        mMultiStateView.startLoading()
-        mPresenter.getCartList()
+        if (AuthManager.instance.isLogined()) {
+            mMultiStateView.startLoading()
+            mPresenter.getCartList()
+        } else {
+            mMultiStateView.viewState = MultiStateView.VIEW_STATE_EMPTY
+        }
     }
 
     /* 获取购物车列表回调 */
@@ -190,9 +198,9 @@ class CartFragment : BaseMvpFragment<CartListPresenter>(), CartListView {
 
     /* 提交购物车回调 */
     override fun onSubmitCartListResult(result: Int) {
-//        ARouter.getInstance().build(RouterPath.OrderCenter.PATH_ORDER_CONFIRM)
-//            .withInt(ProviderConstant.KEY_ORDER_ID,result)
-//            .navigation()
+        ARouter.getInstance().build(RouterPath.OrderCenter.PATH_ORDER_CONFIRM)
+            .withInt(ProviderConstant.KEY_ORDER_ID,result)
+            .navigation()
     }
 
     /* 设置Back是否可见 */

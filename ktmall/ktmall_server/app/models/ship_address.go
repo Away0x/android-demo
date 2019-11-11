@@ -14,7 +14,7 @@ type ShipAddress struct {
 	ShipUserName   string
 	ShipUserMobile string
 	ShipAddress    string
-	ShipIsDefault  int
+	ShipIsDefault  uint `gorm:"type:tinyint(1)"`
 
 	UserId uint
 }

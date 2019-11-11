@@ -1,4 +1,4 @@
-package net.away0x.lib_provider.common
+package net.away0x.lib_base.common
 
 /* 业务常量 */
 class ProviderConstant {
