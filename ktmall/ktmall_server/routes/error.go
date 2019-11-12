@@ -2,7 +2,7 @@ package routes
 
 import (
 	"ktmall/app/context"
-	"ktmall/common"
+	"ktmall/app/response"
 	"log"
 	"net/http"
 
@@ -30,7 +30,7 @@ func registerError(e *echo.Echo) {
 	}
 }
 
-func transformErrorType(err error) *common.CommonResponse {
+func transformErrorType(err error) *response.CommonResponse {
 	switch typed := err.(type) {
 	// 请求参数错误
 	case validate.Messages:
@@ -39,15 +39,15 @@ func transformErrorType(err error) *common.CommonResponse {
 			msg = v[0] // 显示第一个错误信息
 		}
 
-		return common.NewCommonResponse(
-			common.ResultCodeReqError,
+		return response.NewCommonResponse(
+			response.ResultCodeReqError,
 			msg,
 			nil,
 		)
 	// 其他 error
 	default:
-		return common.NewCommonResponse(
-			common.ResultCodeError,
+		return response.NewCommonResponse(
+			response.ResultCodeError,
 			typed.Error(),
 			nil,
 		)

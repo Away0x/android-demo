@@ -1,5 +1,6 @@
 package net.away0x.lib_order_center.service.impl
 
+import android.util.Log
 import io.reactivex.Observable
 import net.away0x.lib_base.rx.baseFunc
 import net.away0x.lib_base.rx.baseFuncBoolean
@@ -34,7 +35,10 @@ class OrderServiceImpl @Inject constructor(): OrderService{
         根据订单状态获取订单列表
      */
     override fun getOrderList(orderStatus: Int): Observable<MutableList<Order>?> {
-        return repository.getOrderList(orderStatus).flatMap { baseFunc(it) }
+        return repository.getOrderList(orderStatus).flatMap {
+            Log.d("reeee", it.data.toString())
+            baseFunc(it)
+        }
 
     }
 

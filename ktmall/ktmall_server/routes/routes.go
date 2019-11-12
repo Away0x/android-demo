@@ -12,7 +12,7 @@ func Register(e *echo.Echo) {
 	e.Use(context.Middleware)
 	e.Use(middleware.Recover())
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Format: "${status}   ${method}   ${latency_human}   ${uri}\n",
+		Format: "${status}   ${method}   ${latency_human}      ${uri}\n",
 	}))
 	e.Pre(middleware.MethodOverrideWithConfig(middleware.MethodOverrideConfig{
 		Getter: middleware.MethodFromForm("_method"),

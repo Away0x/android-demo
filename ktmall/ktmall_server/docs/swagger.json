@@ -1,0 +1,220 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "KTMall api document",
+        "title": "KTMall Api",
+        "contact": {
+            "name": "Away0x",
+            "url": "https://github.com/Away0x",
+            "email": "wutong0910@foxmail.com"
+        },
+        "license": {},
+        "version": "1.0"
+    },
+    "host": "localhost:9999",
+    "basePath": "/api",
+    "paths": {
+        "/address/add": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "summary": "添加收货地址",
+                "parameters": [
+                    {
+                        "description": "收货地址",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/controllers.AddShipAddressReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.CommonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/address/delete/{id}": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "summary": "删除收货地址",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "收货地址 id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.CommonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/address/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "summary": "查询收货地址列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.CommonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/address/modify": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "summary": "修改收货地址",
+                "parameters": [
+                    {
+                        "description": "收货地址",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/controllers.ModifyShipAddressReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.CommonResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "controllers.AddShipAddressReq": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "description": "地址",
+                    "type": "string"
+                },
+                "is_default": {
+                    "description": "是否为默认地址",
+                    "type": "integer"
+                },
+                "user_mobile": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "user_name": {
+                    "description": "用户名",
+                    "type": "string",
+                    "example": "xiaoming"
+                }
+            }
+        },
+        "controllers.ModifyShipAddressReq": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "description": "地址",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_default": {
+                    "description": "是否为默认地址",
+                    "type": "integer"
+                },
+                "user_mobile": {
+                    "type": "string"
+                },
+                "user_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.CommonResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

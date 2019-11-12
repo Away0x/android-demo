@@ -1,10 +1,10 @@
-package handler
+package controllers
 
 import (
 	"ktmall/app/context"
 	"ktmall/app/models"
 	"ktmall/app/request"
-	"ktmall/common"
+	"ktmall/app/response"
 
 	"github.com/Away0x/validate"
 )
@@ -46,10 +46,10 @@ func UserLogin(c *context.AppContext) (err error) {
 
 	u := new(models.UserInfo)
 	if err = models.DB().Where("mobile = ?", req.Mobile).First(u).Error; err != nil {
-		return c.ErrorResp(common.ResultCodeResourceError, "用户不存在")
+		return c.ErrorResp(response.ResultCodeResourceError, "用户不存在")
 	}
 	if err = u.Compare(req.Pwd); err != nil {
-		return c.ErrorResp(common.ResultCodeError, "密码错误")
+		return c.ErrorResp(response.ResultCodeError, "密码错误")
 	}
 
 	t, err := c.TokenSign(u)
@@ -92,11 +92,11 @@ func UserForgetPwd(c *context.AppContext) (err error) {
 	}
 
 	if req.Mobile == "" {
-		return c.ErrorResp(common.ResultCodeReqError, "手机号不能为空")
+		return c.ErrorResp(response.ResultCodeReqError, "手机号不能为空")
 	}
 	u := new(models.UserInfo)
 	if err = c.DB().Where("mobile = ?", req.Mobile).First(u).Error; err != nil {
-		return c.ErrorResp(common.ResultCodeResourceError, "用户不存在")
+		return c.ErrorResp(response.ResultCodeResourceError, "用户不存在")
 	}
 
 	// 处理忘记密码的逻辑
@@ -115,7 +115,7 @@ func UserResetPwd(c *context.AppContext, u *models.UserInfo, s string) (err erro
 
 	u.Pwd = req.Pwd
 	if err = u.Update(); err != nil {
-		return c.ErrorResp(common.ResultCodeDatabaseError, "密码更新失败")
+		return c.ErrorResp(response.ResultCodeDatabaseError, "密码更新失败")
 	}
 
 	t, err := c.TokenSign(u)
@@ -141,7 +141,7 @@ func UserEdit(c *context.AppContext, u *models.UserInfo, s string) (err error) {
 	u.Gender = req.Gender
 	u.Sign = req.Sign
 	if err = u.Update(); err != nil {
-		return c.ErrorResp(common.ResultCodeDatabaseError, "用户更新失败")
+		return c.ErrorResp(response.ResultCodeDatabaseError, "用户更新失败")
 	}
 
 	return c.SuccessResp(u)

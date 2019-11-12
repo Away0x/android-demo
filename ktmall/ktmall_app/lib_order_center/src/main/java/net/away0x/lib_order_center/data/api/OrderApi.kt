@@ -3,10 +3,7 @@ package net.away0x.lib_order_center.data.api
 import net.away0x.lib_order_center.data.protocol.*
 import io.reactivex.Observable
 import net.away0x.lib_base.data.protocol.BaseResp
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 
 /*
@@ -36,7 +33,7 @@ interface OrderApi {
         根据订单状态查询查询订单列表
      */
     @GET("order/list")
-    fun getOrderList(@Body req: GetOrderListReq): Observable<BaseResp<MutableList<Order>?>>
+    fun getOrderList(@Query("orderStatus") orderStatus: Int): Observable<BaseResp<MutableList<Order>?>>
 
     /*
         提交订单

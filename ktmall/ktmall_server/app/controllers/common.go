@@ -1,10 +1,10 @@
-package handler
+package controllers
 
 import (
 	"ktmall/app/context"
 	"ktmall/app/models"
+	"ktmall/app/response"
 	"ktmall/bootstrap/config"
-	"ktmall/common"
 
 	"github.com/qiniu/api.v7/v7/auth"
 	"github.com/qiniu/api.v7/v7/storage"
@@ -21,7 +21,7 @@ func CommonGetQiNiuUploadToken(c *context.AppContext, u *models.UserInfo, s stri
 	qiniuUploadAccessKey := config.String("QINIU.ACCESS_KEY")
 	qiniuUploadSecretKey := config.String("QINIU.SECRET_KEY")
 	if qiniuUploadAccessKey == "" || qiniuUploadSecretKey == "" {
-		return c.ErrorResp(common.ResultCodeError, "qiniu accessKey or secretKey not found.")
+		return c.ErrorResp(response.ResultCodeError, "qiniu accessKey or secretKey not found.")
 	}
 
 	putPolicy := storage.PutPolicy{Scope: qiniuUploadBucket}

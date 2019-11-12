@@ -1,10 +1,10 @@
-package handler
+package controllers
 
 import (
 	"ktmall/app/context"
 	"ktmall/app/models"
+	"ktmall/app/response"
 	"ktmall/app/services"
-	"ktmall/common"
 )
 
 /// 商品相关接口
@@ -37,12 +37,12 @@ func GoodsList(c *context.AppContext) (err error) {
 func GoodsDetail(c *context.AppContext) (err error) {
 	id, err := c.IntParam("id")
 	if err != nil {
-		return c.ErrorResp(common.ResultCodeReqError, "参数错误")
+		return c.ErrorResp(response.ResultCodeReqError, "参数错误")
 	}
 
 	good := new(models.GoodsInfo)
 	if err = c.DB().Where("id = ?", id).First(good).Error; err != nil {
-		return c.ErrorResp(common.ResultCodeResourceError, "商品不存在")
+		return c.ErrorResp(response.ResultCodeResourceError, "商品不存在")
 	}
 	gs := good.Serialize()
 

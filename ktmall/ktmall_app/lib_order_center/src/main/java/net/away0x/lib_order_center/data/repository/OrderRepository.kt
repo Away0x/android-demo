@@ -38,7 +38,7 @@ class OrderRepository @Inject constructor() {
         根据状态查询订单列表
      */
     fun getOrderList(orderStatus: Int): Observable<BaseResp<MutableList<Order>?>> {
-        return RetrofitFactory.instance.create(OrderApi::class.java).getOrderList(GetOrderListReq(orderStatus))
+        return RetrofitFactory.instance.create(OrderApi::class.java).getOrderList(orderStatus)
     }
 
     /*

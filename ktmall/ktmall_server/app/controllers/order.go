@@ -1,10 +1,10 @@
-package handler
+package controllers
 
 import (
 	"ktmall/app/context"
 	"ktmall/app/models"
+	"ktmall/app/response"
 	"ktmall/app/services"
-	"ktmall/common"
 	"ktmall/common/serializer"
 
 	"github.com/jinzhu/gorm"
@@ -22,7 +22,7 @@ func OrderPay(c *context.AppContext, u *models.UserInfo, t string, order *models
 	order.OrderStatus = models.OrderStatusWaitConfirm
 
 	if err = c.DB().Save(order).Error; err != nil {
-		return c.ErrorResp(common.ResultCodeDatabaseError, "操作失败")
+		return c.ErrorResp(response.ResultCodeDatabaseError, "操作失败")
 	}
 
 	return c.SuccessResp(nil)
@@ -33,7 +33,7 @@ func OrderCancel(c *context.AppContext, u *models.UserInfo, t string, order *mod
 	order.OrderStatus = models.OrderStatusCanceled
 
 	if err = c.DB().Save(order).Error; err != nil {
-		return c.ErrorResp(common.ResultCodeDatabaseError, "删除失败")
+		return c.ErrorResp(response.ResultCodeDatabaseError, "删除失败")
 	}
 
 	return c.SuccessResp(nil)
@@ -44,7 +44,7 @@ func OrderConfirm(c *context.AppContext, u *models.UserInfo, t string, order *mo
 	order.OrderStatus = models.OrderStatusCompleted
 
 	if err = c.DB().Save(order).Error; err != nil {
-		return c.ErrorResp(common.ResultCodeDatabaseError, "确认失败")
+		return c.ErrorResp(response.ResultCodeDatabaseError, "确认失败")
 	}
 
 	return c.SuccessResp(nil)
@@ -70,7 +70,7 @@ func OrderDetail(c *context.AppContext, u *models.UserInfo, t string, order *mod
 // 根据订单状态查询查询订单列表
 func OrderList(c *context.AppContext, u *models.UserInfo, t string) (err error) {
 	req := &struct {
-		OrderStatus models.OrderStatus `json:"orderStatus"`
+		OrderStatus models.OrderStatus `query:"orderStatus"`
 	}{}
 	if err = c.BindReq(req); err != nil {
 		return err
@@ -109,7 +109,7 @@ func OrderSubmit(c *context.AppContext, u *models.UserInfo, t string, order *mod
 	})
 
 	if err != nil {
-		return c.ErrorResp(common.ResultCodeDatabaseError, "提交订单失败")
+		return c.ErrorResp(response.ResultCodeDatabaseError, "提交订单失败")
 	}
 
 	return c.SuccessResp(nil)

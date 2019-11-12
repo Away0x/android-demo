@@ -3,16 +3,38 @@ package routes
 import (
 	"ktmall/app/context"
 	. "ktmall/app/controllers"
+	"ktmall/bootstrap/config"
 	"ktmall/routes/wrapper"
 
+	_ "ktmall/docs"
+
 	"github.com/labstack/echo/v4"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 const (
 	APIPrefix = "/api"
 )
 
+// @title KTMall Api
+// @version 1.0
+// @description KTMall api document
+
+// @contact.name Away0x
+// @contact.url https://github.com/Away0x
+// @contact.email wutong0910@foxmail.com
+
+// @host localhost:9999
+// @BasePath /api
+
+// @securityDefinitions.apiKey ApiKeyAuth
+// @in header
+// @name Authorization
 func registerAPI(e *echo.Echo) {
+	if config.IsDev() {
+		e.GET("/apidoc/*", echoSwagger.WrapHandler)
+	}
+
 	ee := e.Group(APIPrefix)
 
 	context.RegisterHandler(ee.GET, "/upload_token", wrapper.GetTokenAndUser(CommonGetQiNiuUploadToken))

@@ -1,4 +1,4 @@
-package common
+package response
 
 type (
 	ResultCode int
@@ -11,8 +11,8 @@ type (
 )
 
 const (
+	// 请求成功
 	ResultCodeSuccess ResultCode = 0
-
 	// 其他错误
 	ResultCodeError ResultCode = -1
 	// 参数错误
@@ -21,6 +21,8 @@ const (
 	ResultCodeResourceError ResultCode = 101
 	// 数据库错误
 	ResultCodeDatabaseError ResultCode = 102
+	// token 错误
+	ResultCodeTokenError ResultCode = 103
 )
 
 func NewCommonResponse(status ResultCode, message string, data interface{}) *CommonResponse {

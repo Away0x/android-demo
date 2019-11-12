@@ -1,0 +1,141 @@
+basePath: /api
+definitions:
+  controllers.AddShipAddressReq:
+    properties:
+      address:
+        description: 地址
+        type: string
+      is_default:
+        description: 是否为默认地址
+        type: integer
+      user_mobile:
+        description: 手机号
+        type: string
+      user_name:
+        description: 用户名
+        example: xiaoming
+        type: string
+    type: object
+  controllers.ModifyShipAddressReq:
+    properties:
+      address:
+        description: 地址
+        type: string
+      id:
+        type: integer
+      is_default:
+        description: 是否为默认地址
+        type: integer
+      user_mobile:
+        type: string
+      user_name:
+        type: string
+    type: object
+  response.CommonResponse:
+    properties:
+      data:
+        type: object
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+host: localhost:9999
+info:
+  contact:
+    email: wutong0910@foxmail.com
+    name: Away0x
+    url: https://github.com/Away0x
+  description: KTMall api document
+  license: {}
+  title: KTMall Api
+  version: "1.0"
+paths:
+  /address/add:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 收货地址
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.AddShipAddressReq'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.CommonResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 添加收货地址
+      tags:
+      - address
+  /address/delete/{id}:
+    post:
+      parameters:
+      - description: 收货地址 id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.CommonResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 删除收货地址
+      tags:
+      - address
+  /address/list:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.CommonResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 查询收货地址列表
+      tags:
+      - address
+  /address/modify:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 收货地址
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.ModifyShipAddressReq'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.CommonResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 修改收货地址
+      tags:
+      - address
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
