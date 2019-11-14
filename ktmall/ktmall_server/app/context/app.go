@@ -1,7 +1,6 @@
 package context
 
 import (
-	"ktmall/bootstrap/app"
 	"ktmall/config"
 	"ktmall/database"
 
@@ -18,8 +17,8 @@ func (c *AppContext) Config() *config.Config {
 	return config.G_Config
 }
 
-func (c *AppContext) App() *app.Application {
-	return app.G_Application
+func (c *AppContext) App() *config.Application {
+	return config.G_Application
 }
 
 func (c *AppContext) Engine() *echo.Echo {

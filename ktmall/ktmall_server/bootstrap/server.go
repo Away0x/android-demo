@@ -1,9 +1,8 @@
-package server
+package bootstrap
 
 import (
 	"encoding/json"
 	"io/ioutil"
-	"ktmall/bootstrap/app"
 	"ktmall/config"
 	"ktmall/routes"
 	"strings"
@@ -13,7 +12,7 @@ import (
 
 func RunServer() {
 	e := setupServer()
-	app.Setup(&app.Application{Engine: e})
+	config.SetupApp(&config.Application{Engine: e})
 
 	e.Logger.Fatal(e.Start(config.String("APP.PORT")))
 }

@@ -1,4 +1,4 @@
-package app
+package config
 
 import (
 	"github.com/labstack/echo/v4"
@@ -14,6 +14,6 @@ var (
 	G_Application *Application
 )
 
-func Setup(app *Application) {
+func SetupApp(app *Application) {
 	G_Application = app
 }
