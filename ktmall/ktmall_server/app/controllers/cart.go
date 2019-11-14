@@ -10,7 +10,7 @@ import (
 
 /// 购物车相关接口
 
-// CartList 获取购物车列表
+// CartList godoc
 // @Summary 获取购物车列表
 // @Tags cart
 // @Produce  json
