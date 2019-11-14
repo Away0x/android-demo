@@ -1,9 +1,5 @@
 package models
 
-import (
-	"ktmall/common/serializer"
-)
-
 const (
 	CategoryTableName = "category"
 )
@@ -16,16 +12,24 @@ type Category struct {
 	ParentId uint
 }
 
+type CategorySerializer struct {
+	ID         uint   `json:"id"`
+	Name       string `json:"name"`
+	Icon       string `json:"icon"`
+	ParentId   uint   `json:"parentId"`
+	IsSelected bool   `json:"isSelected"`
+}
+
 func (Category) TableName() string {
 	return CategoryTableName
 }
 
-func (c *Category) Serialize() serializer.Data {
-	return serializer.Data{
-		"id":         c.IDString(),
-		"name":       c.Name,
-		"icon":       c.Icon,
-		"parentId":   c.ParentId,
-		"isSelected": false,
+func (m *Category) Serialize() CategorySerializer {
+	return CategorySerializer{
+		ID:         m.ID,
+		Name:       m.Name,
+		Icon:       m.Icon,
+		ParentId:   m.ParentId,
+		IsSelected: false,
 	}
 }

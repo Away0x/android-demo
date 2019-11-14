@@ -1,9 +1,5 @@
 package models
 
-import (
-	"ktmall/common/serializer"
-)
-
 const (
 	CartGoodsTableName = "cart_goods"
 )
@@ -21,19 +17,30 @@ type CartGoods struct {
 	UserId uint
 }
 
+type CartGoodsSerializer struct {
+	ID         uint   `json:"id"`
+	GoodsId    uint   `json:"goodsId"`
+	GoodsDesc  string `json:"goodsDesc"`
+	GoodsIcon  string `json:"goodsIcon"`
+	GoodsPrice string `json:"goodsPrice"`
+	GoodsCount uint   `json:"goodsCount"`
+	GoodsSku   string `json:"goodsSku"`
+	IsSelected bool   `json:"isSelected"` // 默认 false
+}
+
 func (CartGoods) TableName() string {
 	return CartGoodsTableName
 }
 
-func (c *CartGoods) Serialize() serializer.Data {
-	return serializer.Data{
-		"id":         c.ID,
-		"goodsId":    c.GoodsId,
-		"goodsDesc":  c.GoodsDesc,
-		"goodsIcon":  c.GoodsIcon,
-		"goodsPrice": c.GoodsPrice,
-		"goodsCount": c.GoodsCount,
-		"goodsSku":   c.GoodsSku,
-		"isSelected": false,
+func (m *CartGoods) Serialize() CartGoodsSerializer {
+	return CartGoodsSerializer{
+		ID:         m.ID,
+		GoodsId:    m.GoodsId,
+		GoodsDesc:  m.GoodsDesc,
+		GoodsIcon:  m.GoodsIcon,
+		GoodsPrice: m.GoodsPrice,
+		GoodsCount: m.GoodsCount,
+		GoodsSku:   m.GoodsSku,
+		IsSelected: false,
 	}
 }

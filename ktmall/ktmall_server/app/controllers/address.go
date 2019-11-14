@@ -3,28 +3,12 @@ package controllers
 import (
 	"ktmall/app/context"
 	"ktmall/app/models"
+	"ktmall/app/request"
 	"ktmall/app/response"
 	"ktmall/common/utils"
 )
 
 /// 收货地址相关接口
-
-type (
-	AddShipAddressReq struct {
-		UserName   string `json:"user_name" example:"xiaoming"` // 用户名
-		UserMobile string `json:"user_mobile"`                  // 手机号
-		Address    string `json:"address"`                      // 地址
-		IsDefault  uint   `json:"is_default"`                   // 是否为默认地址
-	}
-
-	ModifyShipAddressReq struct {
-		ID         uint   `json:"id"`
-		UserName   string `json:"user_name"`
-		UserMobile string `json:"user_mobile"`
-		Address    string `json:"address"`    // 地址
-		IsDefault  uint   `json:"is_default"` // 是否为默认地址
-	}
-)
 
 // AddressAdd 添加收货地址
 // @Summary 添加收货地址
@@ -32,11 +16,11 @@ type (
 // @Accept  json
 // @Produce  json
 // @Security ApiKeyAuth
-// @Param json body controllers.AddShipAddressReq true "收货地址"
-// @Success 200 {object} response.CommonResponse
+// @Param json body request.AddShipAddressReq true "收货地址"
+// @Success 200 {object} models.AddressSerializer
 // @Router /address/add [post]
 func AddressAdd(c *context.AppContext, u *models.UserInfo, s string) (err error) {
-	req := new(AddShipAddressReq)
+	req := new(request.AddShipAddressReq)
 	if err = c.BindReq(req); err != nil {
 		return err
 	}
@@ -64,7 +48,7 @@ func AddressAdd(c *context.AppContext, u *models.UserInfo, s string) (err error)
 		return c.ErrorResp(response.ResultCodeDatabaseError, "创建失败")
 	}
 
-	return c.SuccessResp(address)
+	return c.SuccessResp(address.Serialize())
 }
 
 // AddressDelete 删除收货地址
@@ -105,11 +89,11 @@ func AddressDelete(c *context.AppContext, u *models.UserInfo, s string) (err err
 // @Accept  json
 // @Produce  json
 // @Security ApiKeyAuth
-// @Param json body controllers.ModifyShipAddressReq true "收货地址"
-// @Success 200 {object} response.CommonResponse
+// @Param json body request.ModifyShipAddressReq true "收货地址"
+// @Success 200 {object} models.AddressSerializer
 // @Router /address/modify [post]
 func AddressModify(c *context.AppContext, u *models.UserInfo, s string) (err error) {
-	req := new(ModifyShipAddressReq)
+	req := new(request.ModifyShipAddressReq)
 	if err = c.BindReq(req); err != nil {
 		return err
 	}
@@ -137,7 +121,7 @@ func AddressModify(c *context.AppContext, u *models.UserInfo, s string) (err err
 		return c.ErrorResp(response.ResultCodeResourceError, "修改失败")
 	}
 
-	return c.SuccessResp(address)
+	return c.SuccessResp(address.Serialize())
 }
 
 // AddressList 查询收货地址列表
@@ -145,13 +129,13 @@ func AddressModify(c *context.AppContext, u *models.UserInfo, s string) (err err
 // @Tags address
 // @Produce  json
 // @Security ApiKeyAuth
-// @Success 200 {object} response.CommonResponse
+// @Success 200 {object} response.AddressListResp
 // @Router /address/list [get]
 func AddressList(c *context.AppContext, u *models.UserInfo, s string) (err error) {
-	list := new(models.ShipAddress)
+	list := make([]*models.ShipAddress, 0)
 	if err = c.DB().Where("user_id = ?", u.ID).Find(list).Error; err != nil {
 		return c.SuccessResp(list)
 	}
 
-	return c.SuccessResp(list)
+	return c.SuccessResp(response.BuildAddressListResp(list))
 }

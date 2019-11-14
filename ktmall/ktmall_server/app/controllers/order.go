@@ -3,21 +3,35 @@ package controllers
 import (
 	"ktmall/app/context"
 	"ktmall/app/models"
+	"ktmall/app/request"
 	"ktmall/app/response"
 	"ktmall/app/services"
-	"ktmall/common/serializer"
 
 	"github.com/jinzhu/gorm"
 )
 
 /// 订单支付相关接口
 
-// 获取支付宝支付签名
+// OrderGetPaySign 获取支付宝支付签名
+// @Summary 获取支付宝支付签名
+// @Tags order
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Router /order/get_pay_sign [post]
 func OrderGetPaySign(c *context.AppContext) (err error) {
 	return nil
 }
 
-// 刷新订单状态，已支付
+// OrderPay 刷新订单状态，已支付
+// @Summary 刷新订单状态，已支付
+// @Tags order
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param id path int true "订单 id"
+// @Success 200 {string} string
+// @Router /order/pay/{id} [post]
 func OrderPay(c *context.AppContext, u *models.UserInfo, t string, order *models.OrderInfo) (err error) {
 	order.OrderStatus = models.OrderStatusWaitConfirm
 
@@ -28,7 +42,15 @@ func OrderPay(c *context.AppContext, u *models.UserInfo, t string, order *models
 	return c.SuccessResp(nil)
 }
 
-// 取消订单
+// OrderCancel 取消订单
+// @Summary 取消订单
+// @Tags order
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param id path int true "订单 id"
+// @Success 200 {string} string
+// @Router /order/cancel/{id} [post]
 func OrderCancel(c *context.AppContext, u *models.UserInfo, t string, order *models.OrderInfo) (err error) {
 	order.OrderStatus = models.OrderStatusCanceled
 
@@ -39,7 +61,15 @@ func OrderCancel(c *context.AppContext, u *models.UserInfo, t string, order *mod
 	return c.SuccessResp(nil)
 }
 
-// 确认订单
+// OrderConfirm 确认订单
+// @Summary 确认订单
+// @Tags order
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param id path int true "订单 id"
+// @Success 200 {string} string
+// @Router /order/confirm/{id} [post]
 func OrderConfirm(c *context.AppContext, u *models.UserInfo, t string, order *models.OrderInfo) (err error) {
 	order.OrderStatus = models.OrderStatusCompleted
 
@@ -50,28 +80,48 @@ func OrderConfirm(c *context.AppContext, u *models.UserInfo, t string, order *mo
 	return c.SuccessResp(nil)
 }
 
-// 根据 ID 获取订单
+// OrderDetail 根据 ID 获取订单
+// @Summary 根据 ID 获取订单
+// @Tags order
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param id path int true "订单 id"
+// @Success 200 {string} string
+// @Router /order/detail/{id} [get]
 func OrderDetail(c *context.AppContext, u *models.UserInfo, t string, order *models.OrderInfo) (err error) {
-	v := order.Serialize()
+	v := response.OrderDetailResp{
+		OrderInfoSerialize: order.Serialize(),
+	}
 
 	// 获取地址
-	addresses := make([]*models.ShipAddress, 0)
-	c.DB().Where("id = ?", order.ShipId).Find(&addresses)
+	address := new(models.ShipAddress)
+	if err = c.DB().Where("id = ?", order.ShipId).First(&address).Error; err == nil {
+		v.ShipAddress = address.Serialize()
+	}
 	// 获取 order goods
 	goods := make([]*models.OrderGoods, 0)
 	c.DB().Where("order_id = ?", order.ID).Find(&goods)
-
-	v["shipAddress"] = serializer.Serialize(addresses)
-	v["orderGoodsList"] = serializer.Serialize(goods)
+	gs := make([]models.OrderGoodsSerializer, len(goods))
+	for i, g := range goods {
+		gs[i] = g.Serialize()
+	}
+	v.OrderGoodsList = gs
 
 	return c.SuccessResp(v)
 }
 
-// 根据订单状态查询查询订单列表
+// OrderList 根据订单状态查询查询订单列表
+// @Summary 根据订单状态查询查询订单列表
+// @Tags order
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param orderStatus query int false "订单状态 0-全部 1-待支付 2-待收货 3-已完成 4-已取消" default(0) enums(0,1,2,3,4)
+// @Success 200 {object} response.OrderListResp
+// @Router /order/list [get]
 func OrderList(c *context.AppContext, u *models.UserInfo, t string) (err error) {
-	req := &struct {
-		OrderStatus models.OrderStatus `query:"orderStatus"`
-	}{}
+	req := new(request.OrderListReq)
 	if err = c.BindReq(req); err != nil {
 		return err
 	}
@@ -82,7 +132,15 @@ func OrderList(c *context.AppContext, u *models.UserInfo, t string) (err error) 
 	return c.SuccessResp(result)
 }
 
-// 提交订单
+// OrderSubmit 提交订单
+// @Summary 提交订单
+// @Tags order
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param id path int true "订单 id"
+// @Success 200 {string} string
+// @Router /order/submit/{id} [post]
 func OrderSubmit(c *context.AppContext, u *models.UserInfo, t string, order *models.OrderInfo) (err error) {
 	err = c.DBTX(func(db *gorm.DB) (e error) {
 		order.OrderStatus = models.OrderStatusWaitPay

@@ -1,9 +1,5 @@
 package models
 
-import (
-	"ktmall/common/serializer"
-)
-
 type (
 	// 订单状态
 	OrderStatus uint
@@ -37,18 +33,22 @@ type OrderInfo struct {
 	OrderStatus OrderStatus
 }
 
+type OrderInfoSerialize struct {
+	ID          uint         `json:"id"`
+	TotalPrice  int          `json:"totalPrice"`
+	PayType     OrderPayType `json:"payType"`
+	OrderStatus OrderStatus  `json:"orderStatus"`
+}
+
 func (OrderInfo) TableName() string {
 	return OrderInfoTableName
 }
 
-func (o *OrderInfo) Serialize() serializer.Data {
-	// var shipAddress: ShipAddress?,
-	// val orderGoodsList: MutableList<OrderGoods>
-
-	return serializer.Data{
-		"id":          o.ID,
-		"payType":     o.PayType,
-		"totalPrice":  o.TotalPrice,
-		"orderStatus": o.OrderStatus,
+func (m *OrderInfo) Serialize() OrderInfoSerialize {
+	return OrderInfoSerialize{
+		ID:          m.ID,
+		TotalPrice:  m.TotalPrice,
+		PayType:     m.PayType,
+		OrderStatus: m.OrderStatus,
 	}
 }

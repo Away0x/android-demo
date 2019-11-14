@@ -1,12 +1,139 @@
 basePath: /api
 definitions:
-  controllers.AddShipAddressReq:
+  models.AddressSerializer:
+    properties:
+      id:
+        description: 这里可写 swagger desc
+        example: 1
+        type: integer
+      shipAddress:
+        type: string
+      shipIsDefault:
+        type: integer
+      shipUserMobile:
+        type: string
+      shipUserName:
+        example: swagger test
+        type: string
+    type: object
+  models.CartGoodsSerializer:
+    properties:
+      goodsCount:
+        type: integer
+      goodsDesc:
+        type: string
+      goodsIcon:
+        type: string
+      goodsId:
+        type: integer
+      goodsPrice:
+        type: string
+      goodsSku:
+        type: string
+      id:
+        type: integer
+      isSelected:
+        description: 默认 false
+        type: boolean
+    type: object
+  models.CategorySerializer:
+    properties:
+      icon:
+        type: string
+      id:
+        type: integer
+      isSelected:
+        type: boolean
+      name:
+        type: string
+      parentId:
+        type: integer
+    type: object
+  models.GoodsSkuSerializer:
+    properties:
+      content:
+        items:
+          type: string
+        type: array
+      id:
+        type: integer
+      title:
+        type: string
+    type: object
+  models.MessageSerializer:
+    properties:
+      content:
+        type: string
+      icon:
+        type: string
+      time:
+        type: string
+      title:
+        type: string
+    type: object
+  models.OrderGoodsSerializer:
+    properties:
+      goodsCount:
+        type: integer
+      goodsDesc:
+        type: string
+      goodsIcon:
+        type: string
+      goodsId:
+        type: integer
+      goodsPrice:
+        type: string
+      goodsSku:
+        type: string
+      id:
+        type: integer
+      orderId:
+        type: integer
+    type: object
+  models.UserSerializer:
+    properties:
+      gender:
+        type: string
+      icon:
+        type: string
+      id:
+        type: string
+      mobile:
+        type: string
+      name:
+        type: string
+      sign:
+        type: string
+    type: object
+  request.AddCartReq:
+    properties:
+      goodsCount:
+        type: integer
+      goodsDesc:
+        type: string
+      goodsIcon:
+        type: string
+      goodsId:
+        type: integer
+      goodsPrice:
+        type: integer
+      goodsSku:
+        type: string
+    type: object
+  request.AddShipAddressReq:
     properties:
       address:
         description: 地址
         type: string
       is_default:
-        description: 是否为默认地址
+        default: 0
+        description: |-
+          default: swagger default value
+          enums: swagger enums
+          是否为默认地址 0-非默认
+        enum:
+        - 0
+        - 1
         type: integer
       user_mobile:
         description: 手机号
@@ -16,7 +143,14 @@ definitions:
         example: xiaoming
         type: string
     type: object
-  controllers.ModifyShipAddressReq:
+  request.DeleteCartReq:
+    properties:
+      cartIdList:
+        items:
+          type: integer
+        type: array
+    type: object
+  request.ModifyShipAddressReq:
     properties:
       address:
         description: 地址
@@ -24,13 +158,137 @@ definitions:
       id:
         type: integer
       is_default:
-        description: 是否为默认地址
+        default: 0
+        description: 是否为默认地址 0-非默认
+        enum:
+        - 0
+        - 1
         type: integer
       user_mobile:
         type: string
       user_name:
         type: string
     type: object
+  request.SubmitCartReq:
+    properties:
+      goodsList:
+        items:
+          properties:
+            goodsCount:
+              type: integer
+            goodsDesc:
+              type: string
+            goodsIcon:
+              type: string
+            goodsId:
+              type: integer
+            goodsPrice:
+              type: integer
+            goodsSku:
+              type: string
+          type: object
+        type: array
+      totalPrice:
+        type: integer
+    type: object
+  request.UserEditReq:
+    properties:
+      gender:
+        type: string
+      icon:
+        type: string
+      name:
+        type: string
+      sign:
+        type: string
+    type: object
+  request.UserForgetPwdReq:
+    properties:
+      mobile:
+        type: string
+      verifyCode:
+        type: string
+    type: object
+  request.UserLoginReq:
+    properties:
+      mobile:
+        example: "223"
+        type: string
+      pushId:
+        type: string
+      pwd:
+        example: "123"
+        type: string
+    type: object
+  request.UserRegisterReq:
+    properties:
+      mobile:
+        type: string
+      pwd:
+        type: string
+      verifyCode:
+        type: string
+    type: object
+  request.UserResetPwdReq:
+    properties:
+      pwd:
+        type: string
+    type: object
+  response.AddressListResp:
+    items:
+      properties:
+        id:
+          description: 这里可写 swagger desc
+          example: 1
+          type: integer
+        shipAddress:
+          type: string
+        shipIsDefault:
+          type: integer
+        shipUserMobile:
+          type: string
+        shipUserName:
+          example: swagger test
+          type: string
+      type: object
+    type: array
+  response.CartListResp:
+    items:
+      properties:
+        goodsCount:
+          type: integer
+        goodsDesc:
+          type: string
+        goodsIcon:
+          type: string
+        goodsId:
+          type: integer
+        goodsPrice:
+          type: string
+        goodsSku:
+          type: string
+        id:
+          type: integer
+        isSelected:
+          description: 默认 false
+          type: boolean
+      type: object
+    type: array
+  response.CategoryListResp:
+    items:
+      properties:
+        icon:
+          type: string
+        id:
+          type: integer
+        isSelected:
+          type: boolean
+        name:
+          type: string
+        parentId:
+          type: integer
+      type: object
+    type: array
   response.CommonResponse:
     properties:
       data:
@@ -39,6 +297,184 @@ definitions:
         type: string
       status:
         type: integer
+    type: object
+  response.GoodListItemResp:
+    properties:
+      allCount:
+        type: integer
+      banner:
+        items:
+          type: string
+        type: array
+      categoryId:
+        type: integer
+      code:
+        type: string
+      defaultIcon:
+        type: string
+      defaultPrice:
+        type: string
+      defaultSku:
+        type: string
+      desc:
+        type: string
+      detailOne:
+        type: string
+      detailTwo:
+        type: string
+      goodsSku:
+        items:
+          $ref: '#/definitions/models.GoodsSkuSerializer'
+        type: array
+      id:
+        type: integer
+      maxPage:
+        type: integer
+      salesCount:
+        type: integer
+      stockCount:
+        type: integer
+    type: object
+  response.GoodListResp:
+    items:
+      properties:
+        allCount:
+          type: integer
+        banner:
+          items:
+            type: string
+          type: array
+        categoryId:
+          type: integer
+        code:
+          type: string
+        defaultIcon:
+          type: string
+        defaultPrice:
+          type: string
+        defaultSku:
+          type: string
+        desc:
+          type: string
+        detailOne:
+          type: string
+        detailTwo:
+          type: string
+        goodsSku:
+          items:
+            $ref: '#/definitions/models.GoodsSkuSerializer'
+          type: array
+        id:
+          type: integer
+        maxPage:
+          type: integer
+        salesCount:
+          type: integer
+        stockCount:
+          type: integer
+      type: object
+    type: array
+  response.GoodsDetailResp:
+    properties:
+      banner:
+        items:
+          type: string
+        type: array
+      categoryId:
+        type: integer
+      code:
+        type: string
+      defaultIcon:
+        type: string
+      defaultPrice:
+        type: string
+      defaultSku:
+        type: string
+      desc:
+        type: string
+      detailOne:
+        type: string
+      detailTwo:
+        type: string
+      goodsSku:
+        items:
+          $ref: '#/definitions/models.GoodsSkuSerializer'
+        type: array
+      id:
+        type: integer
+      salesCount:
+        type: integer
+      stockCount:
+        type: integer
+    type: object
+  response.MessageListResp:
+    items:
+      properties:
+        content:
+          type: string
+        icon:
+          type: string
+        time:
+          type: string
+        title:
+          type: string
+      type: object
+    type: array
+  response.OrderDetailResp:
+    properties:
+      id:
+        type: integer
+      orderGoodsList:
+        items:
+          $ref: '#/definitions/models.OrderGoodsSerializer'
+        type: array
+      orderStatus:
+        type: integer
+      payType:
+        type: integer
+      shipAddress:
+        $ref: '#/definitions/models.AddressSerializer'
+        type: object
+      totalPrice:
+        type: integer
+    type: object
+  response.OrderListResp:
+    items:
+      properties:
+        id:
+          type: integer
+        orderGoodsList:
+          items:
+            $ref: '#/definitions/models.OrderGoodsSerializer'
+          type: array
+        orderStatus:
+          type: integer
+        payType:
+          type: integer
+        shipAddress:
+          $ref: '#/definitions/models.AddressSerializer'
+          type: object
+        totalPrice:
+          type: integer
+      type: object
+    type: array
+  response.UserTokenResp:
+    properties:
+      token:
+        $ref: '#/definitions/token.Info'
+        type: object
+      user:
+        $ref: '#/definitions/models.UserSerializer'
+        type: object
+    type: object
+  token.Info:
+    properties:
+      expires_in:
+        type: string
+      token:
+        type: string
+      type:
+        type: string
     type: object
 host: localhost:9999
 info:
@@ -61,7 +497,7 @@ paths:
         name: json
         required: true
         schema:
-          $ref: '#/definitions/controllers.AddShipAddressReq'
+          $ref: '#/definitions/request.AddShipAddressReq'
           type: object
       produces:
       - application/json
@@ -69,7 +505,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.CommonResponse'
+            $ref: '#/definitions/models.AddressSerializer'
       security:
       - ApiKeyAuth: []
       summary: 添加收货地址
@@ -103,7 +539,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.CommonResponse'
+            $ref: '#/definitions/response.AddressListResp'
       security:
       - ApiKeyAuth: []
       summary: 查询收货地址列表
@@ -119,7 +555,55 @@ paths:
         name: json
         required: true
         schema:
-          $ref: '#/definitions/controllers.ModifyShipAddressReq'
+          $ref: '#/definitions/request.ModifyShipAddressReq'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AddressSerializer'
+      security:
+      - ApiKeyAuth: []
+      summary: 修改收货地址
+      tags:
+      - address
+  /cart/add:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 商品信息
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/request.AddCartReq'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: int
+      security:
+      - ApiKeyAuth: []
+      summary: 添加收货地址
+      tags:
+      - cart
+  /cart/delete:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 购物车商品的 id list
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/request.DeleteCartReq'
           type: object
       produces:
       - application/json
@@ -130,9 +614,428 @@ paths:
             $ref: '#/definitions/response.CommonResponse'
       security:
       - ApiKeyAuth: []
-      summary: 修改收货地址
+      summary: 添加收货地址
       tags:
-      - address
+      - cart
+  /cart/list:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.CartListResp'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取购物车列表
+      tags:
+      - cart
+  /cart/refresh_token:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.CommonResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: 用户登出
+      tags:
+      - user
+  /cart/submit:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 购物车商品信息
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/request.SubmitCartReq'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 订单 id
+          schema:
+            type: int
+      security:
+      - ApiKeyAuth: []
+      summary: 添加收货地址
+      tags:
+      - cart
+  /category/list:
+    get:
+      parameters:
+      - description: 大分类 id
+        in: query
+        name: parentId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.CategoryListResp'
+      summary: 获取商品分类列表
+      tags:
+      - category
+  /goods/detail/{id}:
+    get:
+      parameters:
+      - description: 商品 id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.GoodsDetailResp'
+      summary: 获取商品详情
+      tags:
+      - goods
+  /goods/list:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 分类 id
+        in: query
+        name: categoryId
+        required: true
+        type: integer
+      - description: 页码
+        in: query
+        name: pageNo
+        type: integer
+      - description: 关键字查询
+        in: query
+        name: keyword
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.GoodListResp'
+      summary: 获取商品列表
+      tags:
+      - goods
+  /message/list:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.MessageListResp'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取消息列表
+      tags:
+      - message
+  /order/cancel/{id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 订单 id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 取消订单
+      tags:
+      - order
+  /order/confirm/{id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 订单 id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 确认订单
+      tags:
+      - order
+  /order/detail/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 订单 id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 根据 ID 获取订单
+      tags:
+      - order
+  /order/get_pay_sign:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - ApiKeyAuth: []
+      summary: 获取支付宝支付签名
+      tags:
+      - order
+  /order/list:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - default: 0
+        description: 订单状态 0-全部 1-待支付 2-待收货 3-已完成 4-已取消
+        enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        in: query
+        name: orderStatus
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.OrderListResp'
+      security:
+      - ApiKeyAuth: []
+      summary: 根据订单状态查询查询订单列表
+      tags:
+      - order
+  /order/pay/{id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 订单 id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 刷新订单状态，已支付
+      tags:
+      - order
+  /order/submit/{id}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 订单 id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 提交订单
+      tags:
+      - order
+  /upload_token:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 获取七牛云上传凭证
+  /user/edit:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户信息
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserEditReq'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserSerializer'
+      security:
+      - ApiKeyAuth: []
+      summary: 编辑用户资料
+      tags:
+      - user
+  /user/forget_pwd:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 忘记密码信息
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserForgetPwdReq'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserSerializer'
+      summary: 忘记密码
+      tags:
+      - cart
+  /user/info:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserSerializer'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取用户资料
+      tags:
+      - user
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 登录信息
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserLoginReq'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.UserTokenResp'
+      summary: 用户登录
+      tags:
+      - user
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 注册用户信息
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserRegisterReq'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.UserTokenResp'
+      summary: 用户注册
+      tags:
+      - user
+  /user/reset_pwd:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 重置密码信息
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserResetPwdReq'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.UserTokenResp'
+      security:
+      - ApiKeyAuth: []
+      summary: 重置密码
+      tags:
+      - user
 securityDefinitions:
   ApiKeyAuth:
     in: header

@@ -1,9 +1,5 @@
 package models
 
-import (
-	"ktmall/common/serializer"
-)
-
 const (
 	ShipAddressTableName = "ship_address"
 )
@@ -19,16 +15,24 @@ type ShipAddress struct {
 	UserId uint
 }
 
+type AddressSerializer struct {
+	ID             uint   `json:"id" example:"1"` // 这里可写 swagger desc
+	ShipUserName   string `json:"shipUserName" example:"swagger test"`
+	ShipUserMobile string `json:"shipUserMobile"`
+	ShipAddress    string `json:"shipAddress"`
+	ShipIsDefault  uint   `json:"shipIsDefault"`
+}
+
 func (ShipAddress) TableName() string {
 	return ShipAddressTableName
 }
 
-func (s *ShipAddress) Serialize() serializer.Data {
-	return serializer.Data{
-		"id":             s.ID,
-		"shipUserName":   s.ShipUserName,
-		"shipUserMobile": s.ShipUserMobile,
-		"shipAddress":    s.ShipAddress,
-		"shipIsDefault":  s.ShipIsDefault,
+func (m *ShipAddress) Serialize() AddressSerializer {
+	return AddressSerializer{
+		ID:             m.ID,
+		ShipUserName:   m.ShipUserName,
+		ShipUserMobile: m.ShipUserMobile,
+		ShipAddress:    m.ShipAddress,
+		ShipIsDefault:  m.ShipIsDefault,
 	}
 }

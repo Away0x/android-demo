@@ -3,7 +3,6 @@ package models
 import (
 	"errors"
 	"ktmall/common/cache"
-	"ktmall/common/serializer"
 	"ktmall/common/utils"
 	"strconv"
 
@@ -32,19 +31,27 @@ type UserInfo struct {
 	PushId       string `sql:"comment:'推送 id'"`
 }
 
-func (UserInfo) TableName() string {
-	return UserInfoTableName
+type UserSerializer struct {
+	ID     string `json:"id"`
+	Icon   string `json:"icon"`
+	Name   string `json:"name"`
+	Gender string `json:"gender"`
+	Mobile string `json:"mobile"`
+	Sign   string `json:"sign"`
 }
 
-func (u *UserInfo) Serialize() serializer.Data {
-	return serializer.Data{
-		"id":     u.IDString(),
-		"icon":   u.Icon,
-		"name":   u.Name,
-		"gender": u.Gender,
-		"mobile": u.Mobile,
-		"sign":   u.Sign,
+func (m *UserInfo) Serialize() UserSerializer {
+	return UserSerializer{
+		ID:     m.IDString(),
+		Icon:   m.Icon,
+		Name:   m.Name,
+		Gender: m.Gender,
+		Mobile: m.Mobile,
 	}
+}
+
+func (UserInfo) TableName() string {
+	return UserInfoTableName
 }
 
 func (u *UserInfo) BeforeCreate(scope *gorm.Scope) (err error) {

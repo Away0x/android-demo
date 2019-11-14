@@ -1,7 +1,6 @@
 package models
 
 import (
-	"ktmall/common/serializer"
 	"strings"
 )
 
@@ -26,25 +25,38 @@ type GoodsInfo struct {
 	CategoryId uint // 分类 ID
 }
 
+type GoodSerializer struct {
+	ID           uint     `json:"id"`
+	CategoryId   uint     `json:"categoryId"`
+	Desc         string   `json:"desc"`
+	DefaultIcon  string   `json:"defaultIcon"`
+	DefaultPrice string   `json:"defaultPrice"`
+	Banner       []string `json:"banner"`
+	DetailOne    string   `json:"detailOne"`
+	DetailTwo    string   `json:"detailTwo"`
+	SalesCount   uint     `json:"salesCount"`
+	StockCount   uint     `json:"stockCount"`
+	Code         string   `json:"code"`
+	DefaultSku   string   `json:"defaultSku"`
+}
+
 func (GoodsInfo) TableName() string {
 	return GoodsInfoTableName
 }
 
-func (g *GoodsInfo) Serialize() serializer.Data {
-	//val maxPage:Int//最大页码
-
-	return serializer.Data{
-		"id":           g.ID,
-		"categoryId":   g.CategoryId,
-		"desc":         g.Desc,
-		"defaultIcon":  g.DefaultIcon,
-		"defaultPrice": g.DefaultPrice,
-		"banner":       strings.Split(g.Banner, ","),
-		"detailOne":    g.DetailOne,
-		"detailTwo":    g.DetailTwo,
-		"salesCount":   g.SalesCount,
-		"stockCount":   g.StockCount,
-		"code":         g.Code,
-		"defaultSku":   g.DefaultSku,
+func (m *GoodsInfo) Serialize() GoodSerializer {
+	return GoodSerializer{
+		ID:           m.ID,
+		CategoryId:   m.CategoryId,
+		Desc:         m.Desc,
+		DefaultIcon:  m.DefaultIcon,
+		DefaultPrice: m.DefaultPrice,
+		Banner:       strings.Split(m.Banner, ","),
+		DetailOne:    m.DetailOne,
+		DetailTwo:    m.DetailTwo,
+		SalesCount:   m.SalesCount,
+		StockCount:   m.StockCount,
+		Code:         m.Code,
+		DefaultSku:   m.DefaultSku,
 	}
 }

@@ -39,7 +39,7 @@
                         "required": true,
                         "schema": {
                             "type": "object",
-                            "$ref": "#/definitions/controllers.AddShipAddressReq"
+                            "$ref": "#/definitions/request.AddShipAddressReq"
                         }
                     }
                 ],
@@ -47,7 +47,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.CommonResponse"
+                            "$ref": "#/definitions/models.AddressSerializer"
                         }
                     }
                 }
@@ -104,7 +104,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.CommonResponse"
+                            "$ref": "#/definitions/response.AddressListResp"
                         }
                     }
                 }
@@ -135,7 +135,85 @@
                         "required": true,
                         "schema": {
                             "type": "object",
-                            "$ref": "#/definitions/controllers.ModifyShipAddressReq"
+                            "$ref": "#/definitions/request.ModifyShipAddressReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.AddressSerializer"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/add": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cart"
+                ],
+                "summary": "添加收货地址",
+                "parameters": [
+                    {
+                        "description": "商品信息",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/request.AddCartReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/delete": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cart"
+                ],
+                "summary": "添加收货地址",
+                "parameters": [
+                    {
+                        "description": "购物车商品的 id list",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/request.DeleteCartReq"
                         }
                     }
                 ],
@@ -148,10 +226,869 @@
                     }
                 }
             }
+        },
+        "/cart/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cart"
+                ],
+                "summary": "获取购物车列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.CartListResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/refresh_token": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "用户登出",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.CommonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/submit": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cart"
+                ],
+                "summary": "添加收货地址",
+                "parameters": [
+                    {
+                        "description": "购物车商品信息",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/request.SubmitCartReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "订单 id",
+                        "schema": {
+                            "type": "int"
+                        }
+                    }
+                }
+            }
+        },
+        "/category/list": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "category"
+                ],
+                "summary": "获取商品分类列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "大分类 id",
+                        "name": "parentId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.CategoryListResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/goods/detail/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "goods"
+                ],
+                "summary": "获取商品详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "商品 id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.GoodsDetailResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/goods/list": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "goods"
+                ],
+                "summary": "获取商品列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "分类 id",
+                        "name": "categoryId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "pageNo",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "关键字查询",
+                        "name": "keyword",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.GoodListResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/message/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "message"
+                ],
+                "summary": "获取消息列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.MessageListResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/cancel/{id}": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "取消订单",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "订单 id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/confirm/{id}": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "确认订单",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "订单 id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/detail/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "根据 ID 获取订单",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "订单 id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/get_pay_sign": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "获取支付宝支付签名"
+            }
+        },
+        "/order/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "根据订单状态查询查询订单列表",
+                "parameters": [
+                    {
+                        "enum": [
+                            0,
+                            1,
+                            2,
+                            3,
+                            4
+                        ],
+                        "type": "integer",
+                        "default": 0,
+                        "description": "订单状态 0-全部 1-待支付 2-待收货 3-已完成 4-已取消",
+                        "name": "orderStatus",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.OrderListResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/pay/{id}": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "刷新订单状态，已支付",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "订单 id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/submit/{id}": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "order"
+                ],
+                "summary": "提交订单",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "订单 id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/upload_token": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取七牛云上传凭证",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/edit": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "编辑用户资料",
+                "parameters": [
+                    {
+                        "description": "用户信息",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/request.UserEditReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.UserSerializer"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/forget_pwd": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cart"
+                ],
+                "summary": "忘记密码",
+                "parameters": [
+                    {
+                        "description": "忘记密码信息",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/request.UserForgetPwdReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.UserSerializer"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/info": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "获取用户资料",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.UserSerializer"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "用户登录",
+                "parameters": [
+                    {
+                        "description": "登录信息",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/request.UserLoginReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.UserTokenResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/register": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "用户注册",
+                "parameters": [
+                    {
+                        "description": "注册用户信息",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/request.UserRegisterReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.UserTokenResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/reset_pwd": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "重置密码",
+                "parameters": [
+                    {
+                        "description": "重置密码信息",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/request.UserResetPwdReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.UserTokenResp"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "controllers.AddShipAddressReq": {
+        "models.AddressSerializer": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "这里可写 swagger desc",
+                    "type": "integer",
+                    "example": 1
+                },
+                "shipAddress": {
+                    "type": "string"
+                },
+                "shipIsDefault": {
+                    "type": "integer"
+                },
+                "shipUserMobile": {
+                    "type": "string"
+                },
+                "shipUserName": {
+                    "type": "string",
+                    "example": "swagger test"
+                }
+            }
+        },
+        "models.CartGoodsSerializer": {
+            "type": "object",
+            "properties": {
+                "goodsCount": {
+                    "type": "integer"
+                },
+                "goodsDesc": {
+                    "type": "string"
+                },
+                "goodsIcon": {
+                    "type": "string"
+                },
+                "goodsId": {
+                    "type": "integer"
+                },
+                "goodsPrice": {
+                    "type": "string"
+                },
+                "goodsSku": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isSelected": {
+                    "description": "默认 false",
+                    "type": "boolean"
+                }
+            }
+        },
+        "models.CategorySerializer": {
+            "type": "object",
+            "properties": {
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isSelected": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parentId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.GoodsSkuSerializer": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.MessageSerializer": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "time": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.OrderGoodsSerializer": {
+            "type": "object",
+            "properties": {
+                "goodsCount": {
+                    "type": "integer"
+                },
+                "goodsDesc": {
+                    "type": "string"
+                },
+                "goodsIcon": {
+                    "type": "string"
+                },
+                "goodsId": {
+                    "type": "integer"
+                },
+                "goodsPrice": {
+                    "type": "string"
+                },
+                "goodsSku": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "orderId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "models.UserSerializer": {
+            "type": "object",
+            "properties": {
+                "gender": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "mobile": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "sign": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.AddCartReq": {
+            "type": "object",
+            "properties": {
+                "goodsCount": {
+                    "type": "integer"
+                },
+                "goodsDesc": {
+                    "type": "string"
+                },
+                "goodsIcon": {
+                    "type": "string"
+                },
+                "goodsId": {
+                    "type": "integer"
+                },
+                "goodsPrice": {
+                    "type": "integer"
+                },
+                "goodsSku": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.AddShipAddressReq": {
             "type": "object",
             "properties": {
                 "address": {
@@ -159,8 +1096,13 @@
                     "type": "string"
                 },
                 "is_default": {
-                    "description": "是否为默认地址",
-                    "type": "integer"
+                    "description": "default: swagger default value\nenums: swagger enums\n是否为默认地址 0-非默认",
+                    "type": "integer",
+                    "default": 0,
+                    "enum": [
+                        0,
+                        1
+                    ]
                 },
                 "user_mobile": {
                     "description": "手机号",
@@ -173,7 +1115,18 @@
                 }
             }
         },
-        "controllers.ModifyShipAddressReq": {
+        "request.DeleteCartReq": {
+            "type": "object",
+            "properties": {
+                "cartIdList": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "request.ModifyShipAddressReq": {
             "type": "object",
             "properties": {
                 "address": {
@@ -184,14 +1137,201 @@
                     "type": "integer"
                 },
                 "is_default": {
-                    "description": "是否为默认地址",
-                    "type": "integer"
+                    "description": "是否为默认地址 0-非默认",
+                    "type": "integer",
+                    "default": 0,
+                    "enum": [
+                        0,
+                        1
+                    ]
                 },
                 "user_mobile": {
                     "type": "string"
                 },
                 "user_name": {
                     "type": "string"
+                }
+            }
+        },
+        "request.SubmitCartReq": {
+            "type": "object",
+            "properties": {
+                "goodsList": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "goodsCount": {
+                                "type": "integer"
+                            },
+                            "goodsDesc": {
+                                "type": "string"
+                            },
+                            "goodsIcon": {
+                                "type": "string"
+                            },
+                            "goodsId": {
+                                "type": "integer"
+                            },
+                            "goodsPrice": {
+                                "type": "integer"
+                            },
+                            "goodsSku": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "totalPrice": {
+                    "type": "integer"
+                }
+            }
+        },
+        "request.UserEditReq": {
+            "type": "object",
+            "properties": {
+                "gender": {
+                    "type": "string"
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "sign": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.UserForgetPwdReq": {
+            "type": "object",
+            "properties": {
+                "mobile": {
+                    "type": "string"
+                },
+                "verifyCode": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.UserLoginReq": {
+            "type": "object",
+            "properties": {
+                "mobile": {
+                    "type": "string",
+                    "example": "223"
+                },
+                "pushId": {
+                    "type": "string"
+                },
+                "pwd": {
+                    "type": "string",
+                    "example": "123"
+                }
+            }
+        },
+        "request.UserRegisterReq": {
+            "type": "object",
+            "properties": {
+                "mobile": {
+                    "type": "string"
+                },
+                "pwd": {
+                    "type": "string"
+                },
+                "verifyCode": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.UserResetPwdReq": {
+            "type": "object",
+            "properties": {
+                "pwd": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.AddressListResp": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "这里可写 swagger desc",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "shipAddress": {
+                        "type": "string"
+                    },
+                    "shipIsDefault": {
+                        "type": "integer"
+                    },
+                    "shipUserMobile": {
+                        "type": "string"
+                    },
+                    "shipUserName": {
+                        "type": "string",
+                        "example": "swagger test"
+                    }
+                }
+            }
+        },
+        "response.CartListResp": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "goodsCount": {
+                        "type": "integer"
+                    },
+                    "goodsDesc": {
+                        "type": "string"
+                    },
+                    "goodsIcon": {
+                        "type": "string"
+                    },
+                    "goodsId": {
+                        "type": "integer"
+                    },
+                    "goodsPrice": {
+                        "type": "string"
+                    },
+                    "goodsSku": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "integer"
+                    },
+                    "isSelected": {
+                        "description": "默认 false",
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        "response.CategoryListResp": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "icon": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "integer"
+                    },
+                    "isSelected": {
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "parentId": {
+                        "type": "integer"
+                    }
                 }
             }
         },
@@ -206,6 +1346,275 @@
                 },
                 "status": {
                     "type": "integer"
+                }
+            }
+        },
+        "response.GoodListItemResp": {
+            "type": "object",
+            "properties": {
+                "allCount": {
+                    "type": "integer"
+                },
+                "banner": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "categoryId": {
+                    "type": "integer"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "defaultIcon": {
+                    "type": "string"
+                },
+                "defaultPrice": {
+                    "type": "string"
+                },
+                "defaultSku": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "detailOne": {
+                    "type": "string"
+                },
+                "detailTwo": {
+                    "type": "string"
+                },
+                "goodsSku": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.GoodsSkuSerializer"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "maxPage": {
+                    "type": "integer"
+                },
+                "salesCount": {
+                    "type": "integer"
+                },
+                "stockCount": {
+                    "type": "integer"
+                }
+            }
+        },
+        "response.GoodListResp": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "allCount": {
+                        "type": "integer"
+                    },
+                    "banner": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "categoryId": {
+                        "type": "integer"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "defaultIcon": {
+                        "type": "string"
+                    },
+                    "defaultPrice": {
+                        "type": "string"
+                    },
+                    "defaultSku": {
+                        "type": "string"
+                    },
+                    "desc": {
+                        "type": "string"
+                    },
+                    "detailOne": {
+                        "type": "string"
+                    },
+                    "detailTwo": {
+                        "type": "string"
+                    },
+                    "goodsSku": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/models.GoodsSkuSerializer"
+                        }
+                    },
+                    "id": {
+                        "type": "integer"
+                    },
+                    "maxPage": {
+                        "type": "integer"
+                    },
+                    "salesCount": {
+                        "type": "integer"
+                    },
+                    "stockCount": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "response.GoodsDetailResp": {
+            "type": "object",
+            "properties": {
+                "banner": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "categoryId": {
+                    "type": "integer"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "defaultIcon": {
+                    "type": "string"
+                },
+                "defaultPrice": {
+                    "type": "string"
+                },
+                "defaultSku": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "detailOne": {
+                    "type": "string"
+                },
+                "detailTwo": {
+                    "type": "string"
+                },
+                "goodsSku": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.GoodsSkuSerializer"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "salesCount": {
+                    "type": "integer"
+                },
+                "stockCount": {
+                    "type": "integer"
+                }
+            }
+        },
+        "response.MessageListResp": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "content": {
+                        "type": "string"
+                    },
+                    "icon": {
+                        "type": "string"
+                    },
+                    "time": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "response.OrderDetailResp": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "orderGoodsList": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.OrderGoodsSerializer"
+                    }
+                },
+                "orderStatus": {
+                    "type": "integer"
+                },
+                "payType": {
+                    "type": "integer"
+                },
+                "shipAddress": {
+                    "type": "object",
+                    "$ref": "#/definitions/models.AddressSerializer"
+                },
+                "totalPrice": {
+                    "type": "integer"
+                }
+            }
+        },
+        "response.OrderListResp": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "orderGoodsList": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/models.OrderGoodsSerializer"
+                        }
+                    },
+                    "orderStatus": {
+                        "type": "integer"
+                    },
+                    "payType": {
+                        "type": "integer"
+                    },
+                    "shipAddress": {
+                        "type": "object",
+                        "$ref": "#/definitions/models.AddressSerializer"
+                    },
+                    "totalPrice": {
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "response.UserTokenResp": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "object",
+                    "$ref": "#/definitions/token.Info"
+                },
+                "user": {
+                    "type": "object",
+                    "$ref": "#/definitions/models.UserSerializer"
+                }
+            }
+        },
+        "token.Info": {
+            "type": "object",
+            "properties": {
+                "expires_in": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
                 }
             }
         }

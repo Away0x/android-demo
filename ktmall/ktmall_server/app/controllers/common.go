@@ -16,7 +16,12 @@ const (
 	qiniuUploadBucket = "ktmall"
 )
 
-// 获取七牛云上传凭证
+// CommonGetQiNiuUploadToken 获取七牛云上传凭证
+// @Summary 获取七牛云上传凭证
+// @Produce  json
+// @Security ApiKeyAuth
+// @Success 200 {string} string
+// @Router /upload_token [get]
 func CommonGetQiNiuUploadToken(c *context.AppContext, u *models.UserInfo, s string) error {
 	qiniuUploadAccessKey := config.String("QINIU.ACCESS_KEY")
 	qiniuUploadSecretKey := config.String("QINIU.SECRET_KEY")

@@ -3,7 +3,7 @@ package services
 import (
 	"errors"
 	"ktmall/app/models"
-	"ktmall/common/serializer"
+	"ktmall/app/response"
 	"math"
 
 	"github.com/jinzhu/gorm"
@@ -13,7 +13,7 @@ type GoodsService struct {
 	DB *gorm.DB
 }
 
-func (g GoodsService) GoodsList(categoryId, pageNo int, keyword string) ([]serializer.Data, error) {
+func (g GoodsService) GoodsList(categoryId, pageNo int, keyword string) (response.GoodListResp, error) {
 	if categoryId == 0 && keyword == "" {
 		return nil, errors.New("categoryId or keyword not found")
 	}
@@ -47,17 +47,17 @@ func (g GoodsService) GoodsList(categoryId, pageNo int, keyword string) ([]seria
 	}
 
 	if err := query.Error; err != nil || len(list) == 0 {
-		return []serializer.Data{}, err
+		return response.GoodListResp{}, err
 	}
 
 	var (
 		ids     = make([]uint, len(list))
-		results = make([]serializer.Data, len(list))
+		results = make(response.GoodListResp, len(list))
 	)
 
 	for i, v := range list {
 		ids[i] = v.ID
-		results[i] = v.Serialize()
+		results[i].GoodSerializer = v.Serialize()
 	}
 
 	skus := make([]*models.GoodsSku, 0)
@@ -67,15 +67,15 @@ func (g GoodsService) GoodsList(categoryId, pageNo int, keyword string) ([]seria
 	}
 
 	for i, v := range list {
-		ss := make([]serializer.Data, 0)
+		ss := make([]models.GoodsSkuSerializer, 0)
 		for _, kv := range skus {
 			if v.ID == kv.GoodsId {
 				ss = append(ss, kv.Serialize())
 			}
 		}
-		results[i]["goodsSku"] = ss
-		results[i]["maxPage"] = maxPage
-		results[i]["allCount"] = allCount
+		results[i].GoodsSku = ss
+		results[i].MaxPage = uint(maxPage)
+		results[i].AllCount = uint(allCount)
 	}
 
 	return results, nil

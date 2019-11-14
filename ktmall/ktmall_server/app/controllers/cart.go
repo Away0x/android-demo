@@ -3,45 +3,37 @@ package controllers
 import (
 	"ktmall/app/context"
 	"ktmall/app/models"
+	"ktmall/app/request"
 	"ktmall/app/response"
 	"strconv"
 )
 
 /// 购物车相关接口
 
-type (
-	AddCartReq struct {
-		GoodsId    uint   `json:"goodsId"`
-		GoodsDesc  string `json:"goodsDesc"`
-		GoodsIcon  string `json:"goodsIcon"`
-		GoodsPrice int    `json:"goodsPrice"`
-		GoodsCount uint   `json:"goodsCount"`
-		GoodsSku   string `json:"goodsSku"`
-	}
-
-	SubmitCartReq struct {
-		TotalPrice int `json:"totalPrice"`
-		GoodsList  []struct {
-			GoodsId    uint
-			GoodsDesc  string
-			GoodsIcon  string
-			GoodsCount uint
-			GoodsSku   string
-			GoodsPrice int
-		} `json:"goodsList"`
-	}
-)
-
-// 获取购物车列表
+// CartList 获取购物车列表
+// @Summary 获取购物车列表
+// @Tags cart
+// @Produce  json
+// @Security ApiKeyAuth
+// @Success 200 {object} response.CartListResp
+// @Router /cart/list [get]
 func CartList(c *context.AppContext, u *models.UserInfo, t string) (err error) {
-	list := new([]*models.CartGoods)
-	c.DB().Where("user_id = ?", u.ID).Find(list)
-	return c.SuccessResp(list)
+	list := make([]*models.CartGoods, 0)
+	c.DB().Where("user_id = ?", u.ID).Find(&list)
+	return c.SuccessResp(response.BuildCartListResp(list))
 }
 
-// 添加商品到购物车
+// CartAdd 添加商品到购物车
+// @Summary 添加收货地址
+// @Tags cart
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param json body request.AddCartReq true "商品信息"
+// @Success 200 {int} int
+// @Router /cart/add [post]
 func CartAdd(c *context.AppContext, u *models.UserInfo, t string) (err error) {
-	req := new(AddCartReq)
+	req := new(request.AddCartReq)
 	if err = c.BindReq(req); err != nil {
 		return err
 	}
@@ -66,11 +58,17 @@ func CartAdd(c *context.AppContext, u *models.UserInfo, t string) (err error) {
 	return c.SuccessResp(count)
 }
 
-// 删除购物车商品
+// CartDelete 删除购物车商品
+// @Summary 添加收货地址
+// @Tags cart
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param json body request.DeleteCartReq true "购物车商品的 id list"
+// @Success 200 {object} response.CommonResponse
+// @Router /cart/delete [post]
 func CartDelete(c *context.AppContext, u *models.UserInfo, t string) (err error) {
-	req := &struct {
-		CartIdList []uint `json:"cartIdList"`
-	}{}
+	req := new(request.DeleteCartReq)
 	if err = c.BindReq(req); err != nil {
 		return err
 	}
@@ -82,9 +80,17 @@ func CartDelete(c *context.AppContext, u *models.UserInfo, t string) (err error)
 	return c.SuccessResp(nil)
 }
 
-// 提交购物车商品
+// CartSubmit 提交购物车商品
+// @Summary 添加收货地址
+// @Tags cart
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param json body request.SubmitCartReq true "购物车商品信息"
+// @Success 200 {int} int "订单 id"
+// @Router /cart/submit [post]
 func CartSubmit(c *context.AppContext, u *models.UserInfo, t string) (err error) {
-	req := new(SubmitCartReq)
+	req := new(request.SubmitCartReq)
 	if err = c.BindReq(req); err != nil {
 		return err
 	}

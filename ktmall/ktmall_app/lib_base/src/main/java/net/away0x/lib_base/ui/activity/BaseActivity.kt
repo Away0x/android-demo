@@ -3,6 +3,7 @@ package net.away0x.lib_base.ui.activity
 import android.content.Context
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
+import com.alibaba.android.arouter.launcher.ARouter
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
 import net.away0x.lib_base.common.AppManager
 
@@ -12,6 +13,9 @@ open class BaseActivity: RxAppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         AppManager.instance.addActivity(this)
+
+        // ARouter注册
+        ARouter.getInstance().inject(this)
     }
 
     override fun onDestroy() {

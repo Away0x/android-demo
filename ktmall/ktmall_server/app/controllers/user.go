@@ -5,13 +5,18 @@ import (
 	"ktmall/app/models"
 	"ktmall/app/request"
 	"ktmall/app/response"
-
-	"github.com/Away0x/validate"
 )
 
 /// 用户相关接口
 
 // 用户注册
+// @Summary 用户注册
+// @Tags user
+// @Accept  json
+// @Produce  json
+// @Param json body request.UserRegisterReq true "注册用户信息"
+// @Success 200 {object} response.UserTokenResp
+// @Router /user/register [post]
 func UserRegister(c *context.AppContext) (err error) {
 	req := new(request.UserRegisterReq)
 	if err = c.BindAndValidate(req); err != nil {
@@ -31,13 +36,17 @@ func UserRegister(c *context.AppContext) (err error) {
 		return err
 	}
 
-	return c.SuccessResp(map[string]interface{}{
-		"user":  u.Serialize(),
-		"token": t,
-	})
+	return c.SuccessResp(response.BuildUserAndTokenResp(u, t))
 }
 
-// 用户登录
+// UserLogin 用户登录
+// @Summary 用户登录
+// @Tags user
+// @Accept  json
+// @Produce  json
+// @Param json body request.UserLoginReq true "登录信息"
+// @Success 200 {object} response.UserTokenResp
+// @Router /user/login [post]
 func UserLogin(c *context.AppContext) (err error) {
 	req := new(request.UserLoginReq)
 	if err := c.BindAndValidate(req); err != nil {
@@ -57,13 +66,16 @@ func UserLogin(c *context.AppContext) (err error) {
 		return err
 	}
 
-	return c.SuccessResp(map[string]interface{}{
-		"user":  u.Serialize(),
-		"token": t,
-	})
+	return c.SuccessResp(response.BuildUserAndTokenResp(u, t))
 }
 
-// 刷新 token
+// UserRefreshToken 刷新 token
+// @Summary 刷新 token
+// @Tags user
+// @Produce  json
+// @Security ApiKeyAuth
+// @Success 200 {object} token.Info
+// @Router /cart/refresh_token [post]
 func UserRefreshToken(c *context.AppContext, s string) error {
 	t, err := c.TokenRefresh(s)
 	if err != nil {
@@ -72,44 +84,54 @@ func UserRefreshToken(c *context.AppContext, s string) error {
 	return c.SuccessResp(t)
 }
 
-// 用户登出
+// UserLogout 用户登出
+// @Summary 用户登出
+// @Tags user
+// @Produce  json
+// @Security ApiKeyAuth
+// @Success 200 {object} response.CommonResponse
+// @Router /cart/refresh_token [post]
 func UserLogout(c *context.AppContext, u *models.UserInfo, s string) error {
 	c.TokenForget(s)
 	return c.SuccessResp(nil)
 }
 
-// 忘记密码
+// UserForgetPwd 忘记密码
+// @Summary 忘记密码
+// @Tags cart
+// @Accept  json
+// @Produce  json
+// @Param json body request.UserForgetPwdReq true "忘记密码信息"
+// @Success 200 {object} models.UserSerializer
+// @Router /user/forget_pwd [post]
 func UserForgetPwd(c *context.AppContext) (err error) {
-	req := &struct {
-		validate.Base
-		Mobile     string `json:"mobile"`
-		VerifyCode string `json:"verifyCode"`
-	}{}
-	if err = c.BindAndValidateWithConfig(req, func(r validate.Validater) validate.Config {
-		return validate.Config{Plugins: validate.Plugins{request.VerifyCodePlugin(req.VerifyCode)}}
-	}); err != nil {
+	req := new(request.UserForgetPwdReq)
+	if err = c.BindAndValidate(req); err != nil {
 		return err
 	}
 
-	if req.Mobile == "" {
-		return c.ErrorResp(response.ResultCodeReqError, "手机号不能为空")
-	}
 	u := new(models.UserInfo)
 	if err = c.DB().Where("mobile = ?", req.Mobile).First(u).Error; err != nil {
 		return c.ErrorResp(response.ResultCodeResourceError, "用户不存在")
 	}
 
-	// 处理忘记密码的逻辑
+	// TODD: 处理忘记密码的逻辑
 
-	return c.SuccessResp(u)
+	return c.SuccessResp(u.Serialize())
 }
 
-// 重置密码
+// UserResetPwd 重置密码
+// @Summary 重置密码
+// @Tags user
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param json body request.UserResetPwdReq true "重置密码信息"
+// @Success 200 {object} response.UserTokenResp
+// @Router /user/reset_pwd [post]
 func UserResetPwd(c *context.AppContext, u *models.UserInfo, s string) (err error) {
-	req := &struct {
-		Pwd string `json:"pwd"`
-	}{}
-	if err = c.BindReq(req); err != nil {
+	req := new(request.UserResetPwdReq)
+	if err = c.BindAndValidate(req); err != nil {
 		return err
 	}
 
@@ -123,13 +145,18 @@ func UserResetPwd(c *context.AppContext, u *models.UserInfo, s string) (err erro
 		return err
 	}
 
-	return c.SuccessResp(map[string]interface{}{
-		"user":  u.Serialize(),
-		"token": t,
-	})
+	return c.SuccessResp(response.BuildUserAndTokenResp(u, t))
 }
 
-// 编辑用户资料
+// UserEdit 编辑用户资料
+// @Summary 编辑用户资料
+// @Tags user
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Param json body request.UserEditReq true "用户信息"
+// @Success 200 {object} models.UserSerializer
+// @Router /user/edit [post]
 func UserEdit(c *context.AppContext, u *models.UserInfo, s string) (err error) {
 	req := new(request.UserEditReq)
 	if err = c.BindReq(req); err != nil {
@@ -144,10 +171,16 @@ func UserEdit(c *context.AppContext, u *models.UserInfo, s string) (err error) {
 		return c.ErrorResp(response.ResultCodeDatabaseError, "用户更新失败")
 	}
 
-	return c.SuccessResp(u)
+	return c.SuccessResp(u.Serialize())
 }
 
-// 获取用户资料
+// UserInfo 获取用户资料
+// @Summary 获取用户资料
+// @Tags user
+// @Produce  json
+// @Security ApiKeyAuth
+// @Success 200 {object} models.UserSerializer
+// @Router /user/info [get]
 func UserInfo(c *context.AppContext, u *models.UserInfo, s string) error {
-	return c.SuccessResp(u)
+	return c.SuccessResp(u.Serialize())
 }

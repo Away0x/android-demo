@@ -46,8 +46,8 @@ func (r *UserRegisterReq) Messages() validate.Messages {
 // 用户登录
 type UserLoginReq struct {
 	validate.Base
-	Mobile string `json:"mobile"`
-	Pwd    string `json:"pwd"`
+	Mobile string `json:"mobile" example:"223"`
+	Pwd    string `json:"pwd" example:"123"`
 	PushId string `json:"pushId"`
 }
 
@@ -67,9 +67,51 @@ func (r *UserLoginReq) Messages() validate.Messages {
 
 // 修改用户
 type UserEditReq struct {
-	validate.Base
 	Name   string
 	Icon   string
 	Gender string
 	Sign   string
+}
+
+// 忘记密码
+type UserForgetPwdReq struct {
+	validate.Base
+	Mobile     string `json:"mobile"`
+	VerifyCode string `json:"verifyCode"`
+}
+
+func (r *UserForgetPwdReq) Validators() validate.Validators {
+	return validate.Validators{
+		"mobile": {validate.RequiredValidator(r.Mobile)},
+	}
+}
+
+func (r *UserForgetPwdReq) Messages() validate.Messages {
+	return validate.Messages{
+		"mobile": {"手机号不能为空"},
+	}
+}
+
+func (r *UserForgetPwdReq) Plugins() validate.Plugins {
+	return validate.Plugins{
+		VerifyCodePlugin(r.VerifyCode),
+	}
+}
+
+// 重置密码
+type UserResetPwdReq struct {
+	validate.Base
+	Pwd string `json:"pwd"`
+}
+
+func (r *UserResetPwdReq) Validators() validate.Validators {
+	return validate.Validators{
+		"pwd": {validate.RequiredValidator(r.Pwd)},
+	}
+}
+
+func (r *UserResetPwdReq) Messages() validate.Messages {
+	return validate.Messages{
+		"pwd": {"密码不能为空"},
+	}
 }

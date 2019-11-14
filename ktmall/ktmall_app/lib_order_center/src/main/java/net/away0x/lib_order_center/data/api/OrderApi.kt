@@ -14,19 +14,19 @@ interface OrderApi {
     /*
         取消订单
      */
-    @POST("order/cancel")
+    @POST("order/cancel/{id}")
     fun cancelOrder(@Path("id") id: Int): Observable<BaseResp<String>>
 
     /*
         确认订单
      */
-    @POST("order/confirm")
+    @POST("order/confirm/{id}")
     fun confirmOrder(@Path("id") id: Int): Observable<BaseResp<String>>
 
     /*
         根据ID获取订单
      */
-    @GET("order/detail")
+    @GET("order/detail/{id}")
     fun getOrderById(@Path("id") id: Int): Observable<BaseResp<Order>>
 
     /*

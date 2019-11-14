@@ -1,7 +1,6 @@
 package models
 
 import (
-	"ktmall/common/serializer"
 	"strings"
 )
 
@@ -17,14 +16,20 @@ type GoodsSku struct {
 	Content string
 }
 
+type GoodsSkuSerializer struct {
+	ID      uint     `json:"id"`
+	Title   string   `json:"title"`
+	Content []string `json:"content"`
+}
+
 func (GoodsSku) TableName() string {
 	return GoodsSkuTableName
 }
 
-func (g *GoodsSku) Serialize() serializer.Data {
-	return serializer.Data{
-		"id":      g.ID,
-		"title":   g.Title,
-		"content": strings.Split(g.Content, ","),
+func (m *GoodsSku) Serialize() GoodsSkuSerializer {
+	return GoodsSkuSerializer{
+		ID:      m.ID,
+		Title:   m.Title,
+		Content: strings.Split(m.Content, ","),
 	}
 }

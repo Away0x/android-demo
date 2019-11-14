@@ -1,9 +1,5 @@
 package models
 
-import (
-	"ktmall/common/serializer"
-)
-
 const (
 	OrderGoodsTableName = "order_goods"
 )
@@ -21,19 +17,30 @@ type OrderGoods struct {
 	OrderId uint
 }
 
+type OrderGoodsSerializer struct {
+	ID         uint   `json:"id"`
+	GoodsId    uint   `json:"goodsId"`
+	GoodsDesc  string `json:"goodsDesc"`
+	GoodsIcon  string `json:"goodsIcon"`
+	GoodsPrice string `json:"goodsPrice"`
+	GoodsCount uint   `json:"goodsCount"`
+	GoodsSku   string `json:"goodsSku"`
+	OrderId    uint   `json:"orderId"`
+}
+
 func (OrderGoods) TableName() string {
 	return OrderGoodsTableName
 }
 
-func (o *OrderGoods) Serialize() serializer.Data {
-	return serializer.Data{
-		"id":         o.ID,
-		"goodsId":    o.GoodsId,
-		"goodsDesc":  o.GoodsDesc,
-		"goodsIcon":  o.GoodsIcon,
-		"goodsPrice": o.GoodsPrice,
-		"goodsCount": o.GoodsCount,
-		"goodsSku":   o.GoodsSku,
-		"orderId":    o.OrderId,
+func (m *OrderGoods) Serialize() OrderGoodsSerializer {
+	return OrderGoodsSerializer{
+		ID:         m.ID,
+		GoodsId:    m.GoodsId,
+		GoodsDesc:  m.GoodsDesc,
+		GoodsIcon:  m.GoodsIcon,
+		GoodsPrice: m.GoodsPrice,
+		GoodsCount: m.GoodsCount,
+		GoodsSku:   m.GoodsSku,
+		OrderId:    m.OrderId,
 	}
 }

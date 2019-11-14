@@ -1,5 +1,6 @@
 package net.away0x.lib_base.data.net
 
+import android.util.Log
 import net.away0x.lib_base.common.AuthManager
 import net.away0x.lib_base.common.BaseConstant
 import okhttp3.Interceptor
@@ -33,7 +34,8 @@ class RetrofitFactory private constructor(){
                     request.addHeader("Authorization", "Bearer $token")
                 }
 
-                chain.proceed(request.build())
+                val response = chain.proceed(request.build())
+                response
         }
 
         retrofit = Retrofit.Builder()

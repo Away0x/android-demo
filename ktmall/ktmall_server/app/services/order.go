@@ -2,7 +2,7 @@ package services
 
 import (
 	"ktmall/app/models"
-	"ktmall/common/serializer"
+	"ktmall/app/response"
 
 	"github.com/jinzhu/gorm"
 )
@@ -12,10 +12,10 @@ type OrderService struct {
 }
 
 // 以后优化
-func (o OrderService) OrderList(status models.OrderStatus, userId uint) []map[string]interface{} {
+func (o OrderService) OrderList(status models.OrderStatus, userId uint) response.OrderListResp {
 	var (
 		err       error
-		result    = make([]map[string]interface{}, 0)
+		result    = make(response.OrderListResp, 0)
 		orderList = make([]*models.OrderInfo, 0)
 	)
 
@@ -30,17 +30,24 @@ func (o OrderService) OrderList(status models.OrderStatus, userId uint) []map[st
 	}
 
 	for _, order := range orderList {
-		v := order.Serialize()
+		v := response.OrderDetailResp{
+			OrderInfoSerialize: order.Serialize(),
+		}
 
 		// 获取地址
-		addresses := make([]*models.ShipAddress, 0)
-		o.DB.Where("id = ?", order.ShipId).Find(&addresses)
+		address := new(models.ShipAddress)
+		o.DB.Where("id = ?", order.ShipId).First(&address)
 		// 获取 order goods
 		goods := make([]*models.OrderGoods, 0)
 		o.DB.Where("order_id = ?", order.ID).Find(&goods)
 
-		v["shipAddress"] = serializer.Serialize(addresses)
-		v["orderGoodsList"] = serializer.Serialize(goods)
+		v.ShipAddress = address.Serialize()
+
+		ogs := make([]models.OrderGoodsSerializer, len(goods))
+		for i, og := range goods {
+			ogs[i] = og.Serialize()
+		}
+		v.OrderGoodsList = ogs
 
 		result = append(result, v)
 	}
