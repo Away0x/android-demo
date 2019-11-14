@@ -4,7 +4,7 @@ import (
 	"ktmall/app/context"
 	"ktmall/app/models"
 	"ktmall/app/response"
-	"ktmall/bootstrap/config"
+	"ktmall/config"
 
 	"github.com/qiniu/api.v7/v7/auth"
 	"github.com/qiniu/api.v7/v7/storage"

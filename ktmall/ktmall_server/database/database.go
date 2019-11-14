@@ -2,7 +2,7 @@ package database
 
 import (
 	"fmt"
-	"ktmall/bootstrap/config"
+	"ktmall/config"
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"

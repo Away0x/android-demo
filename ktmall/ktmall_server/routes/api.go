@@ -3,7 +3,7 @@ package routes
 import (
 	"ktmall/app/context"
 	. "ktmall/app/controllers"
-	"ktmall/bootstrap/config"
+	"ktmall/config"
 	"ktmall/routes/wrapper"
 
 	_ "ktmall/docs"

@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"ktmall/bootstrap/config"
+	"ktmall/config"
 	"os"
 
 	"github.com/spf13/cobra"

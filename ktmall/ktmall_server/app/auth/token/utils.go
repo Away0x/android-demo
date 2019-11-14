@@ -2,7 +2,7 @@ package token
 
 import (
 	"ktmall/app/models"
-	"ktmall/bootstrap/config"
+	"ktmall/config"
 	"ktmall/common/cache"
 	"time"
 

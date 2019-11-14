@@ -2,7 +2,7 @@ package file
 
 import (
 	"errors"
-	"ktmall/bootstrap/config"
+	"ktmall/config"
 	"ktmall/common/utils"
 	"mime/multipart"
 	"path"

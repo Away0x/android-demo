@@ -2,7 +2,7 @@ package context
 
 import (
 	"ktmall/bootstrap/app"
-	"ktmall/bootstrap/config"
+	"ktmall/config"
 	"ktmall/database"
 
 	"github.com/labstack/echo/v4"

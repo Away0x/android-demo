@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"ktmall/bootstrap/app"
-	"ktmall/bootstrap/config"
+	"ktmall/config"
 	"ktmall/routes"
 	"strings"
 
