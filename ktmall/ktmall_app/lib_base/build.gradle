@@ -92,7 +92,8 @@ dependencies {
     api "com.bigkoo:alertview:$alert_view_version"
 
     // 七牛
-    api "com.qiniu:qiniu-android-sdk:$qiniu_sdk_version"
+    // api "com.qiniu:qiniu-android-sdk:$qiniu_sdk_version"
+    api files('libs/qiniu-android-sdk-7.4.3-umd.jar')
 
     // bottom nav bar
     api "com.ashokvarma.android:bottom-navigation-bar:$bottom_nav_bar_version"

@@ -8,6 +8,8 @@ import net.away0x.lib_order_center.data.protocol.DeleteShipAddressReq
 import net.away0x.lib_order_center.data.protocol.EditShipAddressReq
 import net.away0x.lib_order_center.data.protocol.ShipAddress
 import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Path
 
 
 /*
@@ -18,25 +20,25 @@ interface ShipAddressApi {
     /*
         添加收货地址
      */
-    @POST("shipAddress/add")
+    @POST("address/add")
     fun addShipAddress(@Body req: AddShipAddressReq): Observable<BaseResp<String>>
 
     /*
         删除收货地址
      */
-    @POST("shipAddress/delete")
-    fun deleteShipAddress(@Body req: DeleteShipAddressReq): Observable<BaseResp<String>>
+    @POST("address/delete/{id}")
+    fun deleteShipAddress(@Path("id") id: Int): Observable<BaseResp<String>>
 
     /*
         修改收货地址
      */
-    @POST("shipAddress/modify")
+    @POST("address/modify")
     fun editShipAddress(@Body req: EditShipAddressReq): Observable<BaseResp<String>>
 
     /*
         查询收货地址列表
      */
-    @POST("shipAddress/getList")
+    @GET("address/list")
     fun getShipAddressList(): Observable<BaseResp<MutableList<ShipAddress>?>>
 
 }

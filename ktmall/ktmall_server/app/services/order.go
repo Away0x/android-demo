@@ -41,7 +41,8 @@ func (o OrderService) OrderList(status models.OrderStatus, userId uint) response
 		goods := make([]*models.OrderGoods, 0)
 		o.DB.Where("order_id = ?", order.ID).Find(&goods)
 
-		v.ShipAddress = address.Serialize()
+		as := address.Serialize()
+		v.ShipAddress = &as
 
 		ogs := make([]models.OrderGoodsSerializer, len(goods))
 		for i, og := range goods {

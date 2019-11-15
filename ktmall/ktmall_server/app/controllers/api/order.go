@@ -1,4 +1,4 @@
-package controllers
+package api
 
 import (
 	"ktmall/app/context"
@@ -97,7 +97,8 @@ func OrderDetail(c *context.AppContext, u *models.UserInfo, t string, order *mod
 	// 获取地址
 	address := new(models.ShipAddress)
 	if err = c.DB().Where("id = ?", order.ShipId).First(&address).Error; err == nil {
-		v.ShipAddress = address.Serialize()
+		as := address.Serialize()
+		v.ShipAddress = &as
 	}
 	// 获取 order goods
 	goods := make([]*models.OrderGoods, 0)

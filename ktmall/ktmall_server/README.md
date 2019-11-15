@@ -10,6 +10,14 @@ make install
 make mock
 ```
 
+# API 文档
+> host:port/apidoc/index.html
+
+```bash
+# 开发
+make api-doc
+```
+
 # 启动
 ```bash
 cd ktmall_server

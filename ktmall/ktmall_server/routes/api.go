@@ -2,7 +2,7 @@ package routes
 
 import (
 	"ktmall/app/context"
-	. "ktmall/app/controllers"
+	. "ktmall/app/controllers/api"
 	"ktmall/config"
 	"ktmall/routes/wrapper"
 
@@ -55,7 +55,7 @@ func registerAPI(e *echo.Echo) {
 	{
 		context.RegisterHandler(address.POST, "/add", wrapper.GetTokenAndUser(AddressAdd))
 		context.RegisterHandler(address.POST, "/delete/:id", wrapper.GetTokenAndUser(AddressDelete))
-		context.RegisterHandler(address.POST, "/modify/:id", wrapper.GetTokenAndUser(AddressModify))
+		context.RegisterHandler(address.POST, "/modify", wrapper.GetTokenAndUser(AddressModify))
 		context.RegisterHandler(address.GET, "/list", wrapper.GetTokenAndUser(AddressList))
 	}
 

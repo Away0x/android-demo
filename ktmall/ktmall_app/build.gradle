@@ -27,9 +27,6 @@ buildscript {
 
     ext.alert_view_version = '1.0.3'
 
-    // 暂时不支持 okhttp4，等待升级为 7.5.x 吧
-    ext.qiniu_sdk_version = '7.4.2'
-
     ext.bottom_nav_bar_version = '2.1.0'
 
     ext.banner_version = '1.4.10'

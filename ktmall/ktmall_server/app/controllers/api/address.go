@@ -1,4 +1,4 @@
-package controllers
+package api
 
 import (
 	"ktmall/app/context"
@@ -29,7 +29,6 @@ func AddressAdd(c *context.AppContext, u *models.UserInfo, s string) (err error)
 		ShipUserName:   req.UserName,
 		ShipUserMobile: req.UserMobile,
 		ShipAddress:    req.Address,
-		ShipIsDefault:  req.IsDefault,
 		UserId:         u.ID,
 	}
 
@@ -66,7 +65,7 @@ func AddressDelete(c *context.AppContext, u *models.UserInfo, s string) (err err
 	}
 
 	address := new(models.ShipAddress)
-	if err = c.DB().First(id, address).Error; err != nil {
+	if err = c.DB().Where("id = ?", id).First(address).Error; err != nil {
 		return c.ErrorResp(response.ResultCodeResourceError, "获取数据失败")
 	}
 
@@ -99,7 +98,7 @@ func AddressModify(c *context.AppContext, u *models.UserInfo, s string) (err err
 	}
 
 	address := new(models.ShipAddress)
-	if err = c.DB().First(req.ID, address).Error; err != nil {
+	if err = c.DB().Where("id = ?", req.ID).First(address).Error; err != nil {
 		return c.ErrorResp(response.ResultCodeResourceError, "获取数据失败")
 	}
 
@@ -133,7 +132,7 @@ func AddressModify(c *context.AppContext, u *models.UserInfo, s string) (err err
 // @Router /address/list [get]
 func AddressList(c *context.AppContext, u *models.UserInfo, s string) (err error) {
 	list := make([]*models.ShipAddress, 0)
-	if err = c.DB().Where("user_id = ?", u.ID).Find(list).Error; err != nil {
+	if err = c.DB().Where("user_id = ?", u.ID).Find(&list).Error; err != nil {
 		return c.SuccessResp(list)
 	}
 

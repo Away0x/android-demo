@@ -27,7 +27,7 @@ class ShipAddressRepository @Inject constructor() {
         删除收货地址
      */
     fun deleteShipAddress(id: Int): Observable<BaseResp<String>> {
-        return RetrofitFactory.instance.create(ShipAddressApi::class.java).deleteShipAddress(DeleteShipAddressReq(id))
+        return RetrofitFactory.instance.create(ShipAddressApi::class.java).deleteShipAddress(id)
     }
 
     /*
