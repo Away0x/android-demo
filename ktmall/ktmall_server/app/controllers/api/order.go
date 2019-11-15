@@ -36,7 +36,7 @@ func OrderPay(c *context.AppContext, u *models.UserInfo, t string, order *models
 	order.OrderStatus = models.OrderStatusWaitConfirm
 
 	if err = c.DB().Save(order).Error; err != nil {
-		return c.ErrorResp(response.ResultCodeDatabaseError, "操作失败")
+		return c.ErrMsgDatabase(err, "操作失败")
 	}
 
 	return c.SuccessResp(nil)
@@ -55,7 +55,7 @@ func OrderCancel(c *context.AppContext, u *models.UserInfo, t string, order *mod
 	order.OrderStatus = models.OrderStatusCanceled
 
 	if err = c.DB().Save(order).Error; err != nil {
-		return c.ErrorResp(response.ResultCodeDatabaseError, "删除失败")
+		return c.ErrMsgDatabase(err, "删除失败")
 	}
 
 	return c.SuccessResp(nil)
@@ -74,7 +74,7 @@ func OrderConfirm(c *context.AppContext, u *models.UserInfo, t string, order *mo
 	order.OrderStatus = models.OrderStatusCompleted
 
 	if err = c.DB().Save(order).Error; err != nil {
-		return c.ErrorResp(response.ResultCodeDatabaseError, "确认失败")
+		return c.ErrMsgDatabase(err, "确认失败")
 	}
 
 	return c.SuccessResp(nil)
@@ -124,7 +124,7 @@ func OrderDetail(c *context.AppContext, u *models.UserInfo, t string, order *mod
 func OrderList(c *context.AppContext, u *models.UserInfo, t string) (err error) {
 	req := new(request.OrderListReq)
 	if err = c.BindReq(req); err != nil {
-		return err
+		return c.ErrReq(err)
 	}
 
 	service := services.OrderService{DB: c.DB()}
@@ -168,7 +168,7 @@ func OrderSubmit(c *context.AppContext, u *models.UserInfo, t string, order *mod
 	})
 
 	if err != nil {
-		return c.ErrorResp(response.ResultCodeDatabaseError, "提交订单失败")
+		return c.ErrMsgDatabase(err, "提交订单失败")
 	}
 
 	return c.SuccessResp(nil)

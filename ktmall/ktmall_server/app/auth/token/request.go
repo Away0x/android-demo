@@ -1,9 +1,10 @@
 package token
 
 import (
-	"errors"
 	"fmt"
 	"ktmall/app/models"
+
+	"github.com/pkg/errors"
 
 	"github.com/labstack/echo/v4"
 )

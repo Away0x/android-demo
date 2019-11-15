@@ -3,7 +3,7 @@ package api
 import (
 	"ktmall/app/context"
 	"ktmall/app/models"
-	"ktmall/app/response"
+	"ktmall/common/errno"
 	"ktmall/config"
 
 	"github.com/qiniu/api.v7/v7/auth"
@@ -26,7 +26,7 @@ func CommonGetQiNiuUploadToken(c *context.AppContext, u *models.UserInfo, s stri
 	qiniuUploadAccessKey := config.String("QINIU.ACCESS_KEY")
 	qiniuUploadSecretKey := config.String("QINIU.SECRET_KEY")
 	if qiniuUploadAccessKey == "" || qiniuUploadSecretKey == "" {
-		return c.ErrorResp(response.ResultCodeError, "qiniu accessKey or secretKey not found.")
+		return errno.UnknownErr.WithMessage("qiniu accessKey or secretKey not found.")
 	}
 
 	putPolicy := storage.PutPolicy{Scope: qiniuUploadBucket}

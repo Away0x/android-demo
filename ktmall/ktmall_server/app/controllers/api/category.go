@@ -19,12 +19,12 @@ import (
 func CategoryList(c *context.AppContext) (err error) {
 	req := new(request.CategoryListReq)
 	if err := c.BindReq(req); err != nil {
-		return err
+		return c.ErrReq(err)
 	}
 
 	list := make([]*models.Category, 0)
 	if err = c.DB().Where("parent_id = ?", req.ParentId).Find(&list).Error; err != nil {
-		return err
+		return c.SuccessResp(response.BuildCategoryListResp(list))
 	}
 
 	return c.SuccessResp(response.BuildCategoryListResp(list))

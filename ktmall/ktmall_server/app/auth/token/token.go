@@ -1,10 +1,11 @@
 package token
 
 import (
-	"errors"
 	"ktmall/app/models"
 	"ktmall/common"
 	"time"
+
+	"github.com/pkg/errors"
 )
 
 // Info token info

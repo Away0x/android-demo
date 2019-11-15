@@ -35,7 +35,7 @@ func CartList(c *context.AppContext, u *models.UserInfo, t string) (err error) {
 func CartAdd(c *context.AppContext, u *models.UserInfo, t string) (err error) {
 	req := new(request.AddCartReq)
 	if err = c.BindReq(req); err != nil {
-		return err
+		return c.ErrReq(err)
 	}
 
 	cart := &models.CartGoods{
@@ -48,11 +48,11 @@ func CartAdd(c *context.AppContext, u *models.UserInfo, t string) (err error) {
 		UserId:     u.ID,
 	}
 	if err = c.DB().Create(cart).Error; err != nil {
-		return c.ErrorResp(response.ResultCodeDatabaseError, "添加失败")
+		return c.ErrMsgResource(err, "添加失败")
 	}
 	count := 0
 	if err = c.DB().Model(&models.CartGoods{}).Where("user_id = ?", u.ID).Count(&count).Error; err != nil {
-		return c.ErrorResp(response.ResultCodeDatabaseError, "count error")
+		return c.ErrMsgResource(err, "count error")
 	}
 
 	return c.SuccessResp(count)
@@ -70,11 +70,11 @@ func CartAdd(c *context.AppContext, u *models.UserInfo, t string) (err error) {
 func CartDelete(c *context.AppContext, u *models.UserInfo, t string) (err error) {
 	req := new(request.DeleteCartReq)
 	if err = c.BindReq(req); err != nil {
-		return err
+		return c.ErrReq(err)
 	}
 
 	if err = c.DB().Where("id in (?)", req.CartIdList).Delete(&models.CartGoods{}).Error; err != nil {
-		return c.ErrorResp(response.ResultCodeDatabaseError, "删除失败")
+		return c.ErrMsgResource(err, "删除失败")
 	}
 
 	return c.SuccessResp(nil)
@@ -92,7 +92,7 @@ func CartDelete(c *context.AppContext, u *models.UserInfo, t string) (err error)
 func CartSubmit(c *context.AppContext, u *models.UserInfo, t string) (err error) {
 	req := new(request.SubmitCartReq)
 	if err = c.BindReq(req); err != nil {
-		return err
+		return c.ErrReq(err)
 	}
 
 	order := new(models.OrderInfo)
@@ -116,7 +116,7 @@ func CartSubmit(c *context.AppContext, u *models.UserInfo, t string) (err error)
 
 	// 创建 order
 	if err = c.DB().Create(order).Error; err != nil {
-		return c.ErrorResp(response.ResultCodeDatabaseError, "创建 Order 失败")
+		return c.ErrMsgDatabase(err, "创建 Order 失败")
 	}
 
 	// 创建 OrderGoods
@@ -130,7 +130,7 @@ func CartSubmit(c *context.AppContext, u *models.UserInfo, t string) (err error)
 		og.OrderId = order.ID
 		og.GoodsPrice = strconv.Itoa(item.GoodsPrice)
 		if err = c.DB().Create(&og).Error; err != nil {
-			return c.ErrorResp(response.ResultCodeDatabaseError, "创建 OrderGoods 失败")
+			return c.ErrMsgDatabase(err, "创建 OrderGoods 失败")
 		}
 	}
 

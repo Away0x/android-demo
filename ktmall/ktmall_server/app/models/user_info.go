@@ -1,10 +1,11 @@
 package models
 
 import (
-	"errors"
 	"ktmall/common/cache"
 	"ktmall/common/utils"
 	"strconv"
+
+	"github.com/pkg/errors"
 
 	"github.com/jinzhu/gorm"
 )

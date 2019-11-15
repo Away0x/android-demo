@@ -23,7 +23,7 @@ import (
 func GoodsList(c *context.AppContext) (err error) {
 	req := new(request.GoodsListReq)
 	if err = c.BindReq(req); err != nil {
-		return err
+		return c.ErrReq(err)
 	}
 
 	if req.PageNo == 0 {
@@ -33,7 +33,7 @@ func GoodsList(c *context.AppContext) (err error) {
 	service := services.GoodsService{DB: c.DB()}
 	list, err := service.GoodsList(req.CategoryId, req.PageNo, req.Keyword)
 	if err != nil {
-		return err
+		return c.ErrResource(err)
 	}
 
 	return c.SuccessResp(list)
@@ -49,12 +49,12 @@ func GoodsList(c *context.AppContext) (err error) {
 func GoodsDetail(c *context.AppContext) (err error) {
 	id, err := c.IntParam("id")
 	if err != nil {
-		return c.ErrorResp(response.ResultCodeReqError, "参数错误")
+		return c.ErrReq(err)
 	}
 
 	good := new(models.GoodsInfo)
 	if err = c.DB().Where("id = ?", id).First(good).Error; err != nil {
-		return c.ErrorResp(response.ResultCodeResourceError, "商品不存在")
+		return c.ErrMsgResource(err, "商品不存在")
 	}
 	gs := response.GoodsDetailResp{
 		GoodSerializer: good.Serialize(),

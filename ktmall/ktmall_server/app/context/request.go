@@ -3,23 +3,23 @@ package context
 import (
 	"strconv"
 
+	"github.com/pkg/errors"
+
 	"github.com/Away0x/validate"
-	"github.com/labstack/echo/v4"
 )
 
-// 包装错误为 validate.Messages 类型
+// 包装 validate.Messages 类型的 message
 func wrapRequestError(err error) error {
 	switch typed := err.(type) {
-	case *echo.HTTPError:
-		return validate.Messages{
-			"bind": {typed.Message.(string)},
-		}
 	case validate.Messages:
-		return typed
-	default:
-		return validate.Messages{
-			"error": {typed.Error()},
+		msg := "参数错误"
+		for _, v := range typed {
+			msg = v[0] // 显示第一个错误信息
 		}
+
+		return errors.New(msg)
+	default:
+		return typed
 	}
 }
 

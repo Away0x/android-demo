@@ -2,17 +2,17 @@ package routes
 
 import (
 	"ktmall/app/context"
-	"ktmall/app/response"
+	"ktmall/common/errno"
 	"log"
 	"net/http"
 
-	"github.com/Away0x/validate"
 	"github.com/labstack/echo/v4"
 )
 
+// 注册通用错误处理
 func registerError(e *echo.Echo) {
 	e.HTTPErrorHandler = func(err error, c echo.Context) {
-		data := transformErrorType(err)
+		errnoData := transformErrorType(err)
 
 		// Send response
 		if !c.Response().Committed {
@@ -21,35 +21,22 @@ func registerError(e *echo.Echo) {
 			} else {
 				// 响应错误的处理
 				cc := context.NewAppContext(c)
-				err = cc.ErrorResp(data.Status, data.Message)
+				err = cc.ErrorResp(errnoData)
 			}
 			if err != nil {
-				log.Printf("errno.HTTPErrorHandler: %s", err)
+				log.Printf("routes/error#HTTPErrorHandler: %s", err)
 			}
 		}
 	}
 }
 
-func transformErrorType(err error) *response.CommonResponse {
+func transformErrorType(err error) *errno.Errno {
 	switch typed := err.(type) {
 	// 请求参数错误
-	case validate.Messages:
-		msg := "参数错误"
-		for _, v := range typed {
-			msg = v[0] // 显示第一个错误信息
-		}
-
-		return response.NewCommonResponse(
-			response.ResultCodeReqError,
-			msg,
-			nil,
-		)
-	// 其他 error
+	case *errno.Errno:
+		return typed
+		// 其他 error
 	default:
-		return response.NewCommonResponse(
-			response.ResultCodeError,
-			typed.Error(),
-			nil,
-		)
+		return errno.UnknownErr.WithErr(typed).(*errno.Errno)
 	}
 }

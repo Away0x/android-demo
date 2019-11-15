@@ -1,12 +1,13 @@
 package file
 
 import (
-	"errors"
-	"ktmall/config"
 	"ktmall/common/utils"
+	"ktmall/config"
 	"mime/multipart"
 	"path"
 	"strings"
+
+	"github.com/pkg/errors"
 
 	"github.com/disintegration/imaging"
 )

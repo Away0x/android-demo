@@ -22,7 +22,7 @@ import (
 func AddressAdd(c *context.AppContext, u *models.UserInfo, s string) (err error) {
 	req := new(request.AddShipAddressReq)
 	if err = c.BindReq(req); err != nil {
-		return err
+		return c.ErrReq(err)
 	}
 
 	address := &models.ShipAddress{
@@ -44,7 +44,7 @@ func AddressAdd(c *context.AppContext, u *models.UserInfo, s string) (err error)
 	}
 
 	if err = c.DB().Create(address).Error; err != nil {
-		return c.ErrorResp(response.ResultCodeDatabaseError, "创建失败")
+		return c.ErrMsgResource(err, "创建失败")
 	}
 
 	return c.SuccessResp(address.Serialize())
@@ -61,16 +61,16 @@ func AddressAdd(c *context.AppContext, u *models.UserInfo, s string) (err error)
 func AddressDelete(c *context.AppContext, u *models.UserInfo, s string) (err error) {
 	id, err := c.UintParam("id")
 	if err != nil {
-		return c.ErrorResp(response.ResultCodeReqError, "参数错误")
+		return c.ErrReq(err)
 	}
 
 	address := new(models.ShipAddress)
 	if err = c.DB().Where("id = ?", id).First(address).Error; err != nil {
-		return c.ErrorResp(response.ResultCodeResourceError, "获取数据失败")
+		return c.ErrMsgResource(err, "获取数据失败")
 	}
 
 	if err = c.DB().Delete(address).Error; err != nil {
-		return c.ErrorResp(response.ResultCodeResourceError, "删除失败")
+		return c.ErrMsgResource(err, "删除失败")
 	}
 
 	// 取消默认地址
@@ -94,12 +94,12 @@ func AddressDelete(c *context.AppContext, u *models.UserInfo, s string) (err err
 func AddressModify(c *context.AppContext, u *models.UserInfo, s string) (err error) {
 	req := new(request.ModifyShipAddressReq)
 	if err = c.BindReq(req); err != nil {
-		return err
+		return c.ErrReq(err)
 	}
 
 	address := new(models.ShipAddress)
 	if err = c.DB().Where("id = ?", req.ID).First(address).Error; err != nil {
-		return c.ErrorResp(response.ResultCodeResourceError, "获取数据失败")
+		return c.ErrMsgResource(err, "获取数据失败")
 	}
 
 	address.ShipUserName = req.UserName
@@ -112,12 +112,12 @@ func AddressModify(c *context.AppContext, u *models.UserInfo, s string) (err err
 		if err = c.DB().Model(models.ShipAddress{}).Updates(models.ShipAddress{
 			ShipIsDefault: models.FalseTinyint,
 		}).Error; err != nil {
-			return c.ErrorResp(response.ResultCodeResourceError, "修改失败")
+			return c.ErrMsgResource(err, "修改失败")
 		}
 	}
 
 	if err = c.DB().Save(address).Error; err != nil {
-		return c.ErrorResp(response.ResultCodeResourceError, "修改失败")
+		return c.ErrMsgResource(err, "修改失败")
 	}
 
 	return c.SuccessResp(address.Serialize())

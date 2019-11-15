@@ -20,7 +20,7 @@ import (
 func UserRegister(c *context.AppContext) (err error) {
 	req := new(request.UserRegisterReq)
 	if err = c.BindAndValidate(req); err != nil {
-		return err
+		return c.ErrReq(err)
 	}
 
 	u := &models.UserInfo{
@@ -28,12 +28,12 @@ func UserRegister(c *context.AppContext) (err error) {
 		Pwd:    req.Pwd,
 	}
 	if err = u.Create(); err != nil {
-		return err
+		return c.ErrDatabase(err)
 	}
 
 	t, err := c.TokenSign(u)
 	if err != nil {
-		return err
+		return c.ErrDatabase(err)
 	}
 
 	return c.SuccessResp(response.BuildUserAndTokenResp(u, t))
@@ -55,10 +55,10 @@ func UserLogin(c *context.AppContext) (err error) {
 
 	u := new(models.UserInfo)
 	if err = models.DB().Where("mobile = ?", req.Mobile).First(u).Error; err != nil {
-		return c.ErrorResp(response.ResultCodeResourceError, "用户不存在")
+		return c.ErrMsgResource(err, "用户不存在")
 	}
 	if err = u.Compare(req.Pwd); err != nil {
-		return c.ErrorResp(response.ResultCodeError, "密码错误")
+		return c.ErrMsgResource(err, "密码错误")
 	}
 
 	t, err := c.TokenSign(u)
@@ -79,7 +79,7 @@ func UserLogin(c *context.AppContext) (err error) {
 func UserRefreshToken(c *context.AppContext, s string) error {
 	t, err := c.TokenRefresh(s)
 	if err != nil {
-		return err
+		return c.ErrResource(err)
 	}
 	return c.SuccessResp(t)
 }
@@ -107,12 +107,12 @@ func UserLogout(c *context.AppContext, u *models.UserInfo, s string) error {
 func UserForgetPwd(c *context.AppContext) (err error) {
 	req := new(request.UserForgetPwdReq)
 	if err = c.BindAndValidate(req); err != nil {
-		return err
+		return c.ErrReq(err)
 	}
 
 	u := new(models.UserInfo)
 	if err = c.DB().Where("mobile = ?", req.Mobile).First(u).Error; err != nil {
-		return c.ErrorResp(response.ResultCodeResourceError, "用户不存在")
+		return c.ErrMsgResource(err, "用户不存在")
 	}
 
 	// TODD: 处理忘记密码的逻辑
@@ -132,12 +132,12 @@ func UserForgetPwd(c *context.AppContext) (err error) {
 func UserResetPwd(c *context.AppContext, u *models.UserInfo, s string) (err error) {
 	req := new(request.UserResetPwdReq)
 	if err = c.BindAndValidate(req); err != nil {
-		return err
+		return c.ErrReq(err)
 	}
 
 	u.Pwd = req.Pwd
 	if err = u.Update(); err != nil {
-		return c.ErrorResp(response.ResultCodeDatabaseError, "密码更新失败")
+		return c.ErrMsgDatabase(err, "密码更新失败")
 	}
 
 	t, err := c.TokenSign(u)
@@ -160,7 +160,7 @@ func UserResetPwd(c *context.AppContext, u *models.UserInfo, s string) (err erro
 func UserEdit(c *context.AppContext, u *models.UserInfo, s string) (err error) {
 	req := new(request.UserEditReq)
 	if err = c.BindReq(req); err != nil {
-		return err
+		return c.ErrReq(err)
 	}
 
 	u.Name = req.Name
@@ -168,7 +168,7 @@ func UserEdit(c *context.AppContext, u *models.UserInfo, s string) (err error) {
 	u.Gender = req.Gender
 	u.Sign = req.Sign
 	if err = u.Update(); err != nil {
-		return c.ErrorResp(response.ResultCodeDatabaseError, "用户更新失败")
+		return c.ErrMsgDatabase(err, "用户更新失败")
 	}
 
 	return c.SuccessResp(u.Serialize())

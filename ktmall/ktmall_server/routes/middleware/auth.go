@@ -2,8 +2,7 @@ package middleware
 
 import (
 	"ktmall/app/auth/token"
-	"ktmall/app/context"
-	"ktmall/app/response"
+	"ktmall/common/errno"
 
 	"github.com/labstack/echo/v4"
 )
@@ -13,8 +12,7 @@ func TokenAuth(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		_, _, err := token.GetTokenAndUser(c)
 		if err != nil {
-			cc := context.NewAppContext(c)
-			return cc.ErrorResp(response.ResultCodeTokenError, err.Error())
+			return errno.TokenErr.WithErr(err)
 		}
 
 		return next(c)

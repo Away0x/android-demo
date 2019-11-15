@@ -48,6 +48,7 @@ require (
 	github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pelletier/go-toml v1.6.0 // indirect
+	github.com/pkg/errors v0.8.1
 	github.com/prometheus/client_golang v1.2.1 // indirect
 	github.com/qiniu/api.v7/v7 v7.4.0
 	github.com/rogpeppe/fastuuid v1.2.0 // indirect
