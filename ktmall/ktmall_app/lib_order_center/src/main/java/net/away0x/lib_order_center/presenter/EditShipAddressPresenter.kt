@@ -27,7 +27,7 @@ class EditShipAddressPresenter @Inject constructor() : BasePresenter<EditShipAdd
         mView.showLoading()
         shipAddressService.addShipAddress(shipUserName, shipUserMobile, shipAddress).execute(lifecycleProvider, {
             mView.hideLoading()
-            mView.onAddShipAddressResult(it)
+            mView.onAddShipAddressResult(true)
         }, {
             if (it is BaseException) {
                 mView.onError(it.msg)
@@ -46,7 +46,7 @@ class EditShipAddressPresenter @Inject constructor() : BasePresenter<EditShipAdd
         mView.showLoading()
         shipAddressService.editShipAddress(address).execute(lifecycleProvider, {
             mView.hideLoading()
-            mView.onEditShipAddressResult(it)
+            mView.onEditShipAddressResult(true)
         }, {
             if (it is BaseException) {
                 mView.onError(it.msg)

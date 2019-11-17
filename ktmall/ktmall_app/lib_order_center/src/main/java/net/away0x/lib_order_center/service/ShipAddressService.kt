@@ -11,7 +11,7 @@ interface ShipAddressService {
     /*
         添加收货地址
      */
-    fun addShipAddress(shipUserName: String, shipUserMobile: String, shipAddress: String): Observable<Boolean>
+    fun addShipAddress(shipUserName: String, shipUserMobile: String, shipAddress: String): Observable<ShipAddress>
 
     /*
     获取收货地址列表
@@ -21,7 +21,7 @@ interface ShipAddressService {
     /*
      修改收货地址
   */
-    fun editShipAddress(address:ShipAddress): Observable<Boolean>
+    fun editShipAddress(address:ShipAddress): Observable<ShipAddress>
 
     /*
     删除收货地址

@@ -109,8 +109,8 @@ func AddressModify(c *context.AppContext, u *models.UserInfo, s string) (err err
 
 	// 设置默认地址
 	if models.TinyBool(address.ShipIsDefault) {
-		if err = c.DB().Model(models.ShipAddress{}).Updates(models.ShipAddress{
-			ShipIsDefault: models.FalseTinyint,
+		if err = c.DB().Model(models.ShipAddress{}).Updates(map[string]interface{}{
+			"ship_is_default": models.FalseTinyint,
 		}).Error; err != nil {
 			return c.ErrMsgResource(err, "修改失败")
 		}

@@ -19,7 +19,7 @@ class ShipAddressRepository @Inject constructor() {
     /*
         添加收货地址
      */
-    fun addShipAddress(shipUserName: String, shipUserMobile: String, shipAddress: String): Observable<BaseResp<String>> {
+    fun addShipAddress(shipUserName: String, shipUserMobile: String, shipAddress: String): Observable<BaseResp<ShipAddress>> {
         return RetrofitFactory.instance.create(ShipAddressApi::class.java).addShipAddress(AddShipAddressReq(shipUserName,shipUserMobile,shipAddress))
     }
 
@@ -33,7 +33,7 @@ class ShipAddressRepository @Inject constructor() {
     /*
         修改收货地址
      */
-    fun editShipAddress(address:ShipAddress): Observable<BaseResp<String>> {
+    fun editShipAddress(address:ShipAddress): Observable<BaseResp<ShipAddress>> {
         return RetrofitFactory.instance.create(ShipAddressApi::class.java).editShipAddress(EditShipAddressReq(address.id,address.shipUserName,address.shipUserMobile,address.shipAddress,address.shipIsDefault))
     }
 

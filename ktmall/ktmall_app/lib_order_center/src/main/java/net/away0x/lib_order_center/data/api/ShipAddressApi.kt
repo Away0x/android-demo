@@ -21,7 +21,7 @@ interface ShipAddressApi {
         添加收货地址
      */
     @POST("address/add")
-    fun addShipAddress(@Body req: AddShipAddressReq): Observable<BaseResp<String>>
+    fun addShipAddress(@Body req: AddShipAddressReq): Observable<BaseResp<ShipAddress>>
 
     /*
         删除收货地址
@@ -33,7 +33,7 @@ interface ShipAddressApi {
         修改收货地址
      */
     @POST("address/modify")
-    fun editShipAddress(@Body req: EditShipAddressReq): Observable<BaseResp<String>>
+    fun editShipAddress(@Body req: EditShipAddressReq): Observable<BaseResp<ShipAddress>>
 
     /*
         查询收货地址列表

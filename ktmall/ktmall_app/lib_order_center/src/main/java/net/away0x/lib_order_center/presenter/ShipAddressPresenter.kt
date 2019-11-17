@@ -45,7 +45,7 @@ class ShipAddressPresenter @Inject constructor() : BasePresenter<ShipAddressView
         mView.showLoading()
         shipAddressService.editShipAddress(address).execute(lifecycleProvider, {
             mView.hideLoading()
-            mView.onSetDefaultResult(it)
+            mView.onSetDefaultResult(true)
         }, {
             if (it is BaseException) {
                 mView.onError(it.msg)

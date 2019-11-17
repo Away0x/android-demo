@@ -19,8 +19,8 @@ class ShipAddressServiceImpl @Inject constructor(): ShipAddressService {
     /*
         添加收货人信息
      */
-    override fun addShipAddress(shipUserName: String, shipUserMobile: String, shipAddress: String): Observable<Boolean> {
-        return repository.addShipAddress(shipUserName,shipUserMobile,shipAddress).flatMap(::baseFuncBoolean)
+    override fun addShipAddress(shipUserName: String, shipUserMobile: String, shipAddress: String): Observable<ShipAddress> {
+        return repository.addShipAddress(shipUserName,shipUserMobile,shipAddress).flatMap { baseFunc(it) }
 
     }
 
@@ -34,8 +34,8 @@ class ShipAddressServiceImpl @Inject constructor(): ShipAddressService {
     /*
         修改收货人信息
      */
-    override fun editShipAddress(address: ShipAddress): Observable<Boolean> {
-        return  repository.editShipAddress(address).flatMap(::baseFuncBoolean)
+    override fun editShipAddress(address: ShipAddress): Observable<ShipAddress> {
+        return  repository.editShipAddress(address).flatMap { baseFunc(it) }
     }
 
     /*

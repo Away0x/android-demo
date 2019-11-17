@@ -11,6 +11,10 @@ import (
 
 // 注册通用错误处理
 func registerError(e *echo.Echo) {
+	echo.NotFoundHandler = notFoundHandler
+	echo.MethodNotAllowedHandler = notFoundHandler
+
+	// 错误处理
 	e.HTTPErrorHandler = func(err error, c echo.Context) {
 		errnoData := transformErrorType(err)
 
@@ -28,6 +32,7 @@ func registerError(e *echo.Echo) {
 			}
 		}
 	}
+
 }
 
 func transformErrorType(err error) *errno.Errno {
@@ -39,4 +44,8 @@ func transformErrorType(err error) *errno.Errno {
 	default:
 		return errno.UnknownErr.WithErr(typed).(*errno.Errno)
 	}
+}
+
+func notFoundHandler(c echo.Context) error {
+	return errno.NotFoundErr
 }

@@ -15,4 +15,6 @@ var (
 	DatabaseErr = &Errno{HTTPCode: http.StatusOK, Code: 102, Message: "database error"}
 	// token 错误
 	TokenErr = &Errno{HTTPCode: http.StatusOK, Code: 103, Message: "token error"}
+	// route not found
+	NotFoundErr = &Errno{HTTPCode: http.StatusOK, Code: 104, Message: "route not found"}
 )

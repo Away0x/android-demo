@@ -11,25 +11,26 @@ import (
 )
 
 func RunServer() {
-	e := setupServer()
-	config.SetupApp(&config.Application{Engine: e})
+	e := SetupServer()
 
 	e.Logger.Fatal(e.Start(config.String("APP.PORT")))
 }
 
-func setupServer() *echo.Echo {
+func SetupServer() *echo.Echo {
 	e := echo.New()
 	e.Debug = config.IsDev()
 	e.HideBanner = true
 
 	routes.Register(e)
-	printRoutes(e, config.String("APP.TEMP_DIR")+"/routes.json")
+	PrintRoutes(e, config.String("APP.TEMP_DIR")+"/routes.json")
+
+	config.SetupApp(&config.Application{Engine: e})
 
 	return e
 }
 
 // 输出路由配置
-func printRoutes(e *echo.Echo, filename string) {
+func PrintRoutes(e *echo.Echo, filename string) {
 	routes := make([]*echo.Route, 0)
 	for _, item := range e.Routes() {
 		if strings.HasPrefix(item.Name, "github.com") {
