@@ -24,6 +24,8 @@ func SetupServer() *echo.Echo {
 	routes.Register(e)
 	PrintRoutes(e, config.String("APP.TEMP_DIR")+"/routes.json")
 
+	SetupServerRender(e)
+
 	config.SetupApp(&config.Application{Engine: e})
 
 	return e
@@ -47,5 +49,6 @@ func PrintRoutes(e *echo.Echo, filename string) {
 		Count:  len(routes),
 		Routes: routes,
 	}, "", "  ")
+
 	ioutil.WriteFile(filename, routesStr, 0644)
 }

@@ -12,6 +12,9 @@ dev:
   # go get -u github.com/Away0x/fresh
 	env KTMALL_APP_RUNMODE=development fresh -c ./fresh.conf
 
+deploy:
+	make && ./bin/deploy restart
+
 api-doc:
   # go get -u github.com/swaggo/swag/cmd/swag
 	swag init -g routes/api.go
@@ -26,6 +29,7 @@ help:
 	@echo "make - compile the source code"
 	@echo "make install - install dep"
 	@echo "make dev - run go fresh"
+	@echo "make deploy - deploy app"
 	@echo "make mock - mock data"
 	@echo "make doc - generate swagger api docs"
 	@echo "make clean - remove binary file"

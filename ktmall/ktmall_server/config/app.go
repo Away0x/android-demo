@@ -17,3 +17,8 @@ var (
 func SetupApp(app *Application) {
 	G_Application = app
 }
+
+// 根据 route name 获取 route path
+func (a *Application) RoutePath(name string, params ...interface{}) string {
+	return a.Engine.Reverse(name, params...)
+}
