@@ -89,7 +89,7 @@ func registerAPI(e *echo.Echo) {
 
 		context.RegisterHandler(order.GET, "/list", wrapper.GetTokenAndUser(OrderList)).Name = "order.list"
 		context.RegisterHandler(order.GET, "/detail/:id", wrapper.GetOrder(OrderDetail)).Name = "order.detail"
-		context.RegisterHandler(order.POST, "/submit", wrapper.GetOrder(OrderSubmit)).Name = "order.submit"
+		context.RegisterHandler(order.POST, "/submit/:id", wrapper.GetOrder(OrderSubmit)).Name = "order.submit"
 
 		context.RegisterHandler(order.POST, "/pay/:id", wrapper.GetOrder(OrderPay)).Name = "order.pay"
 		context.RegisterHandler(order.POST, "/confirm/:id", wrapper.GetOrder(OrderConfirm)).Name = "order.confirm"

@@ -29,7 +29,6 @@ class OrderGoodsAdapter(context: Context) : BaseRecyclerViewAdapter<OrderGoods, 
         holder.itemView.mGoodsSkuTv.text = model.goodsSku
         holder.itemView.mGoodsPriceTv.text = YuanFenConverter.changeF2YWithUnit(model.goodsPrice)
         holder.itemView.mGoodsCountTv.text = "x${model.goodsCount}"
-
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)

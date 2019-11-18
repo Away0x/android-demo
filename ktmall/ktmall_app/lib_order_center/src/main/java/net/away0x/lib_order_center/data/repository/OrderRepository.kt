@@ -45,8 +45,8 @@ class OrderRepository @Inject constructor() {
     /*
         提交订单
      */
-    fun submitOrder(order: Order): Observable<BaseResp<String>> {
-        return RetrofitFactory.instance.create(OrderApi::class.java).submitOrder(SubmitOrderReq(order))
+    fun submitOrder(id: Int): Observable<BaseResp<String>> {
+        return RetrofitFactory.instance.create(OrderApi::class.java).submitOrder(id)
     }
 
 }

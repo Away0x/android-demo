@@ -21,9 +21,9 @@ func (o OrderService) OrderList(status models.OrderStatus, userId uint) response
 
 	// 获取订单信息
 	if status == 0 {
-		err = o.DB.Where("user_id = ?", userId).Find(&orderList).Error
+		err = o.DB.Where("user_id = ?", userId).Order("id desc").Find(&orderList).Error
 	} else {
-		err = o.DB.Where("user_id = ? AND order_status = ?", userId, status).Find(&orderList).Error
+		err = o.DB.Where("user_id = ? AND order_status = ?", userId, status).Order("id desc").Find(&orderList).Error
 	}
 	if err != nil {
 		return result

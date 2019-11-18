@@ -87,7 +87,7 @@ func OrderConfirm(c *context.AppContext, u *models.UserInfo, t string, order *mo
 // @Produce  json
 // @Security ApiKeyAuth
 // @Param id path int true "订单 id"
-// @Success 200 {string} string
+// @Success 200 {object} response.OrderDetailResp
 // @Router /order/detail/{id} [get]
 func OrderDetail(c *context.AppContext, u *models.UserInfo, t string, order *models.OrderInfo) (err error) {
 	v := response.OrderDetailResp{

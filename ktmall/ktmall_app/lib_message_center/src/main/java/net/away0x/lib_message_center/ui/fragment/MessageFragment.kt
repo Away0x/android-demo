@@ -75,7 +75,7 @@ class MessageFragment: BaseMvpFragment<MessagePresenter>(), MessageView {
     /* 获取消息后回调 */
     override fun onGetMessageResult(result: MutableList<Message>?) {
         if (result != null && result.size > 0){
-            // mAdapter.setData(result)
+            mAdapter.setData(result)
             mMultiStateView.viewState = MultiStateView.VIEW_STATE_CONTENT
         }else{
             //数据为空

@@ -802,7 +802,7 @@ paths:
         "200":
           description: OK
           schema:
-            type: string
+            $ref: '#/definitions/response.OrderDetailResp'
       security:
       - ApiKeyAuth: []
       summary: 根据 ID 获取订单

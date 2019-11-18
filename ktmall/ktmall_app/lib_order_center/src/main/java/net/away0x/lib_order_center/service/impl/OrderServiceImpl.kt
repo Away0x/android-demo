@@ -28,7 +28,7 @@ class OrderServiceImpl @Inject constructor(): OrderService{
         订单确认，提交订单
      */
     override fun submitOrder(order: Order): Observable<Boolean> {
-        return repository.submitOrder(order).flatMap(::baseFuncBoolean)
+        return repository.submitOrder(order.id).flatMap(::baseFuncBoolean)
     }
 
     /*

@@ -38,7 +38,7 @@ interface OrderApi {
     /*
         提交订单
      */
-    @POST("order/submit")
-    fun submitOrder(@Body req: SubmitOrderReq): Observable<BaseResp<String>>
+    @POST("order/submit/{id}")
+    fun submitOrder(@Path("id") id: Int): Observable<BaseResp<String>>
 
 }
