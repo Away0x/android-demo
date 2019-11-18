@@ -1,5 +1,14 @@
 basePath: /api
 definitions:
+  common.CommonResponse:
+    properties:
+      data:
+        type: object
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
   models.AddressSerializer:
     properties:
       id:
@@ -125,20 +134,10 @@ definitions:
       address:
         description: 地址
         type: string
-      is_default:
-        default: 0
-        description: |-
-          default: swagger default value
-          enums: swagger enums
-          是否为默认地址 0-非默认
-        enum:
-        - 0
-        - 1
-        type: integer
-      user_mobile:
+      userMobile:
         description: 手机号
         type: string
-      user_name:
+      userName:
         description: 用户名
         example: xiaoming
         type: string
@@ -157,16 +156,19 @@ definitions:
         type: string
       id:
         type: integer
-      is_default:
+      isDefault:
         default: 0
-        description: 是否为默认地址 0-非默认
+        description: |-
+          default: swagger default value
+          enums: swagger enums
+          是否为默认地址 0-非默认
         enum:
         - 0
         - 1
         type: integer
-      user_mobile:
+      userMobile:
         type: string
-      user_name:
+      userName:
         type: string
     type: object
   request.SubmitCartReq:
@@ -289,15 +291,6 @@ definitions:
           type: integer
       type: object
     type: array
-  response.CommonResponse:
-    properties:
-      data:
-        type: object
-      message:
-        type: string
-      status:
-        type: integer
-    type: object
   response.GoodListItemResp:
     properties:
       allCount:
@@ -434,6 +427,7 @@ definitions:
         type: integer
       shipAddress:
         $ref: '#/definitions/models.AddressSerializer'
+        description: 存储指针，无值时为就 nil 就不会序列化为一个都为空值的 struct
         type: object
       totalPrice:
         type: integer
@@ -453,6 +447,7 @@ definitions:
           type: integer
         shipAddress:
           $ref: '#/definitions/models.AddressSerializer'
+          description: 存储指针，无值时为就 nil 就不会序列化为一个都为空值的 struct
           type: object
         totalPrice:
           type: integer
@@ -525,7 +520,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.CommonResponse'
+            $ref: '#/definitions/common.CommonResponse'
       security:
       - ApiKeyAuth: []
       summary: 删除收货地址
@@ -611,7 +606,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.CommonResponse'
+            $ref: '#/definitions/common.CommonResponse'
       security:
       - ApiKeyAuth: []
       summary: 添加收货地址
@@ -639,7 +634,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/response.CommonResponse'
+            $ref: '#/definitions/common.CommonResponse'
       security:
       - ApiKeyAuth: []
       summary: 用户登出
@@ -706,7 +701,7 @@ paths:
       tags:
       - goods
   /goods/list:
-    post:
+    get:
       consumes:
       - application/json
       parameters:

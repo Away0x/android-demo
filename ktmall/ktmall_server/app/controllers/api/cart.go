@@ -65,7 +65,7 @@ func CartAdd(c *context.AppContext, u *models.UserInfo, t string) (err error) {
 // @Produce  json
 // @Security ApiKeyAuth
 // @Param json body request.DeleteCartReq true "购物车商品的 id list"
-// @Success 200 {object} response.CommonResponse
+// @Success 200 {object} common.CommonResponse
 // @Router /cart/delete [post]
 func CartDelete(c *context.AppContext, u *models.UserInfo, t string) (err error) {
 	req := new(request.DeleteCartReq)

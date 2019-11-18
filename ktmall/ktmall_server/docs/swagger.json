@@ -80,7 +80,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.CommonResponse"
+                            "$ref": "#/definitions/common.CommonResponse"
                         }
                     }
                 }
@@ -221,7 +221,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.CommonResponse"
+                            "$ref": "#/definitions/common.CommonResponse"
                         }
                     }
                 }
@@ -269,7 +269,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.CommonResponse"
+                            "$ref": "#/definitions/common.CommonResponse"
                         }
                     }
                 }
@@ -371,7 +371,7 @@
             }
         },
         "/goods/list": {
-            "post": {
+            "get": {
                 "consumes": [
                     "application/json"
                 ],
@@ -906,6 +906,20 @@
         }
     },
     "definitions": {
+        "common.CommonResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
         "models.AddressSerializer": {
             "type": "object",
             "properties": {
@@ -1095,20 +1109,11 @@
                     "description": "地址",
                     "type": "string"
                 },
-                "is_default": {
-                    "description": "default: swagger default value\nenums: swagger enums\n是否为默认地址 0-非默认",
-                    "type": "integer",
-                    "default": 0,
-                    "enum": [
-                        0,
-                        1
-                    ]
-                },
-                "user_mobile": {
+                "userMobile": {
                     "description": "手机号",
                     "type": "string"
                 },
-                "user_name": {
+                "userName": {
                     "description": "用户名",
                     "type": "string",
                     "example": "xiaoming"
@@ -1136,8 +1141,8 @@
                 "id": {
                     "type": "integer"
                 },
-                "is_default": {
-                    "description": "是否为默认地址 0-非默认",
+                "isDefault": {
+                    "description": "default: swagger default value\nenums: swagger enums\n是否为默认地址 0-非默认",
                     "type": "integer",
                     "default": 0,
                     "enum": [
@@ -1145,10 +1150,10 @@
                         1
                     ]
                 },
-                "user_mobile": {
+                "userMobile": {
                     "type": "string"
                 },
-                "user_name": {
+                "userName": {
                     "type": "string"
                 }
             }
@@ -1332,20 +1337,6 @@
                     "parentId": {
                         "type": "integer"
                     }
-                }
-            }
-        },
-        "response.CommonResponse": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "object"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "integer"
                 }
             }
         },
@@ -1553,6 +1544,7 @@
                     "type": "integer"
                 },
                 "shipAddress": {
+                    "description": "存储指针，无值时为就 nil 就不会序列化为一个都为空值的 struct",
                     "type": "object",
                     "$ref": "#/definitions/models.AddressSerializer"
                 },
@@ -1582,6 +1574,7 @@
                         "type": "integer"
                     },
                     "shipAddress": {
+                        "description": "存储指针，无值时为就 nil 就不会序列化为一个都为空值的 struct",
                         "type": "object",
                         "$ref": "#/definitions/models.AddressSerializer"
                     },

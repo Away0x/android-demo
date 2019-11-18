@@ -5,43 +5,96 @@ import (
 	"ktmall/config"
 	"log"
 
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
 
-var dbClient *gorm.DB
+var (
+	dbConnection *gorm.DB
+	models       []interface{}
+)
 
-func SetupDB() {
-	url := createDBURL(
-		config.String("DB.USERNAME"),
-		config.String("DB.PASSWORD"),
-		config.String("DB.HOST"),
-		config.String("DB.PORT"),
-		dbname(),
-	)
-	db, err := gorm.Open(config.String("DB.CONNECTION"), url)
+func GetConnection() *gorm.DB {
+	if dbConnection == nil {
+		dbConnection = newConnection()
+	}
+	return dbConnection
+}
+
+func Close() {
+	if dbConnection != nil {
+		dbConnection.Close()
+		dbConnection = nil
+	}
+}
+
+func RegisterModels(ms ...interface{}) {
+	for _, m := range ms {
+		models = append(models, m)
+	}
+}
+
+func RegisterModel(model interface{}) {
+	models = append(models, model)
+}
+
+func Migrate() {
+	db := GetConnection()
+	for _, model := range models {
+		db.AutoMigrate(model)
+	}
+}
+
+func newConnection() *gorm.DB {
+	connection := config.String("DB.CONNECTION")
+	db, err := gorm.Open(connection, buildConnectionOptions(connection))
 	if err != nil {
-		log.Fatal("Database connection failed. Database url: "+url+" error: ", err)
+		panic(err)
 	}
 
 	db.LogMode(config.IsDev())
-	dbClient = db
+	db.DB().SetMaxOpenConns(config.Int("DB.MAX_OPEN_CONNECTIONS"))
+	db.DB().SetMaxIdleConns(config.Int("DB.MAX_IDLE_CONNECTIONS"))
+	return db
 }
 
-func DBManager() *gorm.DB {
-	if dbClient == nil {
-		panic("请先初始化 SetupDB")
+func buildConnectionOptions(connection string) string {
+	dbname := config.String("DB.DATABASE") + "_" + config.String("APP.RUNMODE")
+
+	switch connection {
+	case "mysql":
+		return fmt.Sprintf(
+			"%s:%s@(%s:%s)/%s?%s",
+			config.String("DB.USERNAME"),
+			config.String("DB.PASSWORD"),
+			config.String("DB.HOST"),
+			config.String("DB.PORT"),
+			dbname,
+			config.String("DB.OPTIONS"),
+		)
+	case "postgres":
+		return fmt.Sprintf(
+			"host=%s port=%s user=%s dbname=%s password=%s options='%s'",
+			config.String("DB.HOST"),
+			config.String("DB.PORT"),
+			config.String("DB.USERNAME"),
+			dbname,
+			config.String("DB.PASSWORD"),
+			config.String("DB.OPTIONS"),
+		)
+	case "sqlite3":
+		return dbname
+	case "mssql":
+		return fmt.Sprintf(
+			"sqlserver://%s:%s@%s:%s?database=%s&%s",
+			config.String("DB.USERNAME"),
+			config.String("DB.PASSWORD"),
+			config.String("DB.HOST"),
+			config.String("DB.PORT"),
+			dbname,
+			config.String("DB.OPTIONS"),
+		)
 	}
-	return dbClient
-}
 
-func createDBURL(uname string, pwd string, host string, port string, dbname string) string {
-	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=%t&loc=%s",
-		uname, pwd,
-		host, port,
-		dbname, true, "Local")
-}
-
-func dbname() string {
-	return config.String("DB.DATABASE") + "_" + config.String("APP.RUNMODE")
+	log.Panicf("DB Connection %s not supported", connection)
+	return ""
 }

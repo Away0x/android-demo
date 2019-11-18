@@ -19,7 +19,7 @@ import (
 // @Param pageNo query int false "页码"
 // @Param keyword query string false "关键字查询"
 // @Success 200 {object} response.GoodListResp
-// @Router /goods/list [post]
+// @Router /goods/list [get]
 func GoodsList(c *context.AppContext) (err error) {
 	req := new(request.GoodsListReq)
 	if err = c.BindReq(req); err != nil {

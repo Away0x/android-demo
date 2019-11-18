@@ -56,7 +56,7 @@ func AddressAdd(c *context.AppContext, u *models.UserInfo, s string) (err error)
 // @Produce  json
 // @Security ApiKeyAuth
 // @Param id path int true "收货地址 id"
-// @Success 200 {object} response.CommonResponse
+// @Success 200 {object} common.CommonResponse
 // @Router /address/delete/{id} [post]
 func AddressDelete(c *context.AppContext, u *models.UserInfo, s string) (err error) {
 	id, err := c.UintParam("id")

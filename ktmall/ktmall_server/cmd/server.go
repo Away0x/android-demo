@@ -11,8 +11,8 @@ var serverCmd = &cobra.Command{
 	Short: "run app server",
 	Run: func(cmd *cobra.Command, args []string) {
 		// init db
-		db, _ := bootstrap.SetupDB()
-		defer db.Close()
+		bootstrap.SetupDB()
+		defer bootstrap.CloseDB()
 
 		// run echo
 		bootstrap.RunServer()

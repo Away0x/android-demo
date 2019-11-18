@@ -89,7 +89,7 @@ func UserRefreshToken(c *context.AppContext, s string) error {
 // @Tags user
 // @Produce  json
 // @Security ApiKeyAuth
-// @Success 200 {object} response.CommonResponse
+// @Success 200 {object} common.CommonResponse
 // @Router /cart/refresh_token [post]
 func UserLogout(c *context.AppContext, u *models.UserInfo, s string) error {
 	c.TokenForget(s)

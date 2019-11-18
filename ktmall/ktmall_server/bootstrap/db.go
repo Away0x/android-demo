@@ -2,16 +2,19 @@ package bootstrap
 
 import (
 	"ktmall/app/models"
+	"ktmall/config"
 	"ktmall/database"
 
-	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	// import _ "github.com/jinzhu/gorm/dialects/postgres"
+	// import _ "github.com/jinzhu/gorm/dialects/sqlite"
+	// import _ "github.com/jinzhu/gorm/dialects/mssql"
 )
 
-func SetupDB() (*gorm.DB, error) {
-	database.SetupDB()
-	db := database.DBManager()
+func SetupDB() {
+	database.GetConnection()
 
-	db.AutoMigrate(
+	database.RegisterModels(
 		&models.UserInfo{},
 		&models.CartGoods{},
 		&models.Category{},
@@ -23,5 +26,11 @@ func SetupDB() (*gorm.DB, error) {
 		&models.ShipAddress{},
 	)
 
-	return db, nil
+	if config.Bool("DB.AUTO_MIGRATE") {
+		database.Migrate()
+	}
+}
+
+func CloseDB() {
+	database.Close()
 }

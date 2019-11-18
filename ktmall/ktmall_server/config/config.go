@@ -54,6 +54,10 @@ func SetupConfig(configFilePath, configFileType string) {
 	G_Config = &Config{}
 }
 
+func WriteConfig(filename string) {
+	viper.WriteConfigAs(filename)
+}
+
 // 监控配置文件变化
 func watchConfig() {
 	viper.WatchConfig()

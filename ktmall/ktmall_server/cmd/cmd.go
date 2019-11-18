@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"ktmall/config"
+	"ktmall/bootstrap"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -42,5 +42,5 @@ func initConfig() {
 		configFilePath = defaultConfigFilePath
 	}
 
-	config.SetupConfig(configFilePath, configFileType)
+	bootstrap.SetupConfig(configFilePath, configFileType)
 }

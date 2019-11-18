@@ -27,7 +27,7 @@ func (m *BaseModel) IDString() string {
 }
 
 func DB() *gorm.DB {
-	return database.DBManager()
+	return database.GetConnection()
 }
 
 func TinyBool(i uint) bool {

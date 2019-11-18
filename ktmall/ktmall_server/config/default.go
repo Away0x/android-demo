@@ -30,12 +30,16 @@ var defaultConfigMap = map[string]interface{}{
 	"APP.GZIP":          true,              // 是否开启 gzip
 
 	// db
-	"DB.CONNECTION": "mysql",
-	"DB.HOST":       "127.0.0.1",
-	"DB.PORT":       "3306",
-	"DB.DATABASE":   defaultAppName,
-	"DB.USERNAME":   "root",
-	"DB.PASSWORD":   "",
+	"DB.CONNECTION":           "mysql",
+	"DB.HOST":                 "127.0.0.1",
+	"DB.PORT":                 "3306",
+	"DB.DATABASE":             defaultAppName,
+	"DB.USERNAME":             "root",
+	"DB.PASSWORD":             "",
+	"DB.OPTIONS":              "charset=utf8&parseTime=true&loc=Local",
+	"DB.MAX_OPEN_CONNECTIONS": 100,
+	"DB.MAX_IDLE_CONNECTIONS": 20,
+	"DB.AUTO_MIGRATE":         true,
 
 	// log
 	"LOG.WRITERS":          "file,stdout",

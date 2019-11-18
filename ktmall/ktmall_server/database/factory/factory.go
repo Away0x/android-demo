@@ -7,13 +7,13 @@ import (
 )
 
 func dropAndCreateTable(table interface{}) {
-	database.DBManager().DropTable(table)
-	database.DBManager().CreateTable(table)
+	database.GetConnection().DropTable(table)
+	database.GetConnection().CreateTable(table)
 }
 
 func Run() {
-	db, _ := bootstrap.SetupDB()
-	defer db.Close()
+	bootstrap.SetupDB()
+	defer bootstrap.CloseDB()
 
 	fmt.Println("database.factory runing")
 
