@@ -2,11 +2,15 @@ package api
 
 import (
 	"ktmall/app/context"
+	"ktmall/app/helpers"
 	"ktmall/app/models"
 	"ktmall/app/request"
 	"ktmall/app/response"
 	"ktmall/app/services"
+	"ktmall/common"
 	"ktmall/common/alipay"
+	"strconv"
+	"time"
 
 	"github.com/jinzhu/gorm"
 )
@@ -173,6 +177,9 @@ func OrderSubmit(c *context.AppContext, u *models.UserInfo, t string, order *mod
 			return e
 		}
 
+		// 推送
+		sendOrderMessage(c, u, strconv.Itoa(int(order.ID)))
+
 		return nil
 	})
 
@@ -181,4 +188,20 @@ func OrderSubmit(c *context.AppContext, u *models.UserInfo, t string, order *mod
 	}
 
 	return c.SuccessResp(nil)
+}
+
+func sendOrderMessage(c *context.AppContext, user *models.UserInfo, orderId string) {
+	msg := new(models.MessageInfo)
+	now := time.Now()
+
+	msg.Icon = user.Icon
+	msg.Title = "下单成功"
+	msg.Content = "恭喜您下单成功，有一笔订单等待支付"
+	msg.UserId = user.ID
+	msg.Time = now.Format(common.DateTimeLayout)
+	c.DB().Create(msg)
+
+	if user.PushId != "" {
+		helpers.OrderPush(user.PushId, orderId)
+	}
 }

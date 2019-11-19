@@ -17,3 +17,12 @@ DB:
 QINIU:
   ACCESS_KEY:
   SECRET_KEY:
+
+# alipay
+ALIPAY:
+  APPID:
+
+# 极光推送
+JPUSH:
+  KEY:
+  SECRET:

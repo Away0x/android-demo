@@ -2,8 +2,10 @@ package net.away0x.lib_user_center.ui.activity
 
 import android.os.Bundle
 import android.view.View
+import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import kotlinx.android.synthetic.main.activity_login.*
+import net.away0x.lib_base.common.PushProvider
 import net.away0x.lib_base.ext.enable
 import net.away0x.lib_base.ext.onClick
 import net.away0x.lib_base.ui.activity.BaseMvpActivity
@@ -20,6 +22,10 @@ import org.jetbrains.anko.toast
 @Route(path = RouterPath.UserCenter.PATH_LOGIN)
 class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView,
     View.OnClickListener {
+
+    @Autowired(name = RouterPath.MessageCenter.PATH_MESSAGE_PUSH)
+    @JvmField
+    var mPushProvider: PushProvider? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +59,7 @@ class LoginActivity : BaseMvpActivity<LoginPresenter>(), LoginView,
 
             // 登录
             R.id.mLoginBtn -> {
-                mPresenter.login(mMobileEt.text.toString(), mPwdEt.text.toString(), "")
+                mPresenter.login(mMobileEt.text.toString(), mPwdEt.text.toString(), mPushProvider?.getPushId()?:"")
                 hideInputBoard()
             }
 

@@ -43,6 +43,7 @@ require (
 	github.com/swaggo/echo-swagger v0.0.0-20190329130007-1219b460a043
 	github.com/swaggo/swag v1.6.3
 	github.com/valyala/fasttemplate v1.1.0 // indirect
+	github.com/ylywyn/jpush-api-go-client v0.0.0-20190906031852-8c4466c6e369
 	golang.org/x/crypto v0.0.0-20191117063200-497ca9f6d64f
 	golang.org/x/image v0.0.0-20191009234506-e7c1f5e7dbb8 // indirect
 	golang.org/x/net v0.0.0-20191116160921-f9c825593386 // indirect

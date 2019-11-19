@@ -3,6 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
+}
+
+
 android {
     compileSdkVersion 28
 
@@ -15,6 +22,12 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
+
+        manifestPlaceholders = [
+            JPUSH_PKGNAME : "net.away0x.ktmall",
+            JPUSH_APPKEY : "3a68a7998b7a52f320cb8afe", // JPush上注册的包名对应的appkey.
+            JPUSH_CHANNEL : "developer-default",       // 暂时填写默认值即可.
+        ]
     }
 
     buildTypes {
@@ -22,6 +35,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 
 }
@@ -39,4 +56,8 @@ dependencies {
     implementation project(":lib_base")
 
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.alibaba:arouter-compiler:$arouter_compiler_version"
+
+    api 'cn.jiguang.sdk:jpush:3.4.0'
+    api 'cn.jiguang.sdk:jcore:2.2.2'
 }

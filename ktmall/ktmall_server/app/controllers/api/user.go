@@ -2,9 +2,12 @@ package api
 
 import (
 	"ktmall/app/context"
+	"ktmall/app/helpers"
 	"ktmall/app/models"
 	"ktmall/app/request"
 	"ktmall/app/response"
+	"ktmall/common"
+	"time"
 )
 
 /// 用户相关接口
@@ -64,6 +67,13 @@ func UserLogin(c *context.AppContext) (err error) {
 	t, err := c.TokenSign(u)
 	if err != nil {
 		return err
+	}
+
+	if req.PushId != "" {
+		u.PushId = req.PushId
+		if err = c.DB().Save(u).Error; err == nil {
+			sendLoginMessage(c, u) // 推送
+		}
 	}
 
 	return c.SuccessResp(response.BuildUserAndTokenResp(u, t))
@@ -183,4 +193,18 @@ func UserEdit(c *context.AppContext, u *models.UserInfo, s string) (err error) {
 // @Router /user/info [get]
 func UserInfo(c *context.AppContext, u *models.UserInfo, s string) error {
 	return c.SuccessResp(u.Serialize())
+}
+
+func sendLoginMessage(c *context.AppContext, user *models.UserInfo) {
+	msg := new(models.MessageInfo)
+	now := time.Now()
+
+	msg.Icon = user.Icon
+	msg.Title = "登录成功"
+	msg.Content = "恭喜您登录成功"
+	msg.UserId = user.ID
+	msg.Time = now.Format(common.DateTimeLayout)
+	c.DB().Create(msg)
+
+	helpers.LoginPush(user.PushId)
 }
