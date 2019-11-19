@@ -2,17 +2,17 @@ package request
 
 // 购物车添加商品
 type AddCartReq struct {
-	GoodsId    uint   `json:"goodsId"`
-	GoodsDesc  string `json:"goodsDesc"`
-	GoodsIcon  string `json:"goodsIcon"`
-	GoodsPrice int    `json:"goodsPrice"`
-	GoodsCount uint   `json:"goodsCount"`
-	GoodsSku   string `json:"goodsSku"`
+	GoodsId    uint    `json:"goodsId"`
+	GoodsDesc  string  `json:"goodsDesc"`
+	GoodsIcon  string  `json:"goodsIcon"`
+	GoodsPrice float64 `json:"goodsPrice"`
+	GoodsCount uint    `json:"goodsCount"`
+	GoodsSku   string  `json:"goodsSku"`
 }
 
 // 提交购物车
 type SubmitCartReq struct {
-	TotalPrice int `json:"totalPrice"`
+	TotalPrice float64 `json:"totalPrice"`
 	GoodsList  []struct {
 		GoodsId    uint
 		GoodsDesc  string

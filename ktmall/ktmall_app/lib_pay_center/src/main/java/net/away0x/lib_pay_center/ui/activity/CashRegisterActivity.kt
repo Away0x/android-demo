@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.alipay.sdk.app.EnvUtils
+import com.alipay.sdk.app.PayTask
 import kotlinx.android.synthetic.main.activity_cash_register.*
 import net.away0x.lib_base.common.ProviderConstant
 import net.away0x.lib_base.common.RouterPath
@@ -48,7 +50,7 @@ class CashRegisterActivity: BaseMvpActivity<PayPresenter>(), PayView, View.OnCli
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cash_register)
 
-        //EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX)
+        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX)
 
         ARouter.getInstance().inject(this)
 
@@ -82,14 +84,14 @@ class CashRegisterActivity: BaseMvpActivity<PayPresenter>(), PayView, View.OnCli
      */
     override fun onGetSignResult(result: String) {
         doAsync {
-//            val resultMap:Map<String,String> = PayTask(this@CashRegisterActivity).payV2(result,true)
-//            uiThread {
-//                if (resultMap["resultStatus"].equals("9000")){
-//                    mPresenter.payOrder(mOrderId)
-//                }else{
-//                    toast("支付失败${resultMap["memo"]}")
-//                }
-//            }
+            val resultMap:Map<String,String> = PayTask(this@CashRegisterActivity).payV2(result,true)
+            uiThread {
+                if (resultMap["resultStatus"].equals("9000")){
+                    mPresenter.payOrder(mOrderId)
+                }else{
+                    toast("支付失败: ${resultMap["memo"]}")
+                }
+            }
 
         }
     }

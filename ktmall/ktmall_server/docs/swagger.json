@@ -11,7 +11,7 @@
         "license": {},
         "version": "1.0"
     },
-    "host": "localhost:9999",
+    "host": "192.168.253.5:9999",
     "basePath": "/api",
     "paths": {
         "/address/add": {
@@ -561,7 +561,19 @@
                 "tags": [
                     "order"
                 ],
-                "summary": "获取支付宝支付签名"
+                "summary": "获取支付宝支付签名",
+                "parameters": [
+                    {
+                        "description": "订单信息",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/request.OrderGetPaySignReq"
+                        }
+                    }
+                ]
             }
         },
         "/order/list": {
@@ -1095,7 +1107,7 @@
                     "type": "integer"
                 },
                 "goodsPrice": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "goodsSku": {
                     "type": "string"
@@ -1158,6 +1170,17 @@
                 }
             }
         },
+        "request.OrderGetPaySignReq": {
+            "type": "object",
+            "properties": {
+                "orderId": {
+                    "type": "integer"
+                },
+                "totalPrice": {
+                    "type": "number"
+                }
+            }
+        },
         "request.SubmitCartReq": {
             "type": "object",
             "properties": {
@@ -1188,7 +1211,7 @@
                     }
                 },
                 "totalPrice": {
-                    "type": "integer"
+                    "type": "number"
                 }
             }
         },
@@ -1549,7 +1572,7 @@
                     "$ref": "#/definitions/models.AddressSerializer"
                 },
                 "totalPrice": {
-                    "type": "integer"
+                    "type": "number"
                 }
             }
         },
@@ -1579,7 +1602,7 @@
                         "$ref": "#/definitions/models.AddressSerializer"
                     },
                     "totalPrice": {
-                        "type": "integer"
+                        "type": "number"
                     }
                 }
             }

@@ -28,14 +28,14 @@ type OrderInfo struct {
 	BaseModel
 	UserId      uint
 	ShipId      uint
-	TotalPrice  int
+	TotalPrice  float64
 	PayType     OrderPayType
 	OrderStatus OrderStatus
 }
 
 type OrderInfoSerialize struct {
 	ID          uint         `json:"id"`
-	TotalPrice  int          `json:"totalPrice"`
+	TotalPrice  float64      `json:"totalPrice"`
 	PayType     OrderPayType `json:"payType"`
 	OrderStatus OrderStatus  `json:"orderStatus"`
 }

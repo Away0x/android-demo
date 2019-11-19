@@ -6,6 +6,7 @@ import (
 	"ktmall/app/request"
 	"ktmall/app/response"
 	"ktmall/app/services"
+	"ktmall/common/alipay"
 
 	"github.com/jinzhu/gorm"
 )
@@ -18,9 +19,17 @@ import (
 // @Accept  json
 // @Produce  json
 // @Security ApiKeyAuth
+// @Param json body request.OrderGetPaySignReq true "订单信息"
 // @Router /order/get_pay_sign [post]
 func OrderGetPaySign(c *context.AppContext) (err error) {
-	return nil
+	req := new(request.OrderGetPaySignReq)
+	if err = c.BindReq(req); err != nil {
+		return c.ErrReq(err)
+	}
+
+	s, _ := alipay.BuildOrderParamMap(1, 20.0)
+
+	return c.SuccessResp(s.Encode())
 }
 
 // OrderPay 刷新订单状态，已支付

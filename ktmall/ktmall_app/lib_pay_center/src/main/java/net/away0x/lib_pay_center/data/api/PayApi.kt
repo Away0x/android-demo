@@ -17,7 +17,7 @@ interface PayApi {
     /*
         获取支付宝支付签名
      */
-    @POST("pay/getPaySign")
+    @POST("order/get_pay_sign")
     fun getPaySign(@Body req: GetPaySignReq): Observable<BaseResp<String>>
 
     /*

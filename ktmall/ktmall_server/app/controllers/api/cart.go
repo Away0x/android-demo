@@ -42,7 +42,7 @@ func CartAdd(c *context.AppContext, u *models.UserInfo, t string) (err error) {
 		GoodsId:    req.GoodsId,
 		GoodsDesc:  req.GoodsDesc,
 		GoodsIcon:  req.GoodsIcon,
-		GoodsPrice: strconv.Itoa(req.GoodsPrice),
+		GoodsPrice: strconv.FormatFloat(req.GoodsPrice, 'f', -1, 64),
 		GoodsCount: req.GoodsCount,
 		GoodsSku:   req.GoodsSku,
 		UserId:     u.ID,

@@ -125,7 +125,7 @@ definitions:
       goodsId:
         type: integer
       goodsPrice:
-        type: integer
+        type: number
       goodsSku:
         type: string
     type: object
@@ -171,6 +171,13 @@ definitions:
       userName:
         type: string
     type: object
+  request.OrderGetPaySignReq:
+    properties:
+      orderId:
+        type: integer
+      totalPrice:
+        type: number
+    type: object
   request.SubmitCartReq:
     properties:
       goodsList:
@@ -191,7 +198,7 @@ definitions:
           type: object
         type: array
       totalPrice:
-        type: integer
+        type: number
     type: object
   request.UserEditReq:
     properties:
@@ -430,7 +437,7 @@ definitions:
         description: 存储指针，无值时为就 nil 就不会序列化为一个都为空值的 struct
         type: object
       totalPrice:
-        type: integer
+        type: number
     type: object
   response.OrderListResp:
     items:
@@ -450,7 +457,7 @@ definitions:
           description: 存储指针，无值时为就 nil 就不会序列化为一个都为空值的 struct
           type: object
         totalPrice:
-          type: integer
+          type: number
       type: object
     type: array
   response.UserTokenResp:
@@ -471,7 +478,7 @@ definitions:
       type:
         type: string
     type: object
-host: localhost:9999
+host: 192.168.253.5:9999
 info:
   contact:
     email: wutong0910@foxmail.com
@@ -812,6 +819,14 @@ paths:
     post:
       consumes:
       - application/json
+      parameters:
+      - description: 订单信息
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/request.OrderGetPaySignReq'
+          type: object
       produces:
       - application/json
       security:
