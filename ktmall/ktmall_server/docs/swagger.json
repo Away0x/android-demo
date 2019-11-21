@@ -11,7 +11,7 @@
         "license": {},
         "version": "1.0"
     },
-    "host": "192.168.253.5:9999",
+    "host": "localhost:9999",
     "basePath": "/api",
     "paths": {
         "/address/add": {

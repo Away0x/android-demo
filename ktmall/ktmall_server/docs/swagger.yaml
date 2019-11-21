@@ -478,7 +478,7 @@ definitions:
       type:
         type: string
     type: object
-host: 192.168.253.5:9999
+host: localhost:9999
 info:
   contact:
     email: wutong0910@foxmail.com

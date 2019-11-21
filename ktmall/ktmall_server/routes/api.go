@@ -24,7 +24,7 @@ const (
 // @contact.url https://github.com/Away0x
 // @contact.email wutong0910@foxmail.com
 
-// @host 192.168.253.5:9999
+// @host localhost:9999
 // @BasePath /api
 
 // @securityDefinitions.apiKey ApiKeyAuth
