@@ -8,6 +8,8 @@ import cn.jpush.android.api.CustomMessage
 import cn.jpush.android.api.JPushMessage
 import cn.jpush.android.api.NotificationMessage
 import cn.jpush.android.service.JPushMessageReceiver
+import com.eightbitlab.rxbus.Bus
+import net.away0x.lib_base.event.MessageBadgeEvent
 
 /*
     自定义Push 接收器
@@ -43,6 +45,7 @@ class MessageReceiver : JPushMessageReceiver() {
         super.onNotifyMessageArrived(p0, p1)
         Log.e(TAG, p1.toString())
         Toast.makeText(p0, "推送成功: " + p1?.notificationContent, Toast.LENGTH_LONG).show()
+        Bus.send(MessageBadgeEvent(true))
     }
 
     // 打开了通知
@@ -55,6 +58,7 @@ class MessageReceiver : JPushMessageReceiver() {
     override fun onMessage(p0: Context?, p1: CustomMessage?) {
         super.onMessage(p0, p1)
         Log.e(TAG, "onMessage")
+        Bus.send(MessageBadgeEvent(true))
     }
 
 }

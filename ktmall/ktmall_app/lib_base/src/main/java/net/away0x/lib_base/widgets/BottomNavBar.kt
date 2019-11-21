@@ -48,7 +48,8 @@ class BottomNavBar @JvmOverloads constructor(
 
         mMsgBadge = ShapeBadgeItem()
         mMsgBadge.setShape(ShapeBadgeItem.SHAPE_OVAL)
-        msgItem.setBadgeItem(mMsgBadge)
+        // msgItem.setBadgeItem(mMsgBadge)
+        msgItem.setBadgeItem(mCartBadge)
 
         // 我的
         val userItem = BottomNavigationItem(R.drawable.btn_nav_user_press,resources.getString(R.string.nav_bar_user))
@@ -83,9 +84,9 @@ class BottomNavBar @JvmOverloads constructor(
     /* 检查消息Tab是否显示标签 */
     fun checkMsgBadge(isVisiable: Boolean) {
         if (isVisiable){
-            mMsgBadge.show()
+            mCartBadge.show()
         } else {
-            mMsgBadge.hide()
+            mCartBadge.hide()
         }
     }
 

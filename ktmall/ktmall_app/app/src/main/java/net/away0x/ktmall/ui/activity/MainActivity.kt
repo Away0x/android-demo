@@ -107,9 +107,8 @@ class MainActivity : BaseActivity() {
 
         Bus.observe<MessageBadgeEvent>()
             .subscribe {
-                    t: MessageBadgeEvent ->
                 run {
-                    mBottomNavBar.checkMsgBadge(t.isVisible)
+                    mBottomNavBar.checkMsgBadge(it.isVisible)
                 }
             }.registerInBus(this)
     }

@@ -94,10 +94,19 @@ func (j *JPush) Send(opts *JPushOptions) {
 
 	payload := jpushclient.NewPushPayLoad()
 
-	payload.SetPlatform(opts.Platform)
-	payload.SetAudience(opts.Audience)
-	payload.SetNotice(opts.Notice)
-	payload.SetMessage(opts.Message)
+	if opts.Platform != nil {
+		payload.SetPlatform(opts.Platform)
+	}
+
+	if opts.Audience != nil {
+		payload.SetAudience(opts.Audience)
+	}
+	if opts.Notice != nil {
+		payload.SetNotice(opts.Notice)
+	}
+	if opts.Message != nil {
+		payload.SetMessage(opts.Message)
+	}
 
 	bytes, _ := payload.ToBytes()
 	c := jpushclient.NewPushClient(j.Secret, j.Key)
