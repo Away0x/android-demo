@@ -1,46 +1,60 @@
 package net.away0x.lib_message_center.receiver
 
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
+import android.nfc.Tag
 import android.util.Log
-import cn.jpush.android.api.JPushInterface
-import com.alibaba.android.arouter.launcher.ARouter
-import com.eightbitlab.rxbus.Bus
-import net.away0x.lib_base.common.ProviderConstant
-import net.away0x.lib_base.common.RouterPath
-import net.away0x.lib_base.event.MessageBadgeEvent
-import org.json.JSONObject
+import android.widget.Toast
+import cn.jpush.android.api.CustomMessage
+import cn.jpush.android.api.JPushMessage
+import cn.jpush.android.api.NotificationMessage
+import cn.jpush.android.service.JPushMessageReceiver
 
 /*
     自定义Push 接收器
  */
-class MessageReceiver: BroadcastReceiver() {
-    val TAG = "MessageReceiver"
-    override fun onReceive(context: Context, intent: Intent) {
+class MessageReceiver : JPushMessageReceiver() {
 
-        val bundle = intent.extras
-        Log.d(TAG, "onReceive - " + intent.action + ", extras: " +bundle)
-
-        when {
-            JPushInterface.ACTION_REGISTRATION_ID == intent.action -> Log.d(TAG, "JPush用户注册成功")
-            JPushInterface.ACTION_MESSAGE_RECEIVED == intent.action -> {
-                Log.d(TAG, "接受到推送下来的自定义消息")
-                Bus.send(MessageBadgeEvent(true))
-
-            }
-            JPushInterface.ACTION_NOTIFICATION_RECEIVED == intent.action -> Log.d(TAG, "接受到推送下来的通知")
-            JPushInterface.ACTION_NOTIFICATION_OPENED == intent.action -> {
-                Log.d(TAG, "用户点击打开了通知")
-                val extra = bundle.getString(JPushInterface.EXTRA_EXTRA)
-                val json = JSONObject(extra)
-                val orderId = json.getInt("orderId")
-                ARouter.getInstance().build(RouterPath.MessageCenter.PATH_MESSAGE_ORDER)
-                    .withInt(ProviderConstant.KEY_ORDER_ID,orderId)
-                    .navigation()
-
-            }
-            else -> Log.d(TAG, "Unhandled intent - " + intent.action)
-        }
+    companion object {
+        const val TAG = "JIGUANG"
     }
+
+    // 连接极光服务器
+    override fun onConnected(p0: Context?, p1: Boolean) {
+        super.onConnected(p0, p1)
+        Log.e(TAG, "onConnected")
+    }
+
+    // 注册极光时的回调
+    override fun onRegister(p0: Context?, p1: String?) {
+        super.onRegister(p0, p1)
+        Log.e(TAG, "onRegister" + p1)
+    }
+
+    // 注册及解除注册别名时的回调
+    override fun onAliasOperatorResult(p0: Context?, p1: JPushMessage?) {
+        super.onAliasOperatorResult(p0, p1)
+        Log.e(TAG, p1.toString())
+    }
+
+    // 接收到推送下来的通知
+    // 可利用字段 p1.notificationExtras 来区别 Notication 指定不同 action，其是 Json 字符串
+    // Notication 指在手机通知栏上会显示的一条通知信息
+    override fun onNotifyMessageArrived(p0: Context?, p1: NotificationMessage?) {
+        super.onNotifyMessageArrived(p0, p1)
+        Log.e(TAG, p1.toString())
+        Toast.makeText(p0, "推送成功: " + p1?.notificationContent, Toast.LENGTH_LONG).show()
+    }
+
+    // 打开了通知
+    override fun onNotifyMessageOpened(p0: Context?, p1: NotificationMessage?) {
+        super.onNotifyMessageOpened(p0, p1)
+        Log.e(TAG, p1?.notificationExtras)
+    }
+
+    // 接收到推送下来的自定义消息
+    override fun onMessage(p0: Context?, p1: CustomMessage?) {
+        super.onMessage(p0, p1)
+        Log.e(TAG, "onMessage")
+    }
+
 }

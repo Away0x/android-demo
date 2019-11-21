@@ -17,7 +17,7 @@ import (
 // @Router /message/list [get]
 func MessageList(c *context.AppContext, u *models.UserInfo, t string) error {
 	list := make([]*models.MessageInfo, 0)
-	c.DB().Where("user_id = ?", u.ID).Find(&list)
+	c.DB().Where("user_id = ?", u.ID).Order("id desc").Find(&list)
 
 	return c.SuccessResp(response.BuildMessageListResp(list))
 }

@@ -23,6 +23,11 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
 
+        ndk {
+            // 选择要添加的对应 cpu 类型的 .so 库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
+        }
+
         manifestPlaceholders = [
             JPUSH_PKGNAME : "net.away0x.ktmall",
             JPUSH_APPKEY : "3a68a7998b7a52f320cb8afe", // JPush上注册的包名对应的appkey.
