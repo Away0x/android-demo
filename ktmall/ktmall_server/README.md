@@ -61,6 +61,8 @@ make deploy
 │
 ├── public           前端静态文件
 │
+├── test             测试文件
+│
 ├── resources        项目资源文件
 │    └── views       view 模板文件
 │
