@@ -18,7 +18,7 @@ func SetupServerRender(e *echo.Echo) {
 	// template global var
 	globalVar := pongo2.Context{
 		"APP_NAME":    config.String("APP.NAME"),
-		"APP_RUNMODE": config.String("APP.RUNMODE"),
+		"APP_RUNMODE": string(config.AppRunMode()),
 		"APP_URL":     config.String("APP.URL"),
 		"route":       config.G_Application.RoutePath,
 	}

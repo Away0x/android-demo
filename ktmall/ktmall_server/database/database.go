@@ -54,11 +54,12 @@ func newConnection() *gorm.DB {
 	db.LogMode(config.IsDev())
 	db.DB().SetMaxOpenConns(config.Int("DB.MAX_OPEN_CONNECTIONS"))
 	db.DB().SetMaxIdleConns(config.Int("DB.MAX_IDLE_CONNECTIONS"))
+
 	return db
 }
 
 func buildConnectionOptions(connection string) string {
-	dbname := config.String("DB.DATABASE") + "_" + config.String("APP.RUNMODE")
+	dbname := getDBName()
 
 	switch connection {
 	case "mysql":
@@ -97,4 +98,8 @@ func buildConnectionOptions(connection string) string {
 
 	log.Panicf("DB Connection %s not supported", connection)
 	return ""
+}
+
+func getDBName() string {
+	return config.String("DB.DATABASE") + "_" + string(config.AppRunMode())
 }

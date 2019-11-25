@@ -10,18 +10,19 @@ import (
 )
 
 type (
-	Config struct{}
+	Config  struct{}
+	Runmode string
 )
 
 const (
 	// RunmodeProduction 生产环境
-	RunmodeProduction = "production"
+	RunmodeProduction Runmode = "production"
 	// RunmodeStaging 准生产环境
-	RunmodeStaging = "staging"
+	RunmodeStaging Runmode = "staging"
 	// RunmodeDevelopment 调试、开发环境
-	RunmodeDevelopment = "development"
+	RunmodeDevelopment Runmode = "development"
 	// RunmodeTest 测试环境
-	RunmodeTest = "test"
+	RunmodeTest Runmode = "test"
 )
 
 var (
@@ -98,7 +99,24 @@ func Bool(key string) bool {
 
 // IsDev 是否为开发模式
 func IsDev() bool {
-	return String("APP.RUNMODE") == RunmodeDevelopment
+	return AppRunMode() == RunmodeDevelopment
+}
+
+func AppRunMode() Runmode {
+	mode := Runmode(String("APP.RUNMODE"))
+
+	switch mode {
+	case RunmodeProduction:
+		return RunmodeProduction
+	case RunmodeStaging:
+		return RunmodeStaging
+	case RunmodeDevelopment:
+		return RunmodeDevelopment
+	case RunmodeTest:
+		return RunmodeTest
+	default:
+		return RunmodeDevelopment
+	}
 }
 
 func (c *Config) String(key string) string {
