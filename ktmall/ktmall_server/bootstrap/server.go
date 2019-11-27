@@ -27,7 +27,7 @@ func SetupServer() *echo.Echo {
 
 	SetupServerRender(e)
 
-	fmt.Printf("app runmode is %s\n\n", config.AppRunMode())
+	fmt.Printf("\n\napp runmode is %s\n\n", config.AppRunMode())
 	config.SetupApp(&config.Application{Engine: e})
 
 	return e

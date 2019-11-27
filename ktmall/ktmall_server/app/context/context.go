@@ -25,12 +25,7 @@ func Middleware(h echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
-func RegisterHandler(
-	fn echoRegisterFn,
-	path string,
-	h AppHandlerFunc,
-	m ...echo.MiddlewareFunc,
-) *echo.Route {
+func RegisterHandler(fn echoRegisterFn, path string, h AppHandlerFunc, m ...echo.MiddlewareFunc) *echo.Route {
 	if path != "" && !strings.HasPrefix(path, "/") {
 		path = "/" + path
 	}

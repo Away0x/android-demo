@@ -29,7 +29,7 @@ func Close() {
 
 func RegisterModels(ms ...interface{}) {
 	for _, m := range ms {
-		models = append(models, m)
+		RegisterModel(m)
 	}
 }
 

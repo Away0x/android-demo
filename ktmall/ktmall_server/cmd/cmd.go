@@ -33,7 +33,7 @@ func init() {
 
 	// 配置文件路径: --cofig config_path
 	rootCmd.PersistentFlags().
-		StringVar(&configFilePath, "config", "", "config file (default is $APP/"+defaultConfigFilePath+")")
+		StringVarP(&configFilePath, "config", "c", defaultConfigFilePath, "config file")
 }
 
 func initConfig() {
