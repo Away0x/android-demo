@@ -50,7 +50,7 @@ require (
 	golang.org/x/net v0.0.0-20191116160921-f9c825593386 // indirect
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e // indirect
 	golang.org/x/sys v0.0.0-20191118013547-6254a7c3cac6 // indirect
-	golang.org/x/tools v0.0.0-20191118051429-5a76f03bc7c3 // indirect
+	golang.org/x/tools v0.0.0-20191126225216-7360bd5c0f4e // indirect
 	golang.org/x/xerrors v0.0.0-20191011141410-1b5146add898 // indirect
 	google.golang.org/appengine v1.6.5 // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect

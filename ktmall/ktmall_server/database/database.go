@@ -48,7 +48,7 @@ func newConnection() *gorm.DB {
 	connection := config.String("DB.CONNECTION")
 	db, err := gorm.Open(connection, buildConnectionOptions(connection))
 	if err != nil {
-		panic(err)
+		panic("[database#newConnection error]: " + err.Error())
 	}
 
 	db.LogMode(config.IsDev())
