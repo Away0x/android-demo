@@ -1,6 +1,9 @@
 package common
 
 const (
+	// 项目版本
+	APP_VERSION = "0.1"
+
 	TAOBAO_SERVER_URL = "http://gw.api.taobao.com/router/rest"
 
 	// Time Format Layout
