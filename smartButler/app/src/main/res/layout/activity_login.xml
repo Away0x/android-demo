@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/mProfileImage"
+        android:layout_marginBottom="30dp"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@drawable/imooc_logo"
+        app:civ_border_color="@android:color/white"
+        app:civ_border_width="2dp"/>
+
+    <EditText
+        android:id="@+id/mNameET"
+        android:paddingLeft="10dp"
+        android:background="@drawable/edittext_bg"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:hint="用户名"/>
+
+    <EditText
+        android:id="@+id/mPwdET"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:background="@drawable/edittext_bg"
+        android:inputType="numberPassword"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:hint="密码"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/mKeepPwdCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="@string/text_keep_password"
+            android:textColor="@color/colorAccent"/>
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/mLoginBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_bg"
+        android:text="@string/text_login"
+        android:textColor="@android:color/white"/>
+
+    <Button
+        android:id="@+id/mRegisterBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_bg"
+        android:text="@string/text_registered"
+        android:textColor="@android:color/white"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/mForgetTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="@string/text_forget_password"
+            android:textColor="@color/colorAccent"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>
