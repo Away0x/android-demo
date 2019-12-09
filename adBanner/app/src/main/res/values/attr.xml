@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="Indicator">
+        <attr name="setNumber" format="integer"></attr>
+        <attr name="Indicator_radius" format="integer"></attr>
+        <attr name="Indicator_bgColor" format="reference"></attr>
+        <attr name="Indicator_foreColor" format="reference"></attr>
+    </declare-styleable>
+
+</resources>
