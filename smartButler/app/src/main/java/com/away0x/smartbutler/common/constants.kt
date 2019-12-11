@@ -20,4 +20,7 @@ object AppConstants {
         return isFirst
     }
 
+    // bmob key
+    const val BMOB_APP_ID = "c7fb775ba77e0a804d6408e0986d9158"
+
 }
