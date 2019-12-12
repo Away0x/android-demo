@@ -2,6 +2,7 @@ package com.away0x.smartbutler.ui.activity
 
 import android.os.Bundle
 import android.os.Handler
+import cn.bmob.v3.BmobUser
 import com.away0x.smartbutler.R
 import com.away0x.smartbutler.common.AppConstants
 import org.jetbrains.anko.startActivity
@@ -21,9 +22,13 @@ class SplashActivity : BaseActivity() {
     private fun initView() {
         Handler().postDelayed({
             if (AppConstants.isFirstLaunch(this)) {
-                 startActivity<GuideActivity>()
+                startActivity<GuideActivity>()
             } else {
-                 startActivity<LoginActivity>()
+                if (BmobUser.isLogin()) {
+                    startActivity<MainActivity>()
+                } else {
+                    startActivity<LoginActivity>()
+                }
             }
 
             finish()
