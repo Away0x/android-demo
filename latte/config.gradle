@@ -11,11 +11,24 @@ ext {
     ]
 
     depVersion = [
-
+        // icon
+        iconify: "2.2.2",
+        // frangment manager
+        fragmentation: "1.0.2",
+        // anko
+        anko: "0.10.8",
     ]
 
     libs = [
-
+        // icon
+        iconifyFontAwesome: "com.joanzapata.iconify:android-iconify-fontawesome:$depVersion.iconify",
+        iconifyIonIcons: "com.joanzapata.iconify:android-iconify-ionicons:$depVersion.iconify",
+        // frangment manager
+        fragmentation: "me.yokeyword:fragmentationx:$depVersion.fragmentation",
+        fragmentationSwipeback: "me.yokeyword:fragmentationx-swipeback:$depVersion.fragmentation", // fragment 滑动返回
+        // anko
+        ankoCommons: "org.jetbrains.anko:anko-commons:$depVersion.anko",
+        ankoAppCompat: "org.jetbrains.anko:anko-appcompat-v7:$depVersion.anko",
     ]
 
 }

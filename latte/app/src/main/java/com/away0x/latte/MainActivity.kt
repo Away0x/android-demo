@@ -1,12 +1,12 @@
 package com.away0x.latte
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import com.away0x.latte.core.activities.ProxyActivity
+import com.away0x.latte.core.delegates.LatteDelegate
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ProxyActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun setRootDelegate(): LatteDelegate {
+        return MainDelegate()
     }
+
 }

@@ -35,4 +35,14 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 
     api project(path: ':latte-annotations')
+
+    // iconify 字体图标
+    api rootProject.libs.iconifyFontAwesome
+    api rootProject.libs.iconifyIonIcons
+    // fragment manager
+    api rootProject.libs.fragmentation
+    api rootProject.libs.fragmentationSwipeback
+    // anko
+    api rootProject.libs.ankoCommons
+    api rootProject.libs.ankoAppCompat
 }
