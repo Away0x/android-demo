@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no">
+    <title>hybird</title>
+</head>
+<body>
+    <button id="btn" type="button">调用 android 方法</button>
+
+    <script type="text/javascript">
+        function invokeAndroidFunc() {
+            // 调用 android 的方法
+            var result = window.androidJSBridge.androidFunc("我是来自 web 的数据")
+
+            alert(result)
+        }
+
+        window.onload = function() {
+            document.getElementById("btn").onclick = invokeAndroidFunc
+        }
+
+        // 提供给 android 调用的方法
+        window.webFunc = function (result) {
+            alert(result)
+            return "我是来自 web 的数据"
+        }
+    </script>
+</body>
+</html>
