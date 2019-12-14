@@ -1,8 +1,11 @@
 package com.away0x.smartbutler.ui.activity
 
+import android.content.Context
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.MenuItem
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 
 open class BaseActivity : AppCompatActivity() {
@@ -20,6 +23,12 @@ open class BaseActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    // 隐藏键盘
+    fun hideKeyBoard(v: View) {
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(v.windowToken, 0)
     }
 
 }
