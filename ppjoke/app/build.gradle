@@ -1,0 +1,63 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion rootProject.android.compileSdkVersion
+    buildToolsVersion rootProject.android.buildToolsVersion
+
+    defaultConfig {
+        applicationId rootProject.android.applicationId
+        minSdkVersion rootProject.android.minSdkVersion
+        targetSdkVersion rootProject.android.targetSdkVersion
+        versionCode rootProject.android.versionCode
+        versionName rootProject.android.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+// To inline the bytecode built with JVM target 1.8 into
+// bytecode that is being built with JVM target 1.6. (e.g. navArgs)
+
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.depsVersion.kotlin}"
+    implementation "androidx.appcompat:appcompat:${rootProject.depsVersion.appcompat}"
+    implementation "androidx.core:core-ktx:${rootProject.depsVersion.ktx}"
+    implementation "com.google.android.material:material:${rootProject.depsVersion.material}"
+    implementation "androidx.constraintlayout:constraintlayout:${rootProject.depsVersion.constraintlayout}"
+
+    implementation "androidx.navigation:navigation-fragment:${rootProject.depsVersion.navigation}"
+    implementation "androidx.navigation:navigation-ui:${rootProject.depsVersion.navigation}"
+    implementation "androidx.navigation:navigation-fragment-ktx:${rootProject.depsVersion.navigation}"
+    implementation "androidx.navigation:navigation-ui-ktx:${rootProject.depsVersion.navigation}"
+
+    implementation "androidx.lifecycle:lifecycle-extensions:${rootProject.depsVersion.lifecycle}"
+
+    implementation project(':lib_annotation')
+    kapt project(':lib_compiler')
+
+    // Testing dependencies
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
