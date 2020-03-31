@@ -19,5 +19,5 @@ fun logv(title: String, message: String) {
 }
 
 private fun toString(str: String): String {
-    return str
+    return "[wutong] $str"
 }
