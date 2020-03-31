@@ -1,1 +1,42 @@
-{"/main/tabs/notification":{"id":1267554780,"needLogin":false,"asStarter":false,"isFragment":true},"/main/tabs/home":{"id":2071299784,"needLogin":false,"asStarter":true,"isFragment":true}}
+{
+  "main/tabs/sofa": {
+    "id": 1285891133,
+    "needLogin": false,
+    "asStarter": false,
+    "isFragment": true,
+    "pageUrl": "main/tabs/sofa",
+    "className": "com.away0x.ppjoke.ui.fragments.sofa.SofaFragment"
+  },
+  "main/tabs/home": {
+    "id": 2084659517,
+    "needLogin": false,
+    "asStarter": true,
+    "isFragment": true,
+    "pageUrl": "main/tabs/home",
+    "className": "com.away0x.ppjoke.ui.fragments.home.HomeFragment"
+  },
+  "main/tabs/publish": {
+    "id": 2122871201,
+    "needLogin": false,
+    "asStarter": false,
+    "isFragment": true,
+    "pageUrl": "main/tabs/publish",
+    "className": "com.away0x.ppjoke.ui.fragments.publish.PublishFragment"
+  },
+  "main/tabs/find": {
+    "id": 591029891,
+    "needLogin": false,
+    "asStarter": false,
+    "isFragment": true,
+    "pageUrl": "main/tabs/find",
+    "className": "com.away0x.ppjoke.ui.fragments.find.FindFragment"
+  },
+  "main/tabs/my": {
+    "id": 761626275,
+    "needLogin": false,
+    "asStarter": false,
+    "isFragment": true,
+    "pageUrl": "main/tabs/my",
+    "className": "com.away0x.ppjoke.ui.fragments.my.MyFragment"
+  }
+}

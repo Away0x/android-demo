@@ -3,7 +3,7 @@ package com.away0x.lib_compiler
 import com.away0x.lib_annotation.ActivityDestination
 import com.away0x.lib_annotation.FragmentDestination
 import com.google.auto.service.AutoService
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import java.io.File
 import javax.annotation.processing.*
 import javax.lang.model.SourceVersion
@@ -13,6 +13,13 @@ import javax.tools.Diagnostic
 import javax.tools.StandardLocation
 import kotlin.math.abs
 
+/**
+ * APP 页面导航信息收集注解处理器
+ *
+ * AutoService: 标记后使用 annotationProcessor/kapt 应用后，会自动执行该类
+ * SupportedSourceVersion: 支持的 jdk 版本
+ * SupportedAnnotationTypes: 声明想要处理的注解
+ */
 @AutoService(Processor::class)
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes(
@@ -68,7 +75,7 @@ class NavProcessor : AbstractProcessor() {
 
                         newFile.createNewFile()
 
-                        val content = Gson().toJson(destMap)
+                        val content = GsonBuilder().setPrettyPrinting().create().toJson(destMap)
                         newFile.outputStream().bufferedWriter().use {
                             it.write(content)
                             it.flush()
@@ -95,7 +102,7 @@ class NavProcessor : AbstractProcessor() {
             // 页面 id 不能重复，使用 hashcode
             val id = abs(clazzName.hashCode())
 
-            var pageUrl: String? = null
+            var pageUrl: String? = null // 相当于隐式跳转的 host://scheme/path 格式
             var needLogin = false
             var asStarter = false
             var isFragment = false
@@ -120,8 +127,9 @@ class NavProcessor : AbstractProcessor() {
                 data["id"] = id
                 data["needLogin"] = needLogin
                 data["asStarter"] = asStarter
-                data["needLogin"] = needLogin
                 data["isFragment"] = isFragment
+                data["pageUrl"] = pageUrl
+                data["className"] = clazzName
 
                 destMap[pageUrl] = data
             }
