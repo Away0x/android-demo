@@ -20,7 +20,7 @@ type UserInfo struct {
 	BaseModel
 	Name         string `sql:"comment:'用户名（登录名）'"`
 	Pwd          string `sql:"comment:'登录密码'"`
-	Mobile       string `sql:"comment:'手机号',unique"`
+	Mobile       string `sql:"comment:'手机号'" gorm:"unique_index:mobile_idx"`
 	Icon         string `sql:"comment:'头像'"`
 	RealName     string `sql:"comment:'真实姓名'"`
 	IdentityCard string `sql:"comment:'身份证'"`
