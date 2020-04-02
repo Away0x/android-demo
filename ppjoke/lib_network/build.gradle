@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
@@ -8,13 +8,20 @@ android {
     buildToolsVersion rootProject.android.buildToolsVersion
 
     defaultConfig {
-        applicationId rootProject.android.applicationId
         minSdkVersion rootProject.android.minSdkVersion
         targetSdkVersion rootProject.android.targetSdkVersion
         versionCode rootProject.android.versionCode
         versionName rootProject.android.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+
+        // 存储 room schema (数据库信息)，存储在当前 module/schemas 文件中
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -24,30 +31,15 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
-    dataBinding {
-        enabled = true
-    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(':lib_annotation')
-    kapt project(':lib_compiler')
     implementation project(':lib_common')
-    implementation project(':lib_network')
 
-    // Testing dependencies
-    testImplementation "junit:junit:${rootProject.testDepsVersion.junit}"
-    androidTestImplementation "androidx.test.ext:junit:${rootProject.testDepsVersion.testExtJunit}"
-    androidTestImplementation "androidx.test.espresso:espresso-core:${rootProject.testDepsVersion.espresso}"
+    // room
+    implementation "androidx.room:room-runtime:${rootProject.depsVersion.room}"
+    implementation "androidx.room:room-ktx:${rootProject.depsVersion.room}"
+    kapt "androidx.room:room-compiler:${rootProject.depsVersion.room}"
 }

@@ -17,7 +17,7 @@ class FindFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        logd(this.javaClass.name, "onCreateView")
+        logd(this.javaClass.simpleName, "onCreateView")
         return inflater.inflate(R.layout.fragment_find, container, false)
     }
 

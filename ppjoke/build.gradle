@@ -23,8 +23,13 @@ buildscript {
                 navigation: '2.2.0',
                 lifecycle: '2.0.0',
 
+                room: '2.2.3',
+
                 gson: '2.8.6',
                 autoService: '1.0-rc6',
+
+                okhttp: '4.2.0',
+                okhttpLog: '3.5.0',
         ]
 
         testDepsVersion = [
