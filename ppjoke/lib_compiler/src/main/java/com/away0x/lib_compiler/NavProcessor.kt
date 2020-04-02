@@ -40,10 +40,15 @@ class NavProcessor : AbstractProcessor() {
         filer = processingEnv.filer
     }
 
-    override fun process(annotations: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment?): Boolean {
+    override fun process(
+        annotations: MutableSet<out TypeElement>?,
+        roundEnv: RoundEnvironment?
+    ): Boolean {
         // 通过注解处理器环境上下文 roundEnv 分别获取项目中标记的注解
-        val fragmentDestination = roundEnv?.getElementsAnnotatedWith(FragmentDestination::class.java)
-        val activityDestination = roundEnv?.getElementsAnnotatedWith(ActivityDestination::class.java)
+        val fragmentDestination =
+            roundEnv?.getElementsAnnotatedWith(FragmentDestination::class.java)
+        val activityDestination =
+            roundEnv?.getElementsAnnotatedWith(ActivityDestination::class.java)
 
         if (fragmentDestination != null && activityDestination != null) {
             if (fragmentDestination.isNotEmpty() || activityDestination.isNotEmpty()) {
@@ -61,7 +66,8 @@ class NavProcessor : AbstractProcessor() {
                  * SOURCE_OUTPUT: java 文件的位置，一般在 /ppjoke/app/build/generated/source/apt/ 目录下
                  */
                 // 获取路径
-                val resource = filer!!.createResource(StandardLocation.CLASS_OUTPUT, "", OUPUT_FILE_NAME)
+                val resource =
+                    filer!!.createResource(StandardLocation.CLASS_OUTPUT, "", OUPUT_FILE_NAME)
                 val resourcePath = resource.toUri().path
                 // 由于要将生成的 json 文件生成在 app/src/main/assets 目录下，所以做个截取
                 val appPath = resourcePath.substring(0, resourcePath.indexOf("app") + 4)

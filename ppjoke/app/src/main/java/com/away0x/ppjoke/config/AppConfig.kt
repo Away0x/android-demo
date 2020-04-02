@@ -51,6 +51,7 @@ object AppConfig {
         return Gson().fromJson<T>(
             parseFile(
                 fileName
-            ), typed)
+            ), typed
+        )
     }
 }

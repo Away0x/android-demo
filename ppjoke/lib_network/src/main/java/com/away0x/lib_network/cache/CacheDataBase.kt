@@ -22,7 +22,11 @@ abstract class CacheDataBase : RoomDatabase() {
                     /**
                      * 创建一个内存数据库，只存在内存中，进程被杀后，数据随之丢失: Room.inMemoryDatabaseBuilder()
                      */
-                    field = Room.databaseBuilder(AppGlobals.getApplication(), CacheDataBase::class.java, "ppjoke_cache")
+                    field = Room.databaseBuilder(
+                        AppGlobals.getApplication(),
+                        CacheDataBase::class.java,
+                        "ppjoke_cache"
+                    )
                         .allowMainThreadQueries()                  // 是否允许在主线程进行查询
                         // .addCallback()                          // 打开和创建的回调
                         // .setQueryExecutor()                     // 设置查询时的线程池

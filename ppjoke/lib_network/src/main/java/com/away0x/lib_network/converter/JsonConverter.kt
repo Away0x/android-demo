@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import java.lang.reflect.Type
 
-class JsonConverter<T>: Converter<T?> {
+class JsonConverter<T> : Converter<T?> {
 
     override fun convert(response: String, type: Type): T? {
         val jsonObject = Gson().fromJson(response, JsonObject::class.java)

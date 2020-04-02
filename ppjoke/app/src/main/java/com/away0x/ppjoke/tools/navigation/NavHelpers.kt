@@ -30,9 +30,14 @@ object NavHelpers {
      * 生成 navigation graph (使用自定义的 navigator)
      * navigation 默认的跳转页面是 fragment replace 操作，使用该方法生成的的 graph 不会每次都重建 fragment，而是 fragment show / hide 操作
      */
-    fun createFixFragmentNavGraph(navController: NavController, activity: FragmentActivity, containerId: Int): NavGraph {
+    fun createFixFragmentNavGraph(
+        navController: NavController,
+        activity: FragmentActivity,
+        containerId: Int
+    ): NavGraph {
         val provider = navController.navigatorProvider
-        val fragmentNavigator = FixFragmentNavigator(activity, activity.supportFragmentManager, containerId)
+        val fragmentNavigator =
+            FixFragmentNavigator(activity, activity.supportFragmentManager, containerId)
         return createNavGraph(
             provider,
             fragmentNavigator,
@@ -40,7 +45,11 @@ object NavHelpers {
         )
     }
 
-    private fun createNavGraph(provider: NavigatorProvider, navigator: FragmentNavigator, destinationConfig: Map<String, Destination>?): NavGraph {
+    private fun createNavGraph(
+        provider: NavigatorProvider,
+        navigator: FragmentNavigator,
+        destinationConfig: Map<String, Destination>?
+    ): NavGraph {
         if (destinationConfig == null || destinationConfig.isEmpty()) {
             throw Error("navigation destination 配置为空")
         }
@@ -63,7 +72,12 @@ object NavHelpers {
                 val destination = activityNavigator.createDestination()
                 destination.id = it.value.id
                 destination.addDeepLink(it.value.pageUrl)
-                destination.setComponentName(ComponentName(AppGlobals.getApplication().packageName, it.value.className))
+                destination.setComponentName(
+                    ComponentName(
+                        AppGlobals.getApplication().packageName,
+                        it.value.className
+                    )
+                )
                 // 添加节点
                 navGraph.addDestination(destination)
             }

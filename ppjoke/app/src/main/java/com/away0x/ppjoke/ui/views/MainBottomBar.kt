@@ -83,7 +83,7 @@ class MainBottomBar @JvmOverloads constructor(
             itemView.setShifting(false)
             if (tab.title.isEmpty()) {
                 val tintColor = if (tab.tintColor.isNullOrEmpty()) Color.parseColor("#ff678f")
-                    else Color.parseColor(tab.tintColor)
+                else Color.parseColor(tab.tintColor)
                 itemView.setIconTintList(ColorStateList.valueOf(tintColor))
                 // 不会有上下浮动的效果 (该 bottom bar 点击该 item 时需要返回 false 才不会有浮动效果)
                 itemView.setShifting(false)

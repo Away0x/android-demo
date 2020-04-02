@@ -36,8 +36,18 @@ object ApiService {
 
         // https
         val trustManagers = arrayOf<TrustManager>(object : X509TrustManager {
-            override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
-            override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
+            override fun checkClientTrusted(
+                chain: Array<out X509Certificate>?,
+                authType: String?
+            ) {
+            }
+
+            override fun checkServerTrusted(
+                chain: Array<out X509Certificate>?,
+                authType: String?
+            ) {
+            }
+
             override fun getAcceptedIssuers(): Array<X509Certificate> {
                 return arrayOf()
             }
@@ -65,7 +75,7 @@ object ApiService {
 
 }
 
-class GetRequest<T>(private val apiUrl: String): Request<T, GetRequest<T>>(apiUrl) {
+class GetRequest<T>(private val apiUrl: String) : Request<T, GetRequest<T>>(apiUrl) {
 
     override fun generateRequest(builder: okhttp3.Request.Builder): okhttp3.Request {
         val url: String = UrlCreator.createUrlFromParams(url, params)
@@ -74,7 +84,7 @@ class GetRequest<T>(private val apiUrl: String): Request<T, GetRequest<T>>(apiUr
 
 }
 
-class PostRequest<T>(private val apiUrl: String): Request<T, GetRequest<T>>(apiUrl) {
+class PostRequest<T>(private val apiUrl: String) : Request<T, GetRequest<T>>(apiUrl) {
 
     override fun generateRequest(builder: okhttp3.Request.Builder): okhttp3.Request {
         val bodyBuilder = FormBody.Builder()
