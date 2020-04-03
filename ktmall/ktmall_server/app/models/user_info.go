@@ -27,7 +27,7 @@ type UserInfo struct {
 	NickName     string `sql:"comment:'昵称'"`
 	Gender       string `sql:"comment:'性别'"`
 	Birthday     string `sql:"comment:'生日'"`
-	Address      string `sql:"comment:'居住地）'"`
+	Address      string `sql:"comment:'居住地'"`
 	Sign         string `sql:"comment:'个性签名'"`
 	PushId       string `sql:"comment:'推送 id'"`
 }
