@@ -35,8 +35,11 @@ class RegisterPresenter @Inject constructor(): BasePresenter<RegisterView>() {
             }, {
                 if (it is BaseException) {
                     mView.onError(it.msg)
+                    mView.onRegisterResult(it.msg)
+                } else {
+                    mView.onRegisterResult(it.message ?: "注册失败")
                 }
-                mView.onRegisterResult("注册失败")
+
                 mView.hideLoading()
             })
     }
