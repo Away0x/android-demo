@@ -2,11 +2,15 @@ package com.away0x.room
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.away0x.room.adapters.MyAdapter
 import com.away0x.room.databinding.ActivityMainBinding
+import com.away0x.room.data.room.Word
+import com.away0x.room.viewmodels.WordViewModel
 
 val english = listOf(
     "Hello",
@@ -40,7 +44,9 @@ val chinese = listOf(
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: WordViewModel
+    private val viewModel: WordViewModel by viewModels {
+        Injection.provideWordViewModelFactory(this)
+    }
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var myAdapter1: MyAdapter
@@ -49,7 +55,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        viewModel = ViewModelProviders.of(this)[WordViewModel::class.java]
 
         initView()
 
@@ -77,7 +82,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.buttonInsert.setOnClickListener {
             val words = english.mapIndexed { index, _ ->
-                Word(word =  english[index], chineseMeaning = chinese[index])
+                Word(
+                    word = english[index],
+                    chineseMeaning = chinese[index]
+                )
             }.toTypedArray()
             viewModel.insertWords(*words)
         }

@@ -1,4 +1,4 @@
-package com.away0x.room
+package com.away0x.room.data.room
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

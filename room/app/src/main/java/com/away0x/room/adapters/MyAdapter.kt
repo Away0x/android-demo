@@ -1,14 +1,16 @@
-package com.away0x.room
+package com.away0x.room.adapters
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.away0x.room.R
+import com.away0x.room.data.room.Word
+import com.away0x.room.viewmodels.WordViewModel
 
 class MyAdapter(
     private val useCardView: Boolean = false,

@@ -1,4 +1,4 @@
-package com.away0x.room
+package com.away0x.room.data.room
 
 import android.content.Context
 import androidx.room.Database
@@ -17,7 +17,10 @@ abstract class WordDatabase : RoomDatabase() {
 
         fun getInstance(context: Context): WordDatabase {
             return instance ?: synchronized(this) {
-                instance ?: buildDatabase(context).also { instance = it }
+                instance
+                    ?: buildDatabase(
+                        context
+                    ).also { instance = it }
             }
         }
 

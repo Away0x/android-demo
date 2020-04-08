@@ -1,4 +1,4 @@
-package com.away0x.room
+package com.away0x.wordslog.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -10,10 +10,10 @@ data class Word(
     val id: Int = 0,
 
     @ColumnInfo(name = "english_word")
-    val word: String,
+    var word: String,
 
     @ColumnInfo(name = "chinese_meaning")
-    val chineseMeaning: String,
+    var chineseMeaning: String,
 
     @ColumnInfo(name = "chinese_invisible")
     var chineseInvisible: Boolean = false

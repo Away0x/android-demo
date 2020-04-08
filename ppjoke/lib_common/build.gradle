@@ -47,8 +47,9 @@ dependencies {
     api "androidx.navigation:navigation-fragment-ktx:${rootProject.depsVersion.navigation}"
     api "androidx.navigation:navigation-ui-ktx:${rootProject.depsVersion.navigation}"
 
-    // 包含了 viewModel & liveData
-    api "androidx.lifecycle:lifecycle-extensions:${rootProject.depsVersion.lifecycle}"
+    // viewModel & liveData
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:${rootProject.depsVersion.lifecycle}"
+    api "androidx.lifecycle:lifecycle-livedata-ktx:${rootProject.depsVersion.lifecycle}"
 
     // gson
     api "com.google.code.gson:gson:${rootProject.depsVersion.gson}"
