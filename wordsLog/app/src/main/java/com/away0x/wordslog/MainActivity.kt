@@ -1,6 +1,9 @@
 package com.away0x.wordslog
 
+import android.content.Context
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -24,6 +27,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp()
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val view = findViewById<View>(R.id.nav_host_fragment)
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+        navController.navigateUp()
+        return super.onSupportNavigateUp()
     }
 }

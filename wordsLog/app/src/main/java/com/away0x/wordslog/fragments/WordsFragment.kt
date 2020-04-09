@@ -206,6 +206,7 @@ class WordsFragment : Fragment() {
         private val wasteIcon: Drawable? = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_delete_forever_black_24dp)
         private val background: Drawable = ColorDrawable(Color.LTGRAY)
 
+        // 拖拽排序的操作由于动作的和数据更新不同步，所以不能这样简单处理。拖拽速度快了就出错了。
         override fun onMove(
             recyclerView: RecyclerView,
             viewHolder: RecyclerView.ViewHolder,
@@ -265,7 +266,7 @@ class WordsFragment : Fragment() {
                 dX < 0 -> {
                     backRight = itemView.right
                     backLeft = itemView.right + dX.toInt()
-                    iconRight = itemView.right + iconMargin
+                    iconRight = itemView.right - iconMargin
                     iconLeft = iconRight - wasteIcon.intrinsicWidth
 
                     background.setBounds(backLeft, backTop, backRight, backBottom)
