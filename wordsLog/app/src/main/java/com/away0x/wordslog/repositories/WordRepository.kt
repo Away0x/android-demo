@@ -1,7 +1,8 @@
-package com.away0x.wordslog.room
+package com.away0x.wordslog.repositories
 
-import android.content.Context
 import androidx.lifecycle.LiveData
+import com.away0x.wordslog.data.room.Word
+import com.away0x.wordslog.data.room.WordDao
 
 class WordRepository private constructor(
     private val wordDao: WordDao
@@ -11,8 +12,10 @@ class WordRepository private constructor(
         private var instance: WordRepository? = null
 
         fun getInstance(wordDao: WordDao): WordRepository {
-            return instance ?: synchronized(this) {
-                instance ?: WordRepository(wordDao).also { instance = it }
+            return instance
+                ?: synchronized(this) {
+                instance
+                    ?: WordRepository(wordDao).also { instance = it }
             }
         }
     }

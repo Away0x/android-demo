@@ -1,19 +1,15 @@
-package com.away0x.wordslog
+package com.away0x.wordslog.viewmodels
 
 import androidx.lifecycle.*
-import com.away0x.wordslog.room.Word
-import com.away0x.wordslog.room.WordRepository
+import com.away0x.wordslog.data.room.Word
+import com.away0x.wordslog.repositories.WordRepository
 import kotlinx.coroutines.launch
 
 class WordViewModel(private val wordRepository: WordRepository) : ViewModel() {
 
-    private var allWords: LiveData<List<Word>> = MutableLiveData()
+    fun getAllWords() = wordRepository.getAllWords()
 
-    fun getAllWords() {
-        allWords = wordRepository.getAllWords()
-    }
-
-    fun findWordsWithPattern() {}
+    fun findWordsWithPattern(pattern: String) = wordRepository.findWordsWithPattern(pattern)
 
     fun insertWords(vararg words: Word) {
         viewModelScope.launch {

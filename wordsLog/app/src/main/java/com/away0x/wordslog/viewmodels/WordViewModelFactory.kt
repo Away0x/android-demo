@@ -1,8 +1,8 @@
-package com.away0x.wordslog
+package com.away0x.wordslog.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.away0x.wordslog.room.WordRepository
+import com.away0x.wordslog.repositories.WordRepository
 
 class WordViewModelFactory(private val wordRepository: WordRepository) : ViewModelProvider.Factory {
 

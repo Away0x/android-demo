@@ -1,4 +1,4 @@
-package com.away0x.wordslog.room
+package com.away0x.wordslog.data.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
