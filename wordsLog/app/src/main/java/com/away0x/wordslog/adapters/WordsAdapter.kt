@@ -14,6 +14,7 @@ import com.away0x.wordslog.R
 import com.away0x.wordslog.data.room.Word
 import com.away0x.wordslog.viewmodels.WordViewModel
 
+// 列表数据的差异化比对是在后台异步执行的
 val diffCallback = object : DiffUtil.ItemCallback<Word>() {
     override fun areItemsTheSame(oldItem: Word, newItem: Word) = oldItem.id == newItem.id
 

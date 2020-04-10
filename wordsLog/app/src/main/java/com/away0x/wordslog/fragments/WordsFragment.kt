@@ -137,6 +137,7 @@ class WordsFragment : Fragment() {
                     val size = myAdapter1.itemCount
                     allWords = it
                     if (size != it.size) {
+                        // 提交的列表数据会在后台进行差异化比较，根据比对结果，来刷新页面
                         myAdapter1.submitList(it)
                         myAdapter2.submitList(it)
                     }

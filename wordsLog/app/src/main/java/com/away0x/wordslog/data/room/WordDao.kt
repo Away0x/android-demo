@@ -19,7 +19,7 @@ interface WordDao {
     suspend fun deleteAllWords()
 
     @Query("SELECT * FROM WORD ORDER BY ID DESC")
-    fun getAllWords(): LiveData<List<Word>>
+    fun getAllWords(): LiveData<List<Word>> // liveData 会在子线程执行
 
     @Query("SELECT * FROM WORD WHERE english_word LIKE :pattern ORDER BY ID DESC")
     fun findWordsWithPattern(pattern: String): LiveData<List<Word>>
