@@ -9,20 +9,22 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.away0x.com.gallery.R
 import com.away0x.com.gallery.adapter.GalleryAdapter
+import com.away0x.com.gallery.databinding.FragmentGalleryBinding
 import com.away0x.com.gallery.viewModel.GalleryViewModel
 import com.away0x.com.gallery.viewModel.GalleryViewModelFactory
-import kotlinx.android.synthetic.main.fragment_gallery.*
 
 
 class GalleryFragment : Fragment() {
 
+    private lateinit var binding: FragmentGalleryBinding
     private val galleryViewModel: GalleryViewModel by viewModels { GalleryViewModelFactory(requireActivity().application) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_gallery, container, false)
+        binding = FragmentGalleryBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -31,7 +33,7 @@ class GalleryFragment : Fragment() {
         setHasOptionsMenu(true)
 
         val galleryAdapter = GalleryAdapter()
-        recyclerView.apply {
+        binding.recyclerView.apply {
             adapter = galleryAdapter
             layoutManager = GridLayoutManager(requireContext(), 2)
         }
@@ -39,13 +41,13 @@ class GalleryFragment : Fragment() {
         // 监听数据变化
         galleryViewModel.photoListLive.observe(viewLifecycleOwner, Observer {
             galleryAdapter.submitList(it)
-            swipeLayoutGallery.isRefreshing = false
+            binding.swipeLayoutGallery.isRefreshing = false
         })
 
         // 没有数据的话，加载数据
         galleryViewModel.photoListLive.value ?: galleryViewModel.fetchData()
 
-        swipeLayoutGallery.setOnRefreshListener {
+        binding.swipeLayoutGallery.setOnRefreshListener {
             galleryViewModel.fetchData()
         }
     }
@@ -58,7 +60,7 @@ class GalleryFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.swipeIndicator -> {
-                swipeLayoutGallery.isRefreshing = true
+                binding.swipeLayoutGallery.isRefreshing = true
                 // 加载数据，延迟 1s
                 Handler().postDelayed(Runnable {
                     galleryViewModel.fetchData()

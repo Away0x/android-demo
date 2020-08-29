@@ -18,5 +18,9 @@
         android:id="@+id/photoFragment"
         android:name="com.away0x.com.gallery.fragment.PhotoFragment"
         android:label="Photo"
-        tools:layout="@layout/fragment_photo" />
+        tools:layout="@layout/fragment_photo" >
+        <argument
+            android:name="photo"
+            app:argType="com.away0x.com.gallery.model.PhotoItem" />
+    </fragment>
 </navigation>

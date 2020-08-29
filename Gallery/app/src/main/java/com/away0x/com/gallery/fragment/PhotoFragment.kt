@@ -7,35 +7,44 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.navArgs
 import com.away0x.com.gallery.R
-import com.away0x.com.gallery.model.PhotoItem
+import com.away0x.com.gallery.databinding.FragmentPhotoBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import kotlinx.android.synthetic.main.fragment_photo.*
 
 
 class PhotoFragment : Fragment() {
 
-    private var photoItem: PhotoItem? = null
+    private val args by navArgs<PhotoFragmentArgs>()
+    private lateinit var binding: FragmentPhotoBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_photo, container, false)
+        binding = FragmentPhotoBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        photoItem = arguments?.getParcelable<PhotoItem>("PHOTO")
-        val url = photoItem?.fullUrl
+        // 1. 普通传参方式接收参数
+        // 发出方
+        // val bundle = Bundle().apply { putParcelable("PHOTO", getItem(holder.adapterPosition)) }
+        // xx.findNavController().navigate(R.id.action_galleryFragment_to_photoFragment, bundle)
+        // 接收方
+        // val url = arguments?.getParcelable<PhotoItem>("PHOTO")?.fullUrl
 
-        shimmerLayoutPhoto.apply {
+        // 2. safe args 接收参数
+        val url = args.photo.fullUrl
+
+        binding.shimmerLayoutPhoto.apply {
             setShimmerColor(0x55FFFFFF)
             setShimmerAngle(0)
             startShimmerAnimation()
@@ -45,23 +54,11 @@ class PhotoFragment : Fragment() {
             .load(url)
             .placeholder(R.drawable.ic_photo_gray_24dp)
             .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean = false
-
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return false.also { shimmerLayoutPhoto?.stopShimmerAnimation() }
+                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean = false
+                override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                    return false.also { binding.shimmerLayoutPhoto?.stopShimmerAnimation() }
                 }
             })
-            .into(photoView)
+            .into(binding.photoView)
     }
 }

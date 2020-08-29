@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion 29
@@ -29,6 +30,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -44,8 +49,12 @@ dependencies {
 
     implementation 'androidx.fragment:fragment-ktx:1.2.0-rc03'
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.2.0-rc03'
+
     implementation 'androidx.navigation:navigation-fragment:2.2.0-rc03'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.0-rc03'
+    implementation 'androidx.navigation:navigation-runtime-ktx:2.2.0-rc03'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.2.0-rc03'
+
     // 下拉刷新
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha03'
     // image loader
