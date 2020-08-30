@@ -18,8 +18,7 @@ class GalleryViewModel(application: Application) : AndroidViewModel(application)
     // 暴露给外部用的是不可变的 livedata
     // 内部用的是可变的 livedata
     private val _photoListLive = MutableLiveData<List<PhotoItem>>()
-    val photoListLive: LiveData<List<PhotoItem>>
-    get() = _photoListLive
+    val photoListLive: LiveData<List<PhotoItem>> get() = _photoListLive
 
     private val keyWords = arrayOf("cat", "dog", "car", "beauty", "phone", "computer", "flower", "animal")
 
@@ -31,9 +30,7 @@ class GalleryViewModel(application: Application) : AndroidViewModel(application)
         val req = StringRequest(
             Request.Method.GET,
             getUrl(),
-            Response.Listener {
-                _photoListLive.value = Gson().fromJson(it, Pixabay::class.java).hits.toList()
-            },
+            Response.Listener { _photoListLive.value = Gson().fromJson(it, Pixabay::class.java).hits.toList() },
             Response.ErrorListener { Log.d("GalleryViewModel", it.toString()) }
         )
 

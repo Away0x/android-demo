@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.away0x.com.gallery.R
 import com.away0x.com.gallery.adapter.GalleryAdapter
 import com.away0x.com.gallery.databinding.FragmentGalleryBinding
@@ -35,7 +36,7 @@ class GalleryFragment : Fragment() {
         val galleryAdapter = GalleryAdapter()
         binding.recyclerView.apply {
             adapter = galleryAdapter
-            layoutManager = GridLayoutManager(requireContext(), 2)
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         }
 
         // 监听数据变化

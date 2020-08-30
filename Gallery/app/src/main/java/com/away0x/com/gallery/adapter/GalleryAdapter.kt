@@ -19,20 +19,16 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 
-class GalleryAdapter : ListAdapter<PhotoItem, MyViewHolder>(DIFFCALLBACK) {
+class GalleryAdapter : ListAdapter<PhotoItem, MyViewHolder>(DiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = GalleryCellBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val holder = MyViewHolder(binding)
 
         holder.itemView.setOnClickListener {
-            // 1. 普通路由传参
-            // val bundle = Bundle().apply {
-            //     putParcelable("PHOTO", getItem(holder.adapterPosition))
-            // }
-            // holder.itemView.findNavController().navigate(R.id.action_galleryFragment_to_photoFragment, bundle)
-
-            // 2. safe args 路由传参
-            val action = GalleryFragmentDirections.actionGalleryFragmentToPhotoFragment(getItem(holder.adapterPosition))
+            val action = GalleryFragmentDirections.actionGalleryFragmentToPhotoFragment(
+                currentList.toTypedArray(),
+                holder.adapterPosition
+            )
             holder.itemView.findNavController().navigate(action)
         }
 
@@ -41,16 +37,27 @@ class GalleryAdapter : ListAdapter<PhotoItem, MyViewHolder>(DIFFCALLBACK) {
 
     @SuppressLint("CheckResult")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        // placeholder image
-        holder.binding.shimmerLayoutCell.apply {
-            setShimmerColor(0x55FFFFFF)
-            setShimmerAngle(0)
-            startShimmerAnimation()
+        val photoItem = getItem(position)
+
+        with(holder.binding) {
+            shimmerLayoutCell.apply {
+                setShimmerColor(0x55FFFFFF)
+                setShimmerAngle(0)
+                startShimmerAnimation()
+            }
+
+            textViewUser.text = photoItem.photoUser
+            textViewLikes.text = photoItem.photoLikes.toString()
+            textViewFavorites.text = photoItem.photoFavorites.toString()
+
+            // item 确定高度后，瀑布流布局就不会因为计算高度而产生重排
+            imageView.layoutParams.height = photoItem.photoHeight
         }
 
         Glide.with(holder.binding.root)
-            .load(getItem(position).previewUrl)
-            .placeholder(R.drawable.ic_photo_gray_24dp)
+            .load(photoItem.previewUrl)
+            // .placeholder(R.drawable.ic_photo_gray_24dp)
+            .placeholder(R.drawable.photo_placeholder)
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean = false
                 override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
@@ -63,14 +70,9 @@ class GalleryAdapter : ListAdapter<PhotoItem, MyViewHolder>(DIFFCALLBACK) {
     }
 
     // 列表数据的差异化比对是在后台异步执行的
-    object DIFFCALLBACK : DiffUtil.ItemCallback<PhotoItem>() {
-        override fun areItemsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean {
-            return oldItem == newItem
-        }
-
-        override fun areContentsTheSame(oldItem: PhotoItem, newItem: PhotoItem): Boolean {
-            return oldItem.photoId == newItem.photoId
-        }
+    object DiffCallback : DiffUtil.ItemCallback<PhotoItem>() {
+        override fun areItemsTheSame(oldItem: PhotoItem, newItem: PhotoItem) = oldItem.photoId == newItem.photoId
+        override fun areContentsTheSame(oldItem: PhotoItem, newItem: PhotoItem) = oldItem == newItem
     }
 }
 
