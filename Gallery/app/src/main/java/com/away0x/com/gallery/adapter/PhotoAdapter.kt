@@ -18,17 +18,27 @@ class PhotoAdapter : ListAdapter<PhotoItem, PhotoViewHolder>(DiffCallback) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
-        val binding = PhotoViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PhotoViewHolder(binding)
+        return PhotoViewHolder.newInstance(parent)
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        Glide.with(holder.binding.root)
-            .load(getItem(position).previewUrl)
-            .placeholder(R.drawable.photo_placeholder)
-            .into(holder.binding.pagerPhoto)
+        holder.bindWith(getItem(position))
     }
 
 }
 
-class PhotoViewHolder(val binding: PhotoViewBinding) : RecyclerView.ViewHolder(binding.root)
+class PhotoViewHolder(val binding: PhotoViewBinding) : RecyclerView.ViewHolder(binding.root) {
+    companion object {
+        fun newInstance(parent: ViewGroup): PhotoViewHolder {
+            val binding = PhotoViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return PhotoViewHolder(binding)
+        }
+    }
+
+    fun bindWith(photoItem: PhotoItem) {
+        Glide.with(binding.root)
+            .load(photoItem.previewUrl)
+            .placeholder(R.drawable.photo_placeholder)
+            .into(binding.pagerPhoto)
+    }
+}

@@ -26,77 +26,70 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 
-class GalleryAdapter(private val galleryViewModel: GalleryViewModel) : ListAdapter<PhotoItem, MyViewHolder>(DiffCallback) {
+const val NORMAL_CELL_TYPE = 0
+const val FOOTER_CELL_TYPE = 1
 
-    companion object {
-        const val NORMAL_VIEW_TYPE = 0
-        const val FOOTER_VIEW_TYPE = 1
-    }
+class GalleryAdapter(private val galleryViewModel: GalleryViewModel) : ListAdapter<PhotoItem, RecyclerView.ViewHolder>(DiffCallback) {
+
     // footer 状态
     var footerViewStatus = DATA_STATUS_CAN_LOAD_MORE
 
     override fun getItemCount() = super.getItemCount() + 1 // + 1 是为了显示 footer
 
     // 最后一行返回 footer
-    override fun getItemViewType(position: Int) = if (isFooter(position)) FOOTER_VIEW_TYPE else NORMAL_VIEW_TYPE
+    override fun getItemViewType(position: Int) = if (isFooter(position)) FOOTER_CELL_TYPE else NORMAL_CELL_TYPE
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        // 是 footer
-        if (viewType == FOOTER_VIEW_TYPE) {
-            val binding = GalleryFooterBinding.inflate(LayoutInflater.from(parent.context), parent, false).also {
-                (it.root.layoutParams as StaggeredGridLayoutManager.LayoutParams).isFullSpan = true // 占整个空间
-                it.root.setOnClickListener {_ ->
-                    it.progressBar.visibility = View.VISIBLE
-                    it.textView.text = "正在加载"
-                    galleryViewModel.fetchData()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            FOOTER_CELL_TYPE -> FooterViewHolder.newInstance(parent).also {
+                it.binding.progressBar.visibility = View.VISIBLE
+                it.binding.textView.text = "正在加载"
+                galleryViewModel.fetchData()
+            }
+            else -> NormalCellViewHolder.newInstance(parent).also { holder ->
+                holder.binding.root.setOnClickListener {
+                    val action = GalleryFragmentDirections.actionGalleryFragmentToPhotoFragment(
+                        currentList.toTypedArray(),
+                        holder.adapterPosition
+                    )
+                    holder.itemView.findNavController().navigate(action)
                 }
             }
-            return MyViewHolder(binding)
         }
-
-        val binding = GalleryCellBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val holder = MyViewHolder(binding)
-        // 跳转 photo 页
-        holder.itemView.setOnClickListener {
-            val action = GalleryFragmentDirections.actionGalleryFragmentToPhotoFragment(
-                currentList.toTypedArray(),
-                holder.adapterPosition
-            )
-            holder.itemView.findNavController().navigate(action)
-        }
-
-        return holder
     }
 
     @SuppressLint("CheckResult")
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        // 是 footer
-        if (isFooter(position)) {
-            with(holder.binding as GalleryFooterBinding) {
-                when (footerViewStatus) {
-                    DATA_STATUS_CAN_LOAD_MORE -> {
-                        progressBar.visibility = View.VISIBLE
-                        textView.text = "正在加载"
-                        root.isClickable = false
-                    }
-                    DATA_STATUS_NO_MORE -> {
-                        progressBar.visibility = View.GONE
-                        textView.text = "全部加载完毕"
-                        root.isClickable = false
-                    }
-                    DATA_STATUS_NETWORK_ERROR -> {
-                        progressBar.visibility = View.GONE
-                        textView.text = "网络故障，点击重试"
-                        root.isClickable = true
-                    }
-                }
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder.itemViewType) {
+            FOOTER_CELL_TYPE -> with(holder as FooterViewHolder) {
+                bindWith(footerViewStatus)
             }
-            return
+            else -> with(holder as NormalCellViewHolder) {
+                val photoItem = getItem(position) ?: return
+                bindWith(photoItem)
+            }
         }
+    }
 
-        val photoItem = getItem(position)
+    // 列表数据的差异化比对是在后台异步执行的
+    object DiffCallback : DiffUtil.ItemCallback<PhotoItem>() {
+        override fun areItemsTheSame(oldItem: PhotoItem, newItem: PhotoItem) = oldItem.photoId == newItem.photoId
+        override fun areContentsTheSame(oldItem: PhotoItem, newItem: PhotoItem) = oldItem == newItem
+    }
 
-        with(holder.binding as GalleryCellBinding) {
+    private fun isFooter(position: Int) = position == itemCount - 1
+}
+
+class NormalCellViewHolder(val binding: GalleryCellBinding) : RecyclerView.ViewHolder(binding.root) {
+    companion object {
+        fun newInstance(parent: ViewGroup): NormalCellViewHolder {
+            val binding = GalleryCellBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return NormalCellViewHolder(binding)
+        }
+    }
+
+    fun bindWith(photoItem: PhotoItem) {
+        with(binding) {
             shimmerLayoutCell.apply {
                 setShimmerColor(0x55FFFFFF)
                 setShimmerAngle(0)
@@ -106,12 +99,11 @@ class GalleryAdapter(private val galleryViewModel: GalleryViewModel) : ListAdapt
             textViewUser.text = photoItem.photoUser
             textViewLikes.text = photoItem.photoLikes.toString()
             textViewFavorites.text = photoItem.photoFavorites.toString()
-
             // item 确定高度后，瀑布流布局就不会因为计算高度而产生重排
             imageView.layoutParams.height = photoItem.photoHeight
         }
 
-        Glide.with(holder.binding.root)
+        Glide.with(binding.root)
             .load(photoItem.previewUrl)
             // .placeholder(R.drawable.ic_photo_gray_24dp)
             .placeholder(R.drawable.photo_placeholder)
@@ -131,20 +123,42 @@ class GalleryAdapter(private val galleryViewModel: GalleryViewModel) : ListAdapt
                     isFirstResource: Boolean
                 ): Boolean {
                     return false.also {
-                        holder.binding.shimmerLayoutCell?.stopShimmerAnimation()
+                        binding.shimmerLayoutCell?.stopShimmerAnimation()
                     }
                 }
             })
-            .into(holder.binding.imageView)
+            .into(binding.imageView)
     }
-
-    // 列表数据的差异化比对是在后台异步执行的
-    object DiffCallback : DiffUtil.ItemCallback<PhotoItem>() {
-        override fun areItemsTheSame(oldItem: PhotoItem, newItem: PhotoItem) = oldItem.photoId == newItem.photoId
-        override fun areContentsTheSame(oldItem: PhotoItem, newItem: PhotoItem) = oldItem == newItem
-    }
-
-    private fun isFooter(position: Int) = position == itemCount - 1
 }
 
-class MyViewHolder(val binding: ViewBinding) : RecyclerView.ViewHolder(binding.root)
+class FooterViewHolder(val binding: GalleryFooterBinding) : RecyclerView.ViewHolder(binding.root) {
+    companion object {
+        fun newInstance(parent: ViewGroup): FooterViewHolder {
+            val binding = GalleryFooterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            (binding.root.layoutParams as StaggeredGridLayoutManager.LayoutParams).isFullSpan = true
+            return FooterViewHolder(binding)
+        }
+    }
+
+    fun bindWith(footerViewStatus: Int) {
+        with(binding) {
+            when (footerViewStatus) {
+                DATA_STATUS_CAN_LOAD_MORE -> {
+                    progressBar.visibility = View.VISIBLE
+                    textView.text = "正在加载"
+                    root.isClickable = false
+                }
+                DATA_STATUS_NO_MORE -> {
+                    progressBar.visibility = View.GONE
+                    textView.text = "全部加载完毕"
+                    root.isClickable = false
+                }
+                DATA_STATUS_NETWORK_ERROR -> {
+                    progressBar.visibility = View.GONE
+                    textView.text = "网络故障，点击重试"
+                    root.isClickable = true
+                }
+            }
+        }
+    }
+}
