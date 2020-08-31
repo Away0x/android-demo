@@ -15,6 +15,8 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.get
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +25,8 @@ import com.away0x.com.gallery.R
 import com.away0x.com.gallery.adapter.PhotoAdapter
 import com.away0x.com.gallery.adapter.PhotoViewHolder
 import com.away0x.com.gallery.databinding.FragmentPhotoBinding
+import com.away0x.com.gallery.viewModel.GalleryViewModel
+import com.away0x.com.gallery.viewModel.GalleryViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -31,6 +35,8 @@ import kotlinx.coroutines.withContext
 const val REQUEST_WRITE_EXTERNAL_STORAGE = 1
 
 class PhotoFragment : Fragment() {
+
+    private val galleryViewModel: GalleryViewModel by activityViewModels { GalleryViewModelFactory(requireActivity().application) }
 
     private val args by navArgs<PhotoFragmentArgs>()
     private lateinit var binding: FragmentPhotoBinding
@@ -96,25 +102,25 @@ class PhotoFragment : Fragment() {
      * 初始化 viewPager2
      */
     private fun initViewPager() {
-        val photoList = args.photoList.toMutableList()
         val currentPosition = args.currentPosition
 
-        PhotoAdapter().apply {
-            binding.viewPager2.adapter = this
-            submitList(photoList)
-        }
+        val adapter = PhotoAdapter()
+        binding.viewPager2.adapter = adapter
+        // 垂直滚动
+        // binding.viewPager2.orientation = ViewPager2.ORIENTATION_VERTICAL
+
+        galleryViewModel.pagedListLiveData.observe(viewLifecycleOwner, Observer {
+            adapter.submitList(it)
+            binding.viewPager2.setCurrentItem(currentPosition, false)
+        })
+
 
         binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                binding.photoTag.text = getString(R.string.photo_tag, position + 1, photoList.size)
+                binding.photoTag.text = getString(R.string.photo_tag, position + 1, galleryViewModel.pagedListLiveData.value?.size)
             }
         })
-
-        // 默认显示
-        binding.viewPager2.setCurrentItem(currentPosition, false)
-        // 垂直滚动
-        // binding.viewPager2.orientation = ViewPager2.ORIENTATION_VERTICAL
     }
 
     /**

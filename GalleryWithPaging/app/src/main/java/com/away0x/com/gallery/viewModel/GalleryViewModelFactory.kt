@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 class GalleryViewModelFactory(private val application: Application) : ViewModelProvider.AndroidViewModelFactory(application) {
-
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(GalleryViewModel::class.java)) {
@@ -13,5 +12,4 @@ class GalleryViewModelFactory(private val application: Application) : ViewModelP
         }
         throw IllegalArgumentException("Unknown AndroidViewModel class")
     }
-
 }

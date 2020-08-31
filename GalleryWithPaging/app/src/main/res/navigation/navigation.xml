@@ -20,9 +20,6 @@
         android:label="Photo"
         tools:layout="@layout/fragment_photo" >
         <argument
-            android:name="photoList"
-            app:argType="com.away0x.com.gallery.model.PhotoItem[]" />
-        <argument
             android:name="currentPosition"
             app:argType="integer" />
     </fragment>
